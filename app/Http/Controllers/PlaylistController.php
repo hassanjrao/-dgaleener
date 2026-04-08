@@ -1,0 +1,133 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+
+use Auth;
+use DataTables;
+use DB;
+
+use App\Models\Playlist;
+use App\Models\Media;
+
+class PlaylistController extends Controller
+{
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('subscriber');
+    }
+
+    public function index()
+    {
+        if (Auth::user()->isPractitioner() || Auth::user()->isAdmin()) {
+            return view('app.pages.playlist.index');
+        } else {
+            return redirect()->to('/dashboard');
+        }
+    }
+
+    public function show($id)
+    {
+        return Playlist::find($id);
+    }
+    
+    public function update(Request $request, $id)
+    {
+        $playlist = Playlist::findOrFail($id);
+        $playlist->update($request->all());
+        return redirect()->to('/playlist')->with('message.success', 'You have successfully updated playlist details.');
+    }
+
+    public function destroy($id)
+    {
+        $playlist = Playlist::findOrFail($id);
+        $playlist->delete();
+        return redirect()->to('/playlist')->with('message.success', 'You have successfully deleted playlist.');
+    }
+    
+    public function datatables()
+    {
+        $playlists = Playlist::query();
+
+        return DataTables::eloquent($playlists)
+            ->addColumn('action', function ($playlist) {
+                if (Auth::user()->id == $playlist->user_id) {
+                    return "
+                        <a href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='listenPlaylist(".$playlist->id.", \"".$playlist->name."\")' title='Listen to Playlist'></a>&nbsp;&nbsp;
+                        <a href='".url('/playlist/allmedia/'.$playlist->id)."' class='fa fa-music fa-2x' title='Add Media to Playlist'></a>&nbsp;&nbsp;
+                        <a data-target='#editModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-edit fa-2x' onClick='editPlaylist(".$playlist->id.", \"".$playlist->name."\", \"".$playlist->description."\")' title='Edit Playlist'></a>&nbsp;&nbsp;
+                        <a data-target='#deleteModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-trash-o fa-2x' onClick='deletePlaylist(".$playlist->id.")' title='Remove Playlist'></a>
+                    ";
+                } else {
+                    return "
+                        <a href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='listenPlaylist(".$playlist->id.", \"".$playlist->name."\")' title='Listen to Playlist'></a>&nbsp;&nbsp;
+                    ";
+                }
+            })->toJson();
+    }
+
+    public function store()
+    {
+        $playlist = Playlist::create([
+            'name'          => $_POST['name'],
+            'description'   => $_POST['description'],
+            'user_id'       => Auth::user()->id
+        ]);
+        return redirect()->to('/playlist')->with('message.success', 'You have successfully added playlist. See list below for your data.');
+    }
+
+    public function getMedia($playlist_id)
+    {
+        $mediaArr = array();
+        if (!empty($playlist_id)) {
+            $medialist = DB::select("SELECT media.* 
+                                    FROM media_playlists
+                                    JOIN media ON media_playlists.media_id = media.id
+                                    WHERE media_playlists.playlist_id = ". $playlist_id);
+
+            if (count($medialist) > 0) {
+                foreach ($medialist as $media) {
+                    $mediaArr[] = array(
+                        'title' => $media->file_name,
+                        'mp3'   => $media->file_url
+                    );
+                }
+            }
+        }
+        echo json_encode($mediaArr);
+    }
+
+    public function allMedia($playlist_id)
+    {
+        $all_media      = array();
+        $assigned_media = array();
+
+        $allmedias = Media::All()->toArray();
+        if (count($allmedias) > 0) {
+            foreach ($allmedias as $media) {
+                $all_media[$media['id']] = $media['file_name'];
+            }
+        }
+
+        $playlistmedia = DB::select("SELECT media.* 
+                                    FROM media_playlists
+                                    JOIN media ON media_playlists.media_id = media.id
+                                    WHERE media_playlists.playlist_id = ". $playlist_id);
+                                    
+        if (count($playlistmedia) > 0) {
+            foreach ($playlistmedia as $pmedia) {
+                $assigned_media[$pmedia->id] = $pmedia->file_name;
+                if (array_key_exists($pmedia->id, $all_media)) {
+                    unset($all_media[$pmedia->id]);
+                }
+            }
+        }
+        return view('app.pages.playlist.allmedia', compact('playlist_id', 'all_media', 'assigned_media'));
+    }
+}
