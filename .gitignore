@@ -38,6 +38,7 @@ public/assets/
 !.env.pipelines
 !.gitignore
 !.gitattributes
+!.dockerignore
 !.htaccess
 !.overcommit.yml
 !.scss-lint.yml

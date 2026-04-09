@@ -7,6 +7,31 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## Local Docker (PHP 7.4)
+
+This repository includes a project-specific Docker setup in `docker-compose.php74.yml`.
+It runs the app on PHP 7.4 without starting a MySQL container and uses the host machine's MySQL instead.
+
+1. Install Docker Engine and the Docker Compose plugin.
+2. Start the app:
+
+```bash
+docker compose -f docker-compose.php74.yml up --build -d
+```
+
+3. If dependencies are missing, install them inside the PHP 7.4 container:
+
+```bash
+docker compose -f docker-compose.php74.yml run --rm app composer install
+```
+
+4. Open the main app at `http://127.0.0.1:8081`.
+5. Open affiliate pages at `http://127.0.0.1:8081/affiliate`.
+
+Notes:
+- This setup uses `network_mode: host`, so it is intended for Linux hosts.
+- The container overrides local URL settings and disables forced HTTPS/domain-bound routes for local development only.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
