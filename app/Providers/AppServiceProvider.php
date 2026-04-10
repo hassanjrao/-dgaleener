@@ -17,7 +17,14 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
 
-		URL::forceScheme('https');
+        $forceHttps = filter_var(
+            env('APP_HTTPS', $this->app->environment('production')),
+            FILTER_VALIDATE_BOOLEAN
+        );
+
+        if ($forceHttps) {
+            URL::forceScheme('https');
+        }
 
         \Validator::extend('recaptcha', 'App\Validators\ReCaptcha@validate');
     }

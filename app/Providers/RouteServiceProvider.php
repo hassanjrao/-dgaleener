@@ -53,10 +53,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::domain(env('APP_WEB_URL'))
-             ->middleware('web')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/web.php'));
+        $route = Route::middleware('web')
+             ->namespace($this->namespace);
+
+        if ($this->shouldBindRoutesToDomains()) {
+            $route->domain($this->normalizeRouteDomain(env('APP_WEB_URL')));
+        }
+
+        $route->group(base_path('routes/web.php'));
     }
 
     /**
@@ -68,18 +72,49 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::domain(env('APP_WEB_API_URL'))
-             ->middleware('auth:api')
-             ->namespace($this->namespace)
-             ->group(base_path('routes/api.php'));
+        $route = Route::middleware('auth:api')
+             ->namespace($this->namespace);
+
+        if ($this->shouldBindRoutesToDomains()) {
+            $route->domain($this->normalizeRouteDomain(env('APP_WEB_API_URL')));
+        }
+
+        $route->group(base_path('routes/api.php'));
     }
 
     protected function mapAffiliateRoutes()
     {
-        Route::domain(env('APP_AFFILIATE_URL'))
-             ->middleware('web')
+        $route = Route::middleware('web')
              ->namespace($this->namespace)
-             ->name('affiliate.')
-             ->group(base_path('routes/affiliate.php'));
+             ->name('affiliate.');
+
+        if ($this->shouldBindRoutesToDomains()) {
+            $route->domain($this->normalizeRouteDomain(env('APP_AFFILIATE_URL')));
+        } else {
+            $route->prefix('affiliate');
+        }
+
+        $route->group(base_path('routes/affiliate.php'));
+    }
+
+    protected function shouldBindRoutesToDomains()
+    {
+        return ! filter_var(env('APP_DISABLE_ROUTE_DOMAINS', false), FILTER_VALIDATE_BOOLEAN);
+    }
+
+    protected function normalizeRouteDomain($domain)
+    {
+        if (! $domain) {
+            return null;
+        }
+
+        $host = parse_url($domain, PHP_URL_HOST);
+        $port = parse_url($domain, PHP_URL_PORT);
+
+        if ($host === null) {
+            return $domain;
+        }
+
+        return $port ? $host.':'.$port : $host;
     }
 }

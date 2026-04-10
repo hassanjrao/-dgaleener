@@ -5,11 +5,8 @@ namespace App\Models;
 use Auth;
 use DateTime;
 use Excel;
-use Mail;
 
 use App\Exports\ScanSessionExport;
-
-use App\Mail\ScanSessionPaymentEmail;
 
 class ScanSession extends Base
 {
@@ -43,9 +40,6 @@ class ScanSession extends Base
             }
         });
 
-        static::saved(function ($scanSession) {
-            Mail::to($scanSession->client->email)->bcc(env('MAIL_FROM_ADDRESS_BCC'))->send(new ScanSessionPaymentEmail($scanSession));
-        });
     }
 
     public function client()

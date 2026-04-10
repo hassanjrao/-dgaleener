@@ -34,7 +34,13 @@ class MediaController extends Controller
 
     public function show($id)
     {
-        return Media::find($id);
+        $media = Media::find($id);
+
+        if ($media) {
+            $media->append('file_url');
+        }
+
+        return $media;
     }
 
     public function update(Request $request, $id)
@@ -53,27 +59,29 @@ class MediaController extends Controller
 
     public function datatables()
     {
-        $medias = Media::query();
+        $medias = Media::query()->select(['id', 'file_name', 'description', 'user_id']);
 
         return DataTables::eloquent($medias)
             ->addColumn('action', function ($media) {
+                $media->setAppends([]);
+
                 if (Auth::user()->isPractitioner()) {
                     if (Auth::user()->id == $media->user_id) {
                         return "
-                            <a data-target='#playerModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='playFile(\"".$media->file_name."\",\"".$media->s3_name."\")' title='Play Media'></a>&nbsp;&nbsp;
+                            <a data-target='#playerModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='playMedia(".$media->id.", \"".$media->file_name."\")' title='Play Media'></a>&nbsp;&nbsp;
                             <a data-target='#comsModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-music fa-2x' onClick='addToPlaylist(".$media->id.", \"".$media->file_name."\", \"media\")' title='Add to Playlist'></a>&nbsp;&nbsp;
                             <a data-target='#editModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-edit fa-2x' onClick='editMedia(".$media->id.", \"".$media->file_name."\", \"".$media->description."\")' title='Edit Media'></a>&nbsp;&nbsp;
                             <a data-target='#deleteModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-trash-o fa-2x' onClick='deleteMedia(".$media->id.")' title='Remove Media'></a>
                         ";
                     } else {
                         return "
-                            <a data-target='#playerModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='playFile(\"".$media->file_name."\",\"".$media->file_url."\")' title='Play Media'></a>&nbsp;&nbsp;
+                            <a data-target='#playerModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='playMedia(".$media->id.", \"".$media->file_name."\")' title='Play Media'></a>&nbsp;&nbsp;
                             <a data-target='#comsModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-music fa-2x' onClick='addToPlaylist(".$media->id.", \"".$media->file_name."\", \"media\")' title='Add to Playlist'></a>
                         ";
                     }
                 } else {
                     return "
-                        <a data-target='#playerModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='playFile(\"".$media->file_name."\",\"".$media->file_url."\")' title='Play Media'></a>
+                        <a data-target='#playerModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='playMedia(".$media->id.", \"".$media->file_name."\")' title='Play Media'></a>
                     ";
                 }
             })->toJson();
@@ -81,19 +89,32 @@ class MediaController extends Controller
 
     public function allmedia()
     {
-        $mediaArr = array();
-        $medialist = Media::inRandomOrder()->get();
+        $mediaArr = [];
+        $availablePaths = Storage::disk('s3')->files('audio_files');
+        $medialist = Media::query()
+            ->select(['id', 'file_name', 's3_name'])
+            ->get();
 
-        if (count($medialist) > 0) {
-            foreach ($medialist as $media) {
-                $mediaArr[] = array(
-                    'title' => $media->file_name,
-                    'mp3'   => $media->file_url
-                );
+        foreach ($medialist as $media) {
+            $partialUrl = $media->resolveAudioStoragePath($availablePaths);
+
+            if (empty($partialUrl)) {
+                continue;
             }
+
+            $mediaArr[] = [
+                'title' => $media->file_name,
+                'mp3' => $media->audioUrlForPath($partialUrl),
+            ];
         }
-        
-        echo json_encode($mediaArr);
+
+        shuffle($mediaArr);
+
+        return response()
+            ->json($mediaArr, 200, [], JSON_UNESCAPED_SLASHES)
+            ->header('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 
     public function store()

@@ -260,6 +260,11 @@
     <script src="{{ asset('js/jplayer.playlist.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
         function playFile(filename, s3file){
+            if (!s3file) {
+                alert('This audio file is missing from storage. Please re-upload it.');
+                return;
+            }
+
             $("#playerModalTitle").html(filename);
             var myPlaylist = new jPlayerPlaylist({
                     jPlayer: "#jquery_jplayer_2",
@@ -280,6 +285,19 @@
                 autoBlur: true,
                 smoothPlayBar: true,
                 keyEnabled: true
+            });
+        }
+
+        function playMedia(id, filename){
+            $.ajax({
+                url: '/media/' + id,
+                type: 'GET',
+                success: function(result) {
+                    playFile(result.file_name || filename, result.file_url);
+                },
+                error: function() {
+                    alert('Unable to load this audio file right now.');
+                }
             });
         }
 

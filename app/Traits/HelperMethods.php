@@ -20,9 +20,10 @@ trait HelperMethods
 
     public function awsAssetsUrl($file_path)
     {
-        $source_url = env('APP_WEB_ASSETS_URL') ?? env('AWS_S3_URL');
-        
-        return $source_url.$file_path;
+        $sourceUrl = env('APP_WEB_ASSETS_URL') ?: env('AWS_S3_URL');
+        $normalizedPath = preg_replace('#/+#', '/', '/'.ltrim((string) $file_path, '/'));
+
+        return rtrim((string) $sourceUrl, '/').$normalizedPath;
     }
 
     public function creator()

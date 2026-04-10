@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Auth;
 use Mail;
+use Illuminate\Support\Facades\Log;
 
 use App\Mail\ScanSessionMail;
 
@@ -165,7 +166,18 @@ class ScanSessionController extends BaseController
             $email_to = $scan_session->client->email;
             $email_bcc = env('MAIL_FROM_ADDRESS_BCC');
 
-            Mail::to($email_to)->bcc($email_bcc)->send(new \App\Mail\ScanSessionEmail($scan_session));
+            try {
+                Mail::to($email_to)->bcc($email_bcc)->send(new \App\Mail\ScanSessionEmail($scan_session));
+            } catch (\Throwable $e) {
+                Log::error('Unable to send scan session email.', [
+                    'scan_session_id' => $scan_session->id,
+                    'client_id' => $scan_session->client_id,
+                    'client_email' => $email_to,
+                    'exception' => $e,
+                ]);
+
+                return $this->sendErrorResponse('Unable to email the client right now. Please verify the mail configuration and try again.');
+            }
 
             return response()->json(['message' => 'Message sent successfully'], Response::HTTP_OK);
         } else {

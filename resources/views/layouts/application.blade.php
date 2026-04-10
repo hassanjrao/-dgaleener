@@ -38,7 +38,7 @@
                 });
             </script>
 
-            @if(!in_array(Route::getCurrentRoute()->uri(), ['home', 'media', 'playlist']) && Auth::user())
+            @if(!in_array(Route::getCurrentRoute()->uri(), ['home', 'media', 'playlist']) && Auth::user() && Auth::user()->hasVerifiedEmail() && Auth::user()->hasValidSubscription())
                 <script src="{{ asset('js/jquery.jplayer.js') }}" type="text/javascript"></script>
                 <script src="{{ asset('js/jplayer.playlist.js') }}" type="text/javascript"></script>
                 <script type="text/javascript">
@@ -59,16 +59,24 @@
                         }
 
                         var allMediaUrl = '{{ url("/media/all")}}';
-                        $.get(allMediaUrl, function(data){
-                            data = JSON.parse(data);
-                            if(data){
+                        $.ajax({
+                            url: allMediaUrl,
+                            dataType: 'json',
+                            cache: false
+                        }).done(function(data){
+                            if (Array.isArray(data) && data.length > 0) {
                                 new jPlayerPlaylist({
                                     jPlayer: "#jquery_jplayer_all",
                                     cssSelectorAncestor: "#jp_container_all"
                                 }, data, 
                                 jPlayerConfig);
+                                $('#jp_container_all').show();
+                            } else {
+                                $('#jp_container_all').hide();
                             }
-                            $('#playerModal').modal('show');
+                        }).fail(function(xhr){
+                            $('#jp_container_all').hide();
+                            console.error('Unable to load media playlist.', xhr);
                         });
                     });
                 </script>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class VerificationController extends Controller
 {
@@ -38,5 +40,26 @@ class VerificationController extends Controller
         // TODO: This bug still persists on Laravel 5.8, may need to clean install the whole project
         // $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
+    }
+
+    public function resend(Request $request)
+    {
+        if ($request->user()->hasVerifiedEmail()) {
+            return redirect($this->redirectPath());
+        }
+
+        try {
+            $request->user()->sendEmailVerificationNotification();
+        } catch (\Throwable $e) {
+            Log::error('Unable to resend verification email.', [
+                'user_id' => $request->user()->id,
+                'email' => $request->user()->email,
+                'exception' => $e,
+            ]);
+
+            return back()->with('message.fail', 'We could not send the verification email right now. Please try again shortly.');
+        }
+
+        return back()->with('resent', true);
     }
 }

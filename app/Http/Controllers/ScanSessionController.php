@@ -27,6 +27,7 @@ use Session;
 use URL;
 
 use Mail;
+use Illuminate\Support\Facades\Log;
 use App\Exports\ScanSessionExport;
 use App\Mail\ScanSessionPaymentEmail;
 
@@ -175,7 +176,18 @@ class ScanSessionController extends Controller
     {
         $scanSession = ScanSession::findOrFail($id);
 
-        Mail::to($scanSession->client->email)->bcc(env('MAIL_FROM_ADDRESS_BCC'))->send(new ScanSessionPaymentEmail($scanSession));
+        try {
+            Mail::to($scanSession->client->email)->bcc(env('MAIL_FROM_ADDRESS_BCC'))->send(new ScanSessionPaymentEmail($scanSession));
+        } catch (\Throwable $e) {
+            Log::error('Unable to send scan session payment request email.', [
+                'scan_session_id' => $scanSession->id,
+                'client_id' => $scanSession->client_id,
+                'client_email' => $scanSession->client->email,
+                'exception' => $e,
+            ]);
+
+            return back()->with('message.fail', 'Unable to send the payment request email right now. Please try again.');
+        }
 
         return back()->with('message.success', 'Payment Request Sent. You have successfully send a request to the client.');
     }

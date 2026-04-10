@@ -39,12 +39,14 @@ class MediaController extends BaseController
 
     public function datatables()
     {
-        $medias = Media::query();
+        $medias = Media::query()->select(['id', 'file_name', 'description', 'user_id']);
 
         return DataTables::eloquent($medias)
             ->addColumn('action', function ($media) {
+                $media->setAppends([]);
+
                 return "
-                    <a data-target='#playerModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='playFile(\"".$media->file_name."\",\"".$media->file_url."\")' title='Play Media'></a>&nbsp;&nbsp;
+                    <a data-target='#playerModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-headphones fa-2x' onClick='playMedia(".$media->id.", \"".$media->file_name."\")' title='Play Media'></a>&nbsp;&nbsp;
                     <a data-target='#comsModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-music fa-2x' onClick='addToPlaylist(".$media->id.", \"".$media->file_name."\", \"admin/media\")' title='Add to Playlist'></a>&nbsp;&nbsp;
                     <a data-target='#editModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-edit fa-2x' onClick='editMedia(".$media->id.")' title='Edit Media'></a>&nbsp;&nbsp;
                     <a data-target='#deleteModal' data-toggle='modal' href='javascript:void(0)' class='fa fa-trash-o fa-2x' onClick='deleteMedia(".$media->id.")' title='Remove Media'></a>

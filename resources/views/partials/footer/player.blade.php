@@ -1,5 +1,5 @@
 <div id="jquery_jplayer_all" class="jp-jplayer"></div>
-<div id="jp_container_all" class="jp-audio" role="application" aria-label="media player">
+<div id="jp_container_all" class="jp-audio" role="application" aria-label="media player" style="display:none;">
     <div class="jp-type-playlist">
         <div class="jp-gui jp-interface">
             <div class="jp-title" style="font-size: 13px; height: 20px;"></div>

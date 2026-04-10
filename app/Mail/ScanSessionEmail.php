@@ -50,13 +50,21 @@ class ScanSessionEmail extends Mailable
         try {
             $filename = $this->scan_session->export();
             $filePath = storage_path().'/app/'. $filename;
-        } catch (\Exception $e) {
-            \Storage::delete($filename);
+        } catch (\Throwable $e) {
+            \Log::error('Unable to export scan session attachment.', [
+                'scan_session_id' => $this->scan_session->id,
+                'exception' => $e,
+            ]);
         }
 
-        return $this->view('emails.scan_session')
+        $mail = $this->view('emails.scan_session')
                     ->subject(env('APP_TITLE').' | Scan Session')
-                    ->with([ 'content' => ''])
-                    ->attach($filePath, [ 'as' => $filename, 'mime' => $fileMimeType ]);
+                    ->with([ 'content' => '']);
+
+        if (! empty($filename) && ! empty($filePath) && \File::exists($filePath)) {
+            $mail->attach($filePath, [ 'as' => $filename, 'mime' => $fileMimeType ]);
+        }
+
+        return $mail;
     }
 }
