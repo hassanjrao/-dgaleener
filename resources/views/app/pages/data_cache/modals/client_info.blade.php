@@ -1,4 +1,42 @@
 <!-- Client Info Modal -->
+<style>
+    #clientInfoModal .client-info-feedback {
+        margin-bottom: 16px;
+    }
+
+    #clientInfoModal .client-info-feedback ul {
+        margin: 8px 0 0 18px;
+        padding: 0;
+    }
+
+    #clientInfoModal .client-info-status {
+        align-items: center;
+        color: #4a5568;
+        display: none;
+        gap: 10px;
+        margin-right: 16px;
+    }
+
+    #clientInfoModal .client-info-status.is-visible {
+        display: inline-flex;
+    }
+
+    #clientInfoModal .client-info-spinner {
+        animation: spin 1s linear infinite;
+        border: 3px solid #d9e2f2;
+        border-radius: 50%;
+        border-top: 3px solid #3498db;
+        display: inline-block;
+        height: 20px;
+        width: 20px;
+    }
+
+    #clientInfoModal .save-btn[disabled],
+    #clientInfoModal .clear-btn[disabled] {
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+</style>
 <div class="modal fade" id="clientInfoModal" tabindex="-1" role="dialog" aria-labelledby="clientInfoModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 1200px;">
         <div class="modal-content">
@@ -13,6 +51,10 @@
                 <input type="hidden" id="user_id" name="user_id" value="{{Auth::user()->id}}">
                 <input type="hidden" id="mode" name="mode">
                 <div class="modal-body">
+                    <div class="alert alert-danger client-info-feedback" style="display: none;">
+                        <strong>We couldn't complete the request.</strong>
+                        <ul class="client-info-error-list"></ul>
+                    </div>
                     <div class="form-group row">
                         <div class="col">
                             <label>First Name</label>
@@ -57,7 +99,7 @@
                     <div class="form-group row">
                         <div class="col">
                             <label>Date of Birth</label>
-                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
+                            <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" autocomplete="bday" max="{{ now()->format('Y-m-d') }}" required>
                         </div>
                         <div class="col">
                             <label>Session and Cost</label>
@@ -80,6 +122,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <div class="client-info-status" aria-live="polite">
+                        <span class="client-info-spinner"></span>
+                        <span class="client-info-status-text">Saving client information...</span>
+                    </div>
                     <button type="button" class="btn btn-danger mr-auto clear-btn">Clear</button>
                     <button type="button" class="btn save-btn">Save</button>
                 </div>

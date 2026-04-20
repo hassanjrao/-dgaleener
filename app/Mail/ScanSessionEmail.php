@@ -58,6 +58,7 @@ class ScanSessionEmail extends Mailable
         }
 
         $mail = $this->view('emails.scan_session')
+                    ->text('emails.plain.scan_session')
                     ->subject(env('APP_TITLE').' | Scan Session')
                     ->with([ 'content' => '']);
 

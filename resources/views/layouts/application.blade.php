@@ -25,15 +25,32 @@
                 $(document).ready(function() {
                     $('[data-toggle="tooltip"]').tooltip();
 
-                    $('input[type="date"]').addClass('date').attr('type','text');
+                    var supportsNativeDateInput = (function() {
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'date');
 
-                    $('input[type="date"]').keydown(function(e) {
-                        e.preventDefault();
-                    });
+                        return input.type === 'date';
+                    })();
 
-                    $datepicker_inputs = $('.date');
-                    $.each($datepicker_inputs, function(index, element) {
-                        $(element).datepicker({ dateFormat: "yy/mm/dd" });  
+                    if (!supportsNativeDateInput) {
+                        $('input[type="date"]').each(function(index, element) {
+                            var $element = $(element);
+
+                            $element.attr('type', 'text').addClass('date-fallback');
+                        });
+
+                        $('.date-fallback').datepicker({
+                            dateFormat: 'yy-mm-dd',
+                            changeMonth: true,
+                            changeYear: true
+                        });
+                    }
+
+                    $('.js-datepicker').datepicker({
+                        dateFormat: 'mm/dd/yy',
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: '1900:+0'
                     });
                 });
             </script>

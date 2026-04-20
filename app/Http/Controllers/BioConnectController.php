@@ -141,12 +141,77 @@ class BioConnectController extends Controller
         }
 
         $user = User::find($user_id);
+        $mirrorReference = [
+            'name' => $user->name,
+            'business' => $user->business,
+        ];
+
         $user->update($postdate);
 
         if (empty($user->getErrors()->all())) {
+            $user->refresh();
+            $this->syncMirroredProfiles($user, $mirrorReference);
+
             return redirect()->to('/bioconnect/profile')->with('message.success', 'You have successfully saved your profile.');
         } else {
             return redirect('/bioconnect/profile')->with('message.fail', 'Unable to save your profile, please check your inputs in the form below.')->withErrors($user->getErrors());
+        }
+    }
+
+    protected function syncMirroredProfiles(User $user, array $mirrorReference = [])
+    {
+        $mirrorIds = User::query()
+            ->where('id', '!=', $user->id)
+            ->where(function ($query) use ($user, $mirrorReference) {
+                $this->applyMirrorIdentity($query, $mirrorReference['name'] ?? null, $mirrorReference['business'] ?? null);
+
+                if (($mirrorReference['name'] ?? null) !== $user->name || ($mirrorReference['business'] ?? null) !== $user->business) {
+                    $query->orWhere(function ($nestedQuery) use ($user) {
+                        $this->applyMirrorIdentity($nestedQuery, $user->name, $user->business);
+                    });
+                }
+            })
+            ->where(function ($query) use ($user) {
+                if ($user->isAdmin()) {
+                    $query->whereHas('roles', function ($roleQuery) {
+                        $roleQuery->whereIn('name', ['practitioner', 'therapist']);
+                    });
+                } else {
+                    $query->whereHas('roles', function ($roleQuery) {
+                        $roleQuery->where('name', 'administrator');
+                    });
+                }
+            })
+            ->pluck('id');
+
+        if ($mirrorIds->isEmpty()) {
+            return;
+        }
+
+        DB::table('users')
+            ->whereIn('id', $mirrorIds)
+            ->update([
+                'name' => $user->name,
+                'business' => $user->business,
+                'location' => $user->location,
+                'address' => $user->address,
+                'country' => $user->country,
+                'zip' => $user->zip,
+                'age' => $user->age,
+                'privacy' => $user->privacy,
+                'profile_picture' => $user->profile_picture,
+                'updated_at' => now(),
+            ]);
+    }
+
+    protected function applyMirrorIdentity($query, $name, $business)
+    {
+        $query->where('name', '=', $name);
+
+        if (is_null($business)) {
+            $query->whereNull('business');
+        } else {
+            $query->where('business', '=', $business);
         }
     }
 }

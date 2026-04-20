@@ -34,6 +34,7 @@ class ScanSessionPaymentEmail extends Mailable
     public function build()
     {
         return $this->view('emails.scan_session_payment')
+                    ->text('emails.plain.scan_session_payment')
                     ->subject($this->scanSession->description());
     }
 }

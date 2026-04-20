@@ -83,6 +83,15 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label for="address" class="col-sm-2 offset-md-1 col-form-label">Address:</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="address" name="address" placeholder="your address here" value="{{ Auth::user()->address }}">
+                        @error('address')
+                            <strong class="invalid">{{ $errors->first('address') }}</strong>
+                        @enderror
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label for="country" class="col-sm-2 offset-md-1 col-form-label">Country:</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" id="country" name="country" placeholder="country" value="{{ Auth::user()->country}}">
@@ -128,12 +137,15 @@
                 var uage = $('#age').val();
                 var ucountry = $('#country').val();
                 var ulocation = $('#location').val();
+                var uaddress = $('#address').val();
                 var uzip = $('#zip').val();
-                var ulogo = $('#upload_logo').val();
-                var fileExtension;
-                fileExtension = ulogo.replace(/^.*\./, '');
-                var logo_name = 'user-{{Auth::user()->id}}.'+fileExtension;
+                var ulogo = $('#upload').val() || '';
+                var logo_name = '';
                 var uname = $('#name').val();
+                if (ulogo !== '') {
+                    var fileExtension = ulogo.replace(/^.*\./, '');
+                    logo_name = 'user-{{Auth::user()->id}}.'+fileExtension;
+                }
                 var fbinitupdataeuser = firebase.database().ref().child('post').orderByChild("post_byId").equalTo("{{Auth::user()->id}}");
 
                 var fbinitcommentsupdate = firebase.database().ref().child('post');
@@ -153,6 +165,7 @@
                                     firebase.database().ref().child('friends/'+ userParentId + '/' + element ).update({
                                         name: uname,
                                         age: uage,
+                                        address: uaddress,
                                         country: ucountry,
                                         location: ulocation,
                                         zip: uzip,

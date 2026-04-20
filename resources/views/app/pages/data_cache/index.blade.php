@@ -45,7 +45,7 @@
         </div>
         <div class="row justify-content-center text-center">
             <div class="row justify-content-center signup-form-row">
-                <a href="{{ asset('assets/files/Anew Avenue - Preferences.pdf') }}" target="_blank">
+                <a href="{{ url('/data_cache/help') }}">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/help.png')}}" alt="{{ env('APP_TITLE') }}"></img>
                         <h3 class="text-center">HELP</h3>

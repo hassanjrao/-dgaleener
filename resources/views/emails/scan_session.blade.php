@@ -1,46 +1,32 @@
 @extends('layouts.mailer')
 @section('styles')
     @parent
-    
-    <style type="text/css">
-        td {
-            padding: 0 10px;
-        }
-    </style>
 @stop
 @section('content')
-    {!! $content !!}
-    <br>
-    <br>
-    <table>
+    @if (!empty($content))
+        {!! \App\Support\EmailContentFormatter::toHtml($content) !!}
+    @endif
+    <table role="presentation" class="details-table">
         <tr>
-            <td>
-                Client Name:
-            </td>
+            <td class="details-label">Client Name:</td>
             <td>
                 {{ $scan_session->client->name }}
             </td>
         </tr>
         <tr>
-            <td>
-                Scan Type:
-            </td>
+            <td class="details-label">Scan Type:</td>
             <td>
                 {{ ucwords(str_replace('_', ' ', $scan_session->scan_type)) }}
             </td>
         </tr>
         <tr>
-            <td>
-                Date Started:
-            </td>
+            <td class="details-label">Date Started:</td>
             <td>
                 {{ $scan_session->date_started }}
             </td>
         </tr>
         <tr>
-            <td>
-                Date Ended:
-            </td>
+            <td class="details-label">Date Ended:</td>
             <td>
                 {{ $scan_session->date_ended ?? '-' }}
             </td>

@@ -31,6 +31,7 @@ class InquiryEmail extends Mailable
     public function build()
     {
         return $this->view('emails.inquiry')
+                    ->text('emails.plain.inquiry')
                     ->subject(env('APP_TITLE').' Demo')
                     ->with([ 'name' => $this->data['name'],
                              'email' => $this->data['email'],

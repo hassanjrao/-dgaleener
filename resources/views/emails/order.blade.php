@@ -1,50 +1,36 @@
 @extends('layouts.mailer')
 @section('styles')
     @parent
-    
-    <style type="text/css">
-        td {
-            padding: 0 10px;
-        }
-    </style>
 @stop
 @section('content')
-    Greetings {{ $order->user->name }}, 
-    <br>
-    <br>
-    Here are the details for your order. You may pay your order by clicking <a href="{{ env('APP_URL').'/orders/'.$order->id.'/payment' }}">here</a>. Thank you choosing our products.
-    <br>
-    <br>
-    <table border="1">
+    <p>Greetings {{ $order->user->name }},</p>
+    <p>
+        Here are the details for your order. You may pay for your order by clicking
+        <a href="{{ env('APP_URL').'/orders/'.$order->id.'/payment' }}">here</a>.
+        Thank you for choosing our products.
+    </p>
+    <table role="presentation" class="details-table">
         <tr>
-            <td>
-                Product Name:
-            </td>
+            <td class="details-label">Product Name:</td>
             <td>
                 {{ $order->description }}
             </td>
         </tr>
         <tr>
-            <td>
-                Price per unit:
-            </td>
+            <td class="details-label">Price per unit:</td>
             <td>
                 {{ '$'.number_format($order->product->unit_price, 2) }}
             </td>
         </tr>
         <tr>
-            <td>
-                Quantity:
-            </td>
+            <td class="details-label">Quantity:</td>
             <td>
                 {{ $order->quantity }}
             </td>
         </tr>
         @if (!empty($order->shipping_service))
         <tr>
-            <td>
-                Shipping Service:
-            </td>
+            <td class="details-label">Shipping Service:</td>
             <td>
             {{ $order->shipping_service }}
             </td>
@@ -52,9 +38,7 @@
         @endif
         @if (!empty($order->shipping_day_set))
         <tr>
-            <td>
-                Shipping Duration:
-            </td>
+            <td class="details-label">Shipping Duration:</td>
             <td>
             {{ $order->shipping_day_set }}
             </td>
@@ -62,26 +46,21 @@
         @endif
         @if (!empty($order->shipping_rate))
         <tr>
-            <td>
-                Shipping Fee:
-            </td>
+            <td class="details-label">Shipping Fee:</td>
             <td>
             {{ '$'.number_format($order->shipping_rate, 2) }}
             </td>
         </tr>
         @endif
         <tr>
-            <td>
-                Total Cost:
-            </td>
+            <td class="details-label">Total Cost:</td>
             <td>
                 {{ '$'.number_format($order->cost(), 2) }}
             </td>
         </tr>
     </table>
-    <br>
-    Best Regards,
-    <br>
-    <br>
-    Anew Team
+    <p class="email-footer">
+        Best regards,<br>
+        Anew Team
+    </p>
 @endsection

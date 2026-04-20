@@ -1,7 +1,145 @@
 <script type="text/javascript">
     $(document).ready(function() {
+        function padDatePart(value) {
+            return ('0' + value).slice(-2);
+        }
+
+        function normalizeDateForRequest(value) {
+            if (!value) {
+                return '';
+            }
+
+            var trimmed = $.trim(value);
+            var isoMatch = trimmed.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (isoMatch) {
+                return trimmed;
+            }
+
+            var usMatch = trimmed.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+            if (usMatch) {
+                return usMatch[3] + '-' + padDatePart(usMatch[1]) + '-' + padDatePart(usMatch[2]);
+            }
+
+            var date = new Date(trimmed);
+            if (!isNaN(date.getTime())) {
+                return date.getFullYear() + '-' + padDatePart(date.getMonth() + 1) + '-' + padDatePart(date.getDate());
+            }
+
+            return null;
+        }
+
+        function resetClientMessages() {
+            $('.client-info-feedback').hide();
+            $('.client-info-error-list').empty();
+        }
+
+        function showClientErrors(messages) {
+            var $feedback = $('.client-info-feedback');
+            var $list = $('.client-info-error-list');
+            var entries = $.isArray(messages) ? messages : [messages];
+
+            $list.empty();
+
+            $.each(entries, function(_, message) {
+                if (message) {
+                    $list.append($('<li>').text(message));
+                }
+            });
+
+            if ($list.children().length === 0) {
+                $list.append($('<li>').text('An unexpected error occurred. Please try again.'));
+            }
+
+            $feedback.show();
+        }
+
+        function collectClientErrors(payload) {
+            var messages = [];
+
+            function appendError(value) {
+                if (!value) {
+                    return;
+                }
+
+                if ($.isArray(value)) {
+                    $.each(value, function(_, nestedValue) {
+                        appendError(nestedValue);
+                    });
+
+                    return;
+                }
+
+                if ($.isPlainObject(value)) {
+                    $.each(value, function(_, nestedValue) {
+                        appendError(nestedValue);
+                    });
+
+                    return;
+                }
+
+                messages.push(value);
+            }
+
+            if (payload && payload.responseJSON && payload.responseJSON.error) {
+                var errorPayload = payload.responseJSON.error;
+
+                appendError(errorPayload.errors);
+
+                if ($.isEmptyObject(errorPayload.errors || {}) || errorPayload.message !== 'Unprocessable Entity') {
+                    appendError(errorPayload.message);
+                }
+            }
+
+            if (messages.length === 0 && payload && payload.statusText) {
+                messages.push(payload.statusText);
+            }
+
+            if (messages.length === 0) {
+                messages.push('An unexpected error occurred. Please try again.');
+            }
+
+            return messages;
+        }
+
+        function setClientBusy(isBusy, message, buttonLabel) {
+            var $status = $('#clientInfoModal .client-info-status');
+            var $statusText = $('#clientInfoModal .client-info-status-text');
+            var $saveButton = $('#clientInfoModal .save-btn');
+            var $clearButton = $('#clientInfoModal .clear-btn');
+
+            if (isBusy) {
+                $status.addClass('is-visible');
+                $statusText.text(message || 'Saving client information...');
+            } else {
+                $status.removeClass('is-visible');
+                $statusText.text('Saving client information...');
+            }
+
+            $saveButton.prop('disabled', isBusy).text(isBusy ? (buttonLabel || 'Working...') : 'Save');
+            $clearButton.prop('disabled', isBusy);
+        }
+
+        function resetClientForm() {
+            $('#client_id').val('');
+            $('#mode').val('');
+            $('#first_name').val('');
+            $('#last_name').val('');
+            $('#email').val('');
+            $('#address').val('');
+            $('#phone_no').val('');
+            $('#date_of_birth').val('');
+            $('#emergency_contact_person').val('');
+            $('#emergency_contact_number').val('');
+            $('#session_cost_type').val('normal');
+            $('#session_cost').val('');
+            $('#session_paid').prop('checked', false);
+            $('#gender').val('female');
+        }
+
         $('#clients').DataTable({
+            deferRender: true,
             processing: true,
+            searchDelay: 300,
             serverSide: true,
             ajax: { url : '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/clients/datatables?user_id={{ Auth::user()->id }}' },
             columns: [
@@ -29,25 +167,28 @@
         // Edit record
         $('#clientInfoModal').on('show.bs.modal', function (e) {
             var trigger = $(e.relatedTarget)
-            $('#clientInfoModalTitle').text(trigger.data('title'));
+            var clientId = trigger.data('id');
+            var mode = trigger.data('mode') || '';
+
+            resetClientMessages();
+            setClientBusy(false);
+            $('#clientInfoModal .modal-title').text(trigger.data('title') || 'Client Info');
+            resetClientForm();
+            $('#mode').val(mode);
 
             // Retrieve client 
-            $client_id = trigger.data('id')
-
-            if (trigger.data('mode') != undefined) {
-                $mode = trigger.data('mode')
-                $('#mode').val($mode);
-            }
-
-            if ($client_id != null) {
-                $(".clear-btn").css("display", "none") 
+            if (clientId != null) {
+                $(".clear-btn").css("display", "none");
             } else {
-                $(".clear-btn").css("display", "initial") 
+                $('#mode').val(mode);
+                $(".clear-btn").css("display", "initial");
             }
 
-            if ($client_id != undefined) {
+            if (clientId != undefined) {
+                setClientBusy(true, 'Loading client information...', 'Loading...');
+
                 $.ajax({
-                    url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/clients/'+$client_id,
+                    url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/clients/' + clientId,
                     type: 'GET',
                     success: function(result) {
                         $('#client_id').val(result.id);
@@ -56,7 +197,7 @@
                         $('#email').val(result.email);
                         $('#address').val(result.address);
                         $('#phone_no').val(result.phone_no);
-                        $('#date_of_birth').val(result.date_of_birth),
+                        $('#date_of_birth').val(normalizeDateForRequest(result.date_of_birth) || '');
                         $('#emergency_contact_person').val(result.emergency_contact_person);
                         $('#emergency_contact_number').val(result.emergency_contact_number);
                         $('#session_cost_type').val(result.session_cost_type);
@@ -67,31 +208,28 @@
                         } else {
                             $('#session_paid').prop('checked', false);
                         }
+                    },
+                    error: function(xhr) {
+                        showClientErrors(collectClientErrors(xhr));
+                    },
+                    complete: function() {
+                        setClientBusy(false);
                     }
                 });
             }
-        })
+        });
 
         $(".clear-btn").click(function(e){
             e.preventDefault();
-
-            $("#first_name").val(null)
-            $("#last_name").val(null)
-            $("#email").val(null)
-            $("#address").val(null)
-            $('#phone_no').val(null)
-            $('#date_of_birth').val(null)
-            $('#emergency_contact_person').val(null)
-            $('#emergency_contact_number').val(null)
-            $('#session_cost_type').val(null)
-            $('#session_cost').val(null)
-            $('#session_paid').prop('checked', false);
-            $('#gender').val(null)
+            resetClientMessages();
+            resetClientForm();
         });
 
         // Save a record
-        $(".save-btn:not(#submit_pref)").click(function(e){
+        $("#clientInfoModal .save-btn").click(function(e){
             e.preventDefault();
+
+            resetClientMessages();
 
             var $client_id = $('#client_id').val()
             var $user_id = $('#user_id').val()
@@ -103,6 +241,8 @@
                 session_paid = 0
             }
 
+            var normalizedDateOfBirth = normalizeDateForRequest($('#date_of_birth').val());
+
             var data = {
                 user_id: parseInt($user_id),
                 first_name: $("#first_name").val(),
@@ -110,7 +250,7 @@
                 email: $("#email").val(),
                 address: $("#address").val(),
                 phone_no: $("#phone_no").val(),
-                date_of_birth: $('#date_of_birth').val(),
+                date_of_birth: normalizedDateOfBirth,
                 emergency_contact_person: $("#emergency_contact_person").val(),
                 emergency_contact_number: $("#emergency_contact_number").val(),
                 session_cost_type: $("#session_cost_type").val(),
@@ -146,6 +286,9 @@
             } else if ($("#date_of_birth").val() == '' || $("#date_of_birth").val() == null) {
                 alert('Date of birth must be filled out.')
                 $("#date_of_birth").focus()
+            } else if (normalizedDateOfBirth == null) {
+                alert('Date of birth must be a valid date.')
+                $("#date_of_birth").focus()
             } else if ($("#session_cost_type").val() == '' || $("#session_cost_type").val() == null) {
                 alert('Session Cost Type must be filled out.')
                 $("#session_cost_type").focus()
@@ -153,6 +296,8 @@
                 alert('Session Cost must be filled out.')
                 $("#session_cost").focus()
             } else {
+                setClientBusy(true, 'Saving client information...', 'Saving...');
+
                 if ($client_id != undefined && $client_id != '') {
                     $.ajax({
                         url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/clients/'+$client_id,
@@ -161,6 +306,12 @@
                         dataType: 'JSON',
                         success: function (data) { 
                             location.reload();
+                        },
+                        error: function(xhr) {
+                            showClientErrors(collectClientErrors(xhr));
+                        },
+                        complete: function() {
+                            setClientBusy(false);
                         }
                     });
                 } else {
@@ -175,6 +326,12 @@
                             } else {
                                 location.reload();
                             }
+                        },
+                        error: function(xhr) {
+                            showClientErrors(collectClientErrors(xhr));
+                        },
+                        complete: function() {
+                            setClientBusy(false);
                         }
                     });
                 }
