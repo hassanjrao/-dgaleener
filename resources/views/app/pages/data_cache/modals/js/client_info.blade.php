@@ -195,6 +195,7 @@
         });
 
         $('#clients').DataTable({
+            autoWidth: false,
             deferRender: true,
             processing: true,
             searchDelay: 300,
@@ -216,7 +217,11 @@
                     className: "dt-body-center",
                     "orderable": false,
                     render: function ( data, type, row, meta ) {
-                        return '<button class="editor_show fa fa-eye" data-id="'+data+'"></button><button class="editor-edit fa fa-edit" data-toggle="modal" data-target="#clientInfoModal" data-title="Edit Client" data-id="'+data+'"></button><button class="editor-remove fa fa-trash-o"data-id="'+data+'"></button>';
+                        return '<div class="data-cache-action-group">'
+                            + '<button type="button" class="editor_show data-cache-action-btn data-cache-view-btn fa fa-eye" title="View client" aria-label="View client" data-id="'+data+'"></button>'
+                            + '<button type="button" class="editor-edit data-cache-action-btn data-cache-edit-btn fa fa-edit" title="Edit client" aria-label="Edit client" data-toggle="modal" data-target="#clientInfoModal" data-title="Edit Client" data-id="'+data+'"></button>'
+                            + '<button type="button" class="editor-remove data-cache-action-btn data-cache-delete-btn fa fa-trash-o" title="Delete client" aria-label="Delete client" data-id="'+data+'"></button>'
+                            + '</div>';
                     }
                 }
             ]

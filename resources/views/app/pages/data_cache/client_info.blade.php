@@ -8,31 +8,39 @@
 @stop
 @section('content')
     @include('partials.header', ['title' => 'Data Cache', 'menu' => 'data_cache', 'section' => 'client_info'])
-    <div id="content-container" style="margin: 50px;">
-        <div class="row col-md-12">
-            <div class="col-md-10"></div>
-            <div class="col-md-2">
-                <button class="btn btn-lg btn-primary fa fa-plus" data-toggle="modal" data-target="#clientInfoModal" data-title="New Client">&nbsp;&nbsp;{{ __('Create New Client') }}</button>
+    <div id="content-container" class="data-cache-client-page">
+        <div class="data-cache-client-panel">
+            <div class="data-cache-client-toolbar">
+                <div class="data-cache-client-heading">
+                    <h2>{{ __('Client Info') }}</h2>
+                </div>
+                <button class="btn data-cache-create-btn" data-toggle="modal" data-target="#clientInfoModal" data-title="New Client">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    <span>{{ __('Create New Client') }}</span>
+                </button>
             </div>
-        </div><br/>
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered table-datatable" id="clients">
-                <thead>
-                    <tr>
-                        <th class="align-center">{{ __('ID') }}</th>
-                        <th class="align-center">{{ __('First Name') }}</th>
-                        <th class="align-center">{{ __('Last Name') }}</th>
-                        <th class="align-center">{{ __('Email') }}</th>
-                        <th class="align-center">{{ __('Address') }}</th>
-                        <th class="align-center">{{ __('Phone No.') }}</th>
-                        <th class="align-center">{{ __('Date of Birth') }}</th>
-                        <th class="align-center">{{ __('Age') }}</th>
-                        <th class="align-center">{{ __('Emergency Details') }}</th>
-                        <th class="align-center">{{ __('Session Details') }}</th>
-                        <th class="align-center">{{ __('Actions') }}</th>
-                    </tr>
-                </thead>
-            </table>
+
+            <div class="data-cache-client-table-shell">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered table-datatable" id="clients">
+                        <thead>
+                            <tr>
+                                <th class="align-center">{{ __('ID') }}</th>
+                                <th class="align-center">{{ __('First Name') }}</th>
+                                <th class="align-center">{{ __('Last Name') }}</th>
+                                <th class="align-center">{{ __('Email') }}</th>
+                                <th class="align-center">{{ __('Address') }}</th>
+                                <th class="align-center">{{ __('Phone No.') }}</th>
+                                <th class="align-center">{{ __('Date of Birth') }}</th>
+                                <th class="align-center">{{ __('Age') }}</th>
+                                <th class="align-center">{{ __('Emergency Details') }}</th>
+                                <th class="align-center">{{ __('Session Details') }}</th>
+                                <th class="align-center">{{ __('Actions') }}</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
     @include('app.pages.data_cache.modals.client_info')
