@@ -95,6 +95,10 @@
 
             </div>
 
+            <div class="friends-scroll-status" ng-if="ctrl.userFriendsLoaded && ctrl.userFriendsLoadingMore">
+                <div class="loader loader-inline"></div>
+            </div>
+
         </div>
 
     </div>

@@ -1,43 +1,130 @@
-function BioConnectFindFriendsCtrl($scope, $filter, User) {
-    _this = this
-    _this.usersLoaded = false
-    _this.filterUserIds = []
+function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
+    var _this = this;
+    var searchDebounce;
 
-    User.prototype.Me.query(function(user) {
-        _this.user = user
+    _this.searchText = '';
+    _this.users = [];
+    _this.usersLoaded = false;
+    _this.usersLoading = false;
+    _this.usersLoadingMore = false;
+    _this.usersHasMore = true;
+    _this.usersPage = 1;
+    _this.usersPerPage = 12;
 
-        angular.forEach(user.friendIds, function(value, key) {
-            _this.filterUserIds.push(value)
-        })
+    function isNearBottom() {
+        var documentElement = $window.document.documentElement;
+        var scrollTop = $window.pageYOffset || documentElement.scrollTop || 0;
+        var viewportBottom = scrollTop + $window.innerHeight;
+        var documentHeight = Math.max(documentElement.scrollHeight, $window.document.body.scrollHeight);
 
-        angular.forEach(user.requestedFriendIds, function(value, key) {
-            _this.filterUserIds.push(value)
-        })
-    })
+        return viewportBottom >= documentHeight - 280;
+    }
 
-    User.prototype.Me.friends_available(function(users) {
-        _this.users = users
-        _this.usersLoaded = true
-    })
-
-    this.addFriend = function(user) {
-        _this = this;
-
-        var confirmDialog = confirm("Are you sure you wish to invite this person?")
-        if (confirmDialog == true) {
-            _this.usersLoaded = false
-
-            User.prototype.Me.add_friend({ friend_id: user.id }, function(friend) { 
-                _this.filterUserIds.push(user.id);
-
-                index = _this.users.indexOf(user);
-                _this.users.splice(index, 1);
-
-                _this.usersLoaded = true
-            })
+    function maybeLoadMore() {
+        if (_this.usersHasMore && !_this.usersLoading && isNearBottom()) {
+            loadUsers(false);
         }
     }
+
+    function loadUsers(reset) {
+        var page = reset ? 1 : _this.usersPage;
+
+        if (_this.usersLoading || (!_this.usersHasMore && !reset)) {
+            return;
+        }
+
+        _this.usersLoading = true;
+        _this.usersLoadingMore = !reset;
+
+        if (reset) {
+            _this.usersLoaded = false;
+            _this.usersHasMore = true;
+        }
+
+        User.prototype.Me.friends_available({
+            page: page,
+            per_page: _this.usersPerPage,
+            search: _this.searchText
+        }, function(response) {
+            var records = response.data || [];
+
+            if (reset) {
+                _this.users = records;
+            } else {
+                Array.prototype.push.apply(_this.users, records);
+            }
+
+            _this.usersHasMore = !!(response.meta && response.meta.has_more);
+            _this.usersPage = _this.usersHasMore && response.meta ? response.meta.next_page : page + 1;
+            _this.usersLoaded = true;
+            _this.usersLoading = false;
+            _this.usersLoadingMore = false;
+
+            $timeout(maybeLoadMore, 0);
+        }, function() {
+            _this.usersLoaded = true;
+            _this.usersLoading = false;
+            _this.usersLoadingMore = false;
+        });
+    }
+
+    function handleScroll() {
+        if (!_this.usersHasMore || _this.usersLoading) {
+            return;
+        }
+
+        if (isNearBottom()) {
+            $scope.$applyAsync(function() {
+                loadUsers(false);
+            });
+        }
+    }
+
+    this.addFriend = function(user) {
+        var confirmDialog = confirm("Are you sure you wish to invite this person?");
+
+        if (confirmDialog === true) {
+            User.prototype.Me.add_friend({ friend_id: user.id }, function() {
+                var index = _this.users.indexOf(user);
+
+                if (index > -1) {
+                    _this.users.splice(index, 1);
+                }
+
+                $timeout(maybeLoadMore, 0);
+            });
+        }
+    };
+
+    $scope.$watch(function() {
+        return _this.searchText;
+    }, function(newValue, oldValue) {
+        if (newValue === oldValue) {
+            return;
+        }
+
+        if (searchDebounce) {
+            $timeout.cancel(searchDebounce);
+        }
+
+        searchDebounce = $timeout(function() {
+            loadUsers(true);
+        }, 250);
+    });
+
+    angular.element($window).on('scroll', handleScroll);
+
+    $scope.$on('$destroy', function() {
+        if (searchDebounce) {
+            $timeout.cancel(searchDebounce);
+        }
+
+        angular.element($window).off('scroll', handleScroll);
+    });
+
+    loadUsers(true);
 }
-BioConnectFindFriendsCtrl.$inject = ['$scope', '$filter', 'User'];
+
+BioConnectFindFriendsCtrl.$inject = ['$scope', '$timeout', '$window', 'User'];
 
 angular.module('AnewApp').controller('BioConnectFindFriendsCtrl', BioConnectFindFriendsCtrl);

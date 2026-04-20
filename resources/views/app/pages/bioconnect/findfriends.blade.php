@@ -36,7 +36,7 @@
 						<i class="fa fa-search"></i>
 						<input type="text"
 							placeholder="Search friends..."
-							ng-model="searchText">
+							ng-model="ctrl.searchText">
 					</div>
 				</div>
 
@@ -45,7 +45,7 @@
 
                 <!-- Empty -->
                 <h6 class="text-center mt-4"
-                    ng-if="!((ctrl.users | filter: { name: searchText })| valPresent) && ctrl.usersLoaded">
+                    ng-if="!(ctrl.users | valPresent) && ctrl.usersLoaded">
                     No results found.
                 </h6>
 
@@ -53,7 +53,7 @@
                 <div class="friends-grid" ng-if="(ctrl.users | valPresent) && ctrl.usersLoaded">
 
                     <div class="friend-item"
-                        ng-repeat="user in ctrl.users | orderBy: 'name' | filter: { name: searchText } track by user.id">
+                        ng-repeat="user in ctrl.users track by user.id">
 
                         <div class="friend-card">
 
@@ -82,8 +82,7 @@
                             <!-- Action -->
                             <div class="friend-actions">
 
-                                <button class="btn btn-primary btn-sm w-100" ng-click="ctrl.addFriend(user)"
-                                    ng-if="!(ctrl.filterUserIds | contains: user.id)">
+                                <button class="btn btn-primary btn-sm w-100" ng-click="ctrl.addFriend(user)">
                                     Invite
                                 </button>
 
@@ -93,6 +92,10 @@
 
                     </div>
 
+                </div>
+
+                <div class="friends-scroll-status" ng-if="ctrl.usersLoaded && ctrl.usersLoadingMore">
+                    <div class="loader loader-inline"></div>
                 </div>
 
             </div>

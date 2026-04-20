@@ -6917,12 +6917,12 @@ function UserFactory($resource, API_PREFIX) {
         friends: {
             method: 'GET',
             url: API_PREFIX + '/users/me/friends',
-            isArray: true
+            isArray: false
         },
         friends_available: {
             method: 'GET',
             url: API_PREFIX + '/users/me/friends/available',
-            isArray: true
+            isArray: false
         },
         add_friend: {
             method: 'POST',
@@ -6936,7 +6936,7 @@ function UserFactory($resource, API_PREFIX) {
         friend_requests: {
             method: 'GET',
             url: API_PREFIX + '/users/me/friend_requests',
-            isArray: true
+            isArray: false
         },
         accept_friend_request: {
             method: 'PUT',
@@ -7823,106 +7823,368 @@ angular.module('AnewApp').controller('BioConnectDiscussionsCtrl', BioConnectDisc
 /* 47 */
 /***/ (function(module, exports) {
 
-function BioConnectFriendsCtrl($scope, $filter, User) {
-    _this = this;
+function BioConnectFriendsCtrl($scope, $timeout, $window, User) {
+    var _this = this;
+
+    _this.user_friends = [];
     _this.userFriendsLoaded = false;
-    _this.friendRequestsLoaded = false;
+    _this.userFriendsLoading = false;
+    _this.userFriendsLoadingMore = false;
+    _this.userFriendsHasMore = true;
+    _this.userFriendsPage = 1;
+    _this.userFriendsPerPage = 12;
 
-    User.prototype.Me.friends(function (user_friends) {
-        _this.user_friends = user_friends;
-        _this.userFriendsLoaded = true;
-    });
+    function isNearBottom() {
+        var documentElement = $window.document.documentElement;
+        var scrollTop = $window.pageYOffset || documentElement.scrollTop || 0;
+        var viewportBottom = scrollTop + $window.innerHeight;
+        var documentHeight = Math.max(documentElement.scrollHeight, $window.document.body.scrollHeight);
 
-    User.prototype.Me.friend_requests(function (friend_requests) {
-        _this.friend_requests = friend_requests;
-        _this.friendRequestsLoaded = true;
-    });
+        return viewportBottom >= documentHeight - 280;
+    }
 
-    this.acceptFriendRequest = function (record) {
-        var confirmDialog = confirm("Are you sure you wish to accept this friend request?");
-        if (confirmDialog == true) {
-            _this.friendRequestsLoaded = false;
-            User.prototype.Me.accept_friend_request({ id: record.id }, function () {
-                index = _this.friend_requests.indexOf(record);
-                _this.friend_requests.splice(index, 1);
-                _this.friendRequestsLoaded = true;
+    function maybeLoadMore() {
+        if (_this.userFriendsHasMore && !_this.userFriendsLoading && isNearBottom()) {
+            loadFriends(false);
+        }
+    }
+
+    function loadFriends(reset) {
+        var page = reset ? 1 : _this.userFriendsPage;
+
+        if (_this.userFriendsLoading || !_this.userFriendsHasMore && !reset) {
+            return;
+        }
+
+        _this.userFriendsLoading = true;
+        _this.userFriendsLoadingMore = !reset;
+
+        if (reset) {
+            _this.userFriendsLoaded = false;
+            _this.userFriendsHasMore = true;
+        }
+
+        User.prototype.Me.friends({
+            page: page,
+            per_page: _this.userFriendsPerPage
+        }, function (response) {
+            var records = response.data || [];
+
+            if (reset) {
+                _this.user_friends = records;
+            } else {
+                Array.prototype.push.apply(_this.user_friends, records);
+            }
+
+            _this.userFriendsHasMore = !!(response.meta && response.meta.has_more);
+            _this.userFriendsPage = _this.userFriendsHasMore && response.meta ? response.meta.next_page : page + 1;
+            _this.userFriendsLoaded = true;
+            _this.userFriendsLoading = false;
+            _this.userFriendsLoadingMore = false;
+
+            $timeout(maybeLoadMore, 0);
+        }, function () {
+            _this.userFriendsLoaded = true;
+            _this.userFriendsLoading = false;
+            _this.userFriendsLoadingMore = false;
+        });
+    }
+
+    function handleScroll() {
+        if (!_this.userFriendsHasMore || _this.userFriendsLoading) {
+            return;
+        }
+
+        if (isNearBottom()) {
+            $scope.$applyAsync(function () {
+                loadFriends(false);
+            });
+        }
+    }
+
+    this.deleteFriend = function (record) {
+        var confirmDialog = confirm("Are you sure you wish to unfriend this user?");
+
+        if (confirmDialog === true) {
+            User.prototype.Me.delete_friend({ id: record.id }, function () {
+                var index = _this.user_friends.indexOf(record);
+
+                if (index > -1) {
+                    _this.user_friends.splice(index, 1);
+                }
+
+                $timeout(maybeLoadMore, 0);
             });
         }
     };
 
-    this.deleteFriend = function (record) {
-        var confirmDialog = confirm("Are you sure you wish to unfriend this user?");
-        if (confirmDialog == true) {
-            _this.userFriendsLoaded = false;
-            User.prototype.Me.delete_friend({ id: record.id }, function () {
-                index = _this.user_friends.indexOf(record);
-                _this.user_friends.splice(index, 1);
-                _this.userFriendsLoaded = true;
+    angular.element($window).on('scroll', handleScroll);
+
+    $scope.$on('$destroy', function () {
+        angular.element($window).off('scroll', handleScroll);
+    });
+
+    loadFriends(true);
+}
+
+function BioConnectFriendRequestsCtrl($scope, $timeout, $window, User) {
+    var _this = this;
+
+    _this.friend_requests = [];
+    _this.friendRequestsLoaded = false;
+    _this.friendRequestsLoading = false;
+    _this.friendRequestsLoadingMore = false;
+    _this.friendRequestsHasMore = true;
+    _this.friendRequestsPage = 1;
+    _this.friendRequestsPerPage = 12;
+
+    function isNearBottom() {
+        var documentElement = $window.document.documentElement;
+        var scrollTop = $window.pageYOffset || documentElement.scrollTop || 0;
+        var viewportBottom = scrollTop + $window.innerHeight;
+        var documentHeight = Math.max(documentElement.scrollHeight, $window.document.body.scrollHeight);
+
+        return viewportBottom >= documentHeight - 280;
+    }
+
+    function maybeLoadMore() {
+        if (_this.friendRequestsHasMore && !_this.friendRequestsLoading && isNearBottom()) {
+            loadFriendRequests(false);
+        }
+    }
+
+    function loadFriendRequests(reset) {
+        var page = reset ? 1 : _this.friendRequestsPage;
+
+        if (_this.friendRequestsLoading || !_this.friendRequestsHasMore && !reset) {
+            return;
+        }
+
+        _this.friendRequestsLoading = true;
+        _this.friendRequestsLoadingMore = !reset;
+
+        if (reset) {
+            _this.friendRequestsLoaded = false;
+            _this.friendRequestsHasMore = true;
+        }
+
+        User.prototype.Me.friend_requests({
+            page: page,
+            per_page: _this.friendRequestsPerPage
+        }, function (response) {
+            var records = response.data || [];
+
+            if (reset) {
+                _this.friend_requests = records;
+            } else {
+                Array.prototype.push.apply(_this.friend_requests, records);
+            }
+
+            _this.friendRequestsHasMore = !!(response.meta && response.meta.has_more);
+            _this.friendRequestsPage = _this.friendRequestsHasMore && response.meta ? response.meta.next_page : page + 1;
+            _this.friendRequestsLoaded = true;
+            _this.friendRequestsLoading = false;
+            _this.friendRequestsLoadingMore = false;
+
+            $timeout(maybeLoadMore, 0);
+        }, function () {
+            _this.friendRequestsLoaded = true;
+            _this.friendRequestsLoading = false;
+            _this.friendRequestsLoadingMore = false;
+        });
+    }
+
+    function handleScroll() {
+        if (!_this.friendRequestsHasMore || _this.friendRequestsLoading) {
+            return;
+        }
+
+        if (isNearBottom()) {
+            $scope.$applyAsync(function () {
+                loadFriendRequests(false);
+            });
+        }
+    }
+
+    this.acceptFriendRequest = function (record) {
+        var confirmDialog = confirm("Are you sure you wish to accept this friend request?");
+
+        if (confirmDialog === true) {
+            User.prototype.Me.accept_friend_request({ id: record.id }, function () {
+                var index = _this.friend_requests.indexOf(record);
+
+                if (index > -1) {
+                    _this.friend_requests.splice(index, 1);
+                }
+
+                $timeout(maybeLoadMore, 0);
             });
         }
     };
 
     this.rejectFriendRequest = function (record) {
         var confirmDialog = confirm("Are you sure you wish to reject this friend request?");
-        if (confirmDialog == true) {
-            _this.friendRequestsLoaded = false;
+
+        if (confirmDialog === true) {
             User.prototype.Me.reject_friend_request({ id: record.id }, function () {
-                index = _this.friend_requests.indexOf(record);
-                _this.friend_requests.splice(index, 1);
-                _this.friendRequestsLoaded = true;
+                var index = _this.friend_requests.indexOf(record);
+
+                if (index > -1) {
+                    _this.friend_requests.splice(index, 1);
+                }
+
+                $timeout(maybeLoadMore, 0);
             });
         }
     };
+
+    angular.element($window).on('scroll', handleScroll);
+
+    $scope.$on('$destroy', function () {
+        angular.element($window).off('scroll', handleScroll);
+    });
+
+    loadFriendRequests(true);
 }
-BioConnectFriendsCtrl.$inject = ['$scope', '$filter', 'User'];
+
+BioConnectFriendsCtrl.$inject = ['$scope', '$timeout', '$window', 'User'];
+BioConnectFriendRequestsCtrl.$inject = ['$scope', '$timeout', '$window', 'User'];
 
 angular.module('AnewApp').controller('BioConnectFriendsCtrl', BioConnectFriendsCtrl);
+angular.module('AnewApp').controller('BioConnectFriendRequestsCtrl', BioConnectFriendRequestsCtrl);
 
 /***/ }),
 /* 48 */
 /***/ (function(module, exports) {
 
-function BioConnectFindFriendsCtrl($scope, $filter, User) {
-    _this = this;
+function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
+    var _this = this;
+    var searchDebounce;
+
+    _this.searchText = '';
+    _this.users = [];
     _this.usersLoaded = false;
-    _this.filterUserIds = [];
+    _this.usersLoading = false;
+    _this.usersLoadingMore = false;
+    _this.usersHasMore = true;
+    _this.usersPage = 1;
+    _this.usersPerPage = 12;
 
-    User.prototype.Me.query(function (user) {
-        _this.user = user;
+    function isNearBottom() {
+        var documentElement = $window.document.documentElement;
+        var scrollTop = $window.pageYOffset || documentElement.scrollTop || 0;
+        var viewportBottom = scrollTop + $window.innerHeight;
+        var documentHeight = Math.max(documentElement.scrollHeight, $window.document.body.scrollHeight);
 
-        angular.forEach(user.friendIds, function (value, key) {
-            _this.filterUserIds.push(value);
+        return viewportBottom >= documentHeight - 280;
+    }
+
+    function maybeLoadMore() {
+        if (_this.usersHasMore && !_this.usersLoading && isNearBottom()) {
+            loadUsers(false);
+        }
+    }
+
+    function loadUsers(reset) {
+        var page = reset ? 1 : _this.usersPage;
+
+        if (_this.usersLoading || !_this.usersHasMore && !reset) {
+            return;
+        }
+
+        _this.usersLoading = true;
+        _this.usersLoadingMore = !reset;
+
+        if (reset) {
+            _this.usersLoaded = false;
+            _this.usersHasMore = true;
+        }
+
+        User.prototype.Me.friends_available({
+            page: page,
+            per_page: _this.usersPerPage,
+            search: _this.searchText
+        }, function (response) {
+            var records = response.data || [];
+
+            if (reset) {
+                _this.users = records;
+            } else {
+                Array.prototype.push.apply(_this.users, records);
+            }
+
+            _this.usersHasMore = !!(response.meta && response.meta.has_more);
+            _this.usersPage = _this.usersHasMore && response.meta ? response.meta.next_page : page + 1;
+            _this.usersLoaded = true;
+            _this.usersLoading = false;
+            _this.usersLoadingMore = false;
+
+            $timeout(maybeLoadMore, 0);
+        }, function () {
+            _this.usersLoaded = true;
+            _this.usersLoading = false;
+            _this.usersLoadingMore = false;
         });
+    }
 
-        angular.forEach(user.requestedFriendIds, function (value, key) {
-            _this.filterUserIds.push(value);
-        });
-    });
+    function handleScroll() {
+        if (!_this.usersHasMore || _this.usersLoading) {
+            return;
+        }
 
-    User.prototype.Me.friends_available(function (users) {
-        _this.users = users;
-        _this.usersLoaded = true;
-    });
+        if (isNearBottom()) {
+            $scope.$applyAsync(function () {
+                loadUsers(false);
+            });
+        }
+    }
 
     this.addFriend = function (user) {
-        _this = this;
-
         var confirmDialog = confirm("Are you sure you wish to invite this person?");
-        if (confirmDialog == true) {
-            _this.usersLoaded = false;
 
-            User.prototype.Me.add_friend({ friend_id: user.id }, function (friend) {
-                _this.filterUserIds.push(user.id);
+        if (confirmDialog === true) {
+            User.prototype.Me.add_friend({ friend_id: user.id }, function () {
+                var index = _this.users.indexOf(user);
 
-                index = _this.users.indexOf(user);
-                _this.users.splice(index, 1);
+                if (index > -1) {
+                    _this.users.splice(index, 1);
+                }
 
-                _this.usersLoaded = true;
+                $timeout(maybeLoadMore, 0);
             });
         }
     };
+
+    $scope.$watch(function () {
+        return _this.searchText;
+    }, function (newValue, oldValue) {
+        if (newValue === oldValue) {
+            return;
+        }
+
+        if (searchDebounce) {
+            $timeout.cancel(searchDebounce);
+        }
+
+        searchDebounce = $timeout(function () {
+            loadUsers(true);
+        }, 250);
+    });
+
+    angular.element($window).on('scroll', handleScroll);
+
+    $scope.$on('$destroy', function () {
+        if (searchDebounce) {
+            $timeout.cancel(searchDebounce);
+        }
+
+        angular.element($window).off('scroll', handleScroll);
+    });
+
+    loadUsers(true);
 }
-BioConnectFindFriendsCtrl.$inject = ['$scope', '$filter', 'User'];
+
+BioConnectFindFriendsCtrl.$inject = ['$scope', '$timeout', '$window', 'User'];
 
 angular.module('AnewApp').controller('BioConnectFindFriendsCtrl', BioConnectFindFriendsCtrl);
 
@@ -19511,73 +19773,73 @@ module.exports = function(module) {
 /* 57 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 58 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 59 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 60 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 61 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 62 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 63 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 64 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 65 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 66 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 67 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ }),
 /* 68 */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed: ModuleBuildError: Module build failed: Error: Node Sass does not yet support your current environment: Linux 64-bit with Unsupported runtime (115)\nFor more information on which environments are supported please see:\nhttps://github.com/sass/node-sass/releases/tag/v4.12.0\n    at module.exports (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/binding.js:13:13)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/node-sass/lib/index.js:14:35)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at Object.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/sass-loader/lib/loader.js:3:14)\n    at Module._compile (node:internal/modules/cjs/loader:1521:14)\n    at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)\n    at Module.load (node:internal/modules/cjs/loader:1266:32)\n    at Module._load (node:internal/modules/cjs/loader:1091:12)\n    at Module.require (node:internal/modules/cjs/loader:1289:19)\n    at require (node:internal/modules/helpers:182:18)\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:13:17)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:195:19\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:364:11\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:170:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:27:11)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:165:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:173:18\n    at loadLoader (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/loadLoader.js:36:3)\n    at iteratePitchingLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:169:2)\n    at runLoaders (/var/www/Project/Fiver/dgaleener/node_modules/loader-runner/lib/LoaderRunner.js:362:2)\n    at NormalModule.doBuild (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:182:3)\n    at NormalModule.build (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModule.js:275:15)\n    at Compilation.buildModule (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:157:10)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/Compilation.js:460:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:243:5\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:94:13\n    at /var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:268:11\n    at NormalModuleFactory.<anonymous> (/var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/CompatibilityPlugin.js:52:5)\n    at NormalModuleFactory.applyPluginsAsyncWaterfall (/var/www/Project/Fiver/dgaleener/node_modules/tapable/lib/Tapable.js:272:13)\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:69:10\n    at /var/www/Project/Fiver/dgaleener/node_modules/webpack/lib/NormalModuleFactory.js:196:7\n    at process.processTicksAndRejections (node:internal/process/task_queues:77:11)");
 
 /***/ })
 ],[6]);

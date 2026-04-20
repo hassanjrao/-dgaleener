@@ -82,6 +82,16 @@
   margin: 40px auto;
 }
 
+.loader-inline {
+  margin: 20px auto 0;
+  width: 24px;
+  height: 24px;
+}
+
+.friends-scroll-status {
+  min-height: 44px;
+}
+
 @keyframes spin {
   100% {
     transform: rotate(360deg);

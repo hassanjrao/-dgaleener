@@ -18,7 +18,7 @@
     'menu' => 'bioconnect'
 ])
 
-<div class="row main-body" ng-controller="BioConnectFriendsCtrl as ctrl" ng-cloak>
+<div class="row main-body" ng-controller="BioConnectFriendRequestsCtrl as ctrl" ng-cloak>
 
     <!-- Sidebar (UNCHANGED) -->
     <div class="col-md-2 offset-md-1 text-center">
@@ -89,6 +89,10 @@
 
                 </div>
 
+            </div>
+
+            <div class="friends-scroll-status" ng-if="ctrl.friendRequestsLoaded && ctrl.friendRequestsLoadingMore">
+                <div class="loader loader-inline"></div>
             </div>
 
         </div>

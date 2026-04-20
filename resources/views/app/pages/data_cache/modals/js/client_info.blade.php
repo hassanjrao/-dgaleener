@@ -4,6 +4,24 @@
             return ('0' + value).slice(-2);
         }
 
+        function formatDateForDisplay(value) {
+            if (!value) {
+                return '';
+            }
+
+            var isoMatch = value.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+            if (isoMatch) {
+                return isoMatch[2] + '/' + isoMatch[3] + '/' + isoMatch[1];
+            }
+
+            var date = new Date(value);
+            if (!isNaN(date.getTime())) {
+                return padDatePart(date.getMonth() + 1) + '/' + padDatePart(date.getDate()) + '/' + date.getFullYear();
+            }
+
+            return value;
+        }
+
         function normalizeDateForRequest(value) {
             if (!value) {
                 return '';
@@ -31,6 +49,24 @@
         function resetClientMessages() {
             $('.client-info-feedback').hide();
             $('.client-info-error-list').empty();
+        }
+
+        function titleTranslation(title) {
+            var translations = {
+                'Edit Client': 'Editar cliente',
+                'Add Client': 'Agregar cliente',
+                'New Client': 'Nuevo cliente',
+                'Client Info': 'Información del cliente'
+            };
+
+            return translations[title] || 'Información del cliente';
+        }
+
+        function setClientModalTitle(title) {
+            var resolvedTitle = title || 'Edit Client';
+
+            $('#clientInfoModal .modal-title-en').text(resolvedTitle);
+            $('#clientInfoModal .modal-title-es').text(titleTranslation(resolvedTitle));
         }
 
         function showClientErrors(messages) {
@@ -102,20 +138,23 @@
         }
 
         function setClientBusy(isBusy, message, buttonLabel) {
-            var $status = $('#clientInfoModal .client-info-status');
-            var $statusText = $('#clientInfoModal .client-info-status-text');
             var $saveButton = $('#clientInfoModal .save-btn');
+            var $saveButtonLabelEn = $('#clientInfoModal .save-btn-label-en');
+            var $saveButtonLabelEs = $('#clientInfoModal .save-btn-label-es');
             var $clearButton = $('#clientInfoModal .clear-btn');
 
+            var resolvedEnglish = buttonLabel || 'Working...';
+            var resolvedSpanish = resolvedEnglish === 'Loading...' ? 'Cargando...' : 'Guardando...';
+
             if (isBusy) {
-                $status.addClass('is-visible');
-                $statusText.text(message || 'Saving client information...');
+                $saveButton.addClass('is-loading');
             } else {
-                $status.removeClass('is-visible');
-                $statusText.text('Saving client information...');
+                $saveButton.removeClass('is-loading');
             }
 
-            $saveButton.prop('disabled', isBusy).text(isBusy ? (buttonLabel || 'Working...') : 'Save');
+            $saveButton.prop('disabled', isBusy);
+            $saveButtonLabelEn.text(isBusy ? resolvedEnglish : 'Save');
+            $saveButtonLabelEs.text(isBusy ? resolvedSpanish : 'Guardar');
             $clearButton.prop('disabled', isBusy);
         }
 
@@ -135,6 +174,25 @@
             $('#session_paid').prop('checked', false);
             $('#gender').val('female');
         }
+
+        if ($('#date_of_birth').hasClass('hasDatepicker')) {
+            $('#date_of_birth').datepicker('destroy');
+        }
+
+        $('#date_of_birth').datepicker({
+            dateFormat: 'mm/dd/yy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1900:+0',
+            beforeShow: function(input, inst) {
+                setTimeout(function() {
+                    inst.dpDiv.addClass('client-info-datepicker');
+                }, 0);
+            },
+            onClose: function(_, inst) {
+                inst.dpDiv.removeClass('client-info-datepicker');
+            }
+        });
 
         $('#clients').DataTable({
             deferRender: true,
@@ -169,10 +227,11 @@
             var trigger = $(e.relatedTarget)
             var clientId = trigger.data('id');
             var mode = trigger.data('mode') || '';
+            var modalTitle = trigger.data('title');
 
             resetClientMessages();
             setClientBusy(false);
-            $('#clientInfoModal .modal-title').text(trigger.data('title') || 'Client Info');
+            setClientModalTitle(modalTitle || (clientId ? 'Edit Client' : 'New Client'));
             resetClientForm();
             $('#mode').val(mode);
 
@@ -197,7 +256,7 @@
                         $('#email').val(result.email);
                         $('#address').val(result.address);
                         $('#phone_no').val(result.phone_no);
-                        $('#date_of_birth').val(normalizeDateForRequest(result.date_of_birth) || '');
+                        $('#date_of_birth').val(formatDateForDisplay(result.date_of_birth));
                         $('#emergency_contact_person').val(result.emergency_contact_person);
                         $('#emergency_contact_number').val(result.emergency_contact_number);
                         $('#session_cost_type').val(result.session_cost_type);
