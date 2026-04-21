@@ -14,7 +14,10 @@
                 <a href="/data_cache/bio">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/bio.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                        <h3 class="text-center">BIO</h3>
+                        <div class="data-cache-bilingual-label text-center">
+                            <span class="data-cache-label-en">Bio</span>
+                            <span class="data-cache-label-es">Bio</span>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -24,13 +27,19 @@
                 <a href="/data_cache/client_info">
                     <div class="data-cache-section adjust">
                         <img src="{{asset('/images/data_cache/client.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                        <h3 class="text-center">CLIENT INFO</h3>
+                        <div class="data-cache-bilingual-label text-center">
+                            <span class="data-cache-label-en">Client Info</span>
+                            <span class="data-cache-label-es">Información del cliente</span>
+                        </div>
                     </div>
                 </a>
                 <a href="/data_cache/chakra">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/chakra.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                        <h3 class="text-center">CHAKRA</h3>
+                        <div class="data-cache-bilingual-label text-center">
+                            <span class="data-cache-label-en">Chakra</span>
+                            <span class="data-cache-label-es">Chakra</span>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -39,7 +48,10 @@
             <div class="row justify-content-center signup-form-row">
                 <div class="data-cache-section" data-toggle="modal" data-target="#preferencesModal">
                     <img src="{{asset('/images/data_cache/preferences.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                    <h3 class="text-center">PREFERENCES</h3>
+                    <div class="data-cache-bilingual-label text-center">
+                        <span class="data-cache-label-en">Preferences</span>
+                        <span class="data-cache-label-es">Preferencias</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -48,7 +60,10 @@
                 <a href="{{ url('/data_cache/help') }}">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/help.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                        <h3 class="text-center">HELP</h3>
+                        <div class="data-cache-bilingual-label text-center">
+                            <span class="data-cache-label-en">Help</span>
+                            <span class="data-cache-label-es">Ayuda</span>
+                        </div>
                     </div>
                 </a>
             </div>

@@ -50,8 +50,8 @@
     #clientInfoModal .modal-title {
         color: #000;
         display: flex;
-        align-items: baseline;
-        flex-wrap: wrap;
+        align-items: flex-start;
+        flex-direction: column;
         font-size: 1.9rem;
         font-weight: 400;
         line-height: 1.1;
@@ -59,14 +59,12 @@
     }
 
     #clientInfoModal .modal-title-en,
-    #clientInfoModal .modal-title-separator,
     #clientInfoModal .modal-title-es {
-        display: inline;
+        display: block;
     }
 
-    #clientInfoModal .modal-title-separator {
+    #clientInfoModal .modal-title-en {
         color: #000;
-        margin: 0 2px;
     }
 
     #clientInfoModal .field-label {
@@ -91,11 +89,11 @@
 
     #clientInfoModal .modal-title .translation {
         color: #ff5a47;
-        display: inline;
-        font-size: 1em;
+        display: block;
+        font-size: 0.62em;
         font-weight: 400;
         line-height: 1.1;
-        margin-top: 0;
+        margin-top: 8px;
     }
 
     #clientInfoModal .save-btn[disabled],
@@ -261,9 +259,6 @@
         color: #750f0f;
     }
 
-    .display-ruby {
-        display: ruby !important;
-    }
 </style>
 <div class="modal fade" id="clientInfoModal" tabindex="-1" role="dialog" aria-labelledby="clientInfoModal"
     aria-hidden="true">
@@ -272,7 +267,6 @@
             <div class="modal-header">
                 <h5 class="modal-title">
                     <span class="label-en modal-title-en">Edit Client</span>
-                    <span class="modal-title-separator mx-2">/</span>
                     <span class="translation modal-title-es">Editar cliente</span>
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -290,34 +284,40 @@
                     </div>
                     <div class="form-group row">
                         <div class="col">
-                            <label class="field-label display-ruby">
+                            <label class="field-label">
                                 <span class="label-en">First Name</span>
-                                / <span class="translation">Nombre de pila</span>
+                                <span class="translation">Nombre de pila</span>
                             </label>
                             <input type="text" class="form-control" id="first_name" name="first_name" required>
                         </div>
                         <div class="col">
-                            <label class="field-label display-ruby">
+                            <label class="field-label">
                                 <span class="label-en">Last Name</span>
-                                / <span class="translation">Apellido</span>
+                                <span class="translation">Apellido</span>
                             </label>
                             <input type="text" class="form-control" id="last_name" name="last_name" required>
                         </div>
                         <div class="col">
-                            <label class="field-label display-ruby"><span class="label-en">Email</span> / <span
-                                    class="translation">Correo electrónico</span></label>
+                            <label class="field-label">
+                                <span class="label-en">Email</span>
+                                <span class="translation">Correo electrónico</span>
+                            </label>
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col">
-                            <label class="field-label display-ruby"><span class="label-en">Address</span> / <span
-                                    class="translation">Dirección</span></label>
+                            <label class="field-label">
+                                <span class="label-en">Address</span>
+                                <span class="translation">Dirección</span>
+                            </label>
                             <input type="text" class="form-control" id="address" name="address" required>
                         </div>
                         <div class="col-4">
-                            <label class="field-label display-ruby"><span class="label-en">Gender</span> / <span
-                                    class="translation">Género</span></label>
+                            <label class="field-label">
+                                <span class="label-en">Gender</span>
+                                <span class="translation">Género</span>
+                            </label>
                             <select class="form-control" id="gender" name="gender" required>
                                 <option value="female">Female / Femenino</option>
                                 <option value="male">Male / Masculino</option>
@@ -326,22 +326,26 @@
                     </div>
                     <div class="form-group row">
                         <div class="col">
-                            <label class="field-label display-ruby"><span class="label-en">Phone</span> / <span
-                                    class="translation">Teléfono</span></label>
+                            <label class="field-label">
+                                <span class="label-en">Phone</span>
+                                <span class="translation">Teléfono</span>
+                            </label>
                             <input type="text" class="form-control" id="phone_no" name="phone_no"
                                 placeholder="Digits Only No Spaces or Special Characters" required>
                         </div>
                         <div class="col">
-                            <label class="field-label display-ruby"><span class="label-en">Emergency Contact
-                                    Person</span> / <span class="translation">Contacto de emergencia</span></label>
+                            <label class="field-label">
+                                <span class="label-en">Emergency Contact Person</span>
+                                <span class="translation">Contacto de emergencia</span>
+                            </label>
                             <input type="text" class="form-control" id="emergency_contact_person"
                                 name="emergency_contact_person" placeholder="Contact person name" required>
                         </div>
                         <div class="col">
-                            <label class="field-label display-ruby"><span class="label-en">Emergency Contact Person
-                                    Phone
-                                    Number</span> / <span class="translation">Teléfono del contacto de
-                                    emergencia</span></label>
+                            <label class="field-label">
+                                <span class="label-en">Emergency Contact Person Phone Number</span>
+                                <span class="translation">Teléfono del contacto de emergencia</span>
+                            </label>
                             <input type="text" class="form-control" id="emergency_contact_number"
                                 name="emergency_contact_number"
                                 placeholder="Digits Only No Spaces or Special Characters" required>
@@ -349,14 +353,18 @@
                     </div>
                     <div class="form-group row">
                         <div class="col">
-                            <label class="field-label display-ruby"><span class="label-en">Date of Birth</span> /
-                                <span class="translation">Fecha de nacimiento</span></label>
+                            <label class="field-label">
+                                <span class="label-en">Date of Birth</span>
+                                <span class="translation">Fecha de nacimiento</span>
+                            </label>
                             <input type="text" class="form-control js-datepicker" id="date_of_birth"
                                 name="date_of_birth" placeholder="MM/DD/YYYY" autocomplete="bday" required>
                         </div>
                         <div class="col">
-                            <label class="field-label display-ruby"><span class="label-en">Session and
-                                    Cost</span> / <span class="translation">Sesión y costo</span></label>
+                            <label class="field-label">
+                                <span class="label-en">Session and Cost</span>
+                                <span class="translation">Sesión y costo</span>
+                            </label>
                             <select class="form-control" id="session_cost_type" name="session_cost_type" required>
                                 <option value="senior">Senior Rate / Tarifa para personas mayores</option>
                                 <option value="children">Children Rate / Tarifa para niños</option>
@@ -365,9 +373,9 @@
                             </select>
                         </div>
                         <div class="col">
-                            <label class="field-label display-ruby">
+                            <label class="field-label">
                                 <span class="label-en">Enter Price</span>
-                                / <span class="translation">Ingresar precio</span>
+                                <span class="translation">Ingresar precio</span>
                             </label>
                             <input type="number" min="0" class="form-control" id="session_cost"
                                 name="session_cost" placeholder="Please input price" required>
@@ -376,9 +384,10 @@
                             <div class="paid-toggle">
                                 <input type="checkbox" class="form-check-input" id="session_paid"
                                     name="session_paid">
-                                <label class="form-check-label checkbox-label display-ruby" for="session_paid"><span
-                                        class="label-en">Paid?</span> / <span
-                                        class="translation">Pagado</span></label>
+                                <label class="form-check-label checkbox-label" for="session_paid">
+                                    <span class="label-en">Paid?</span>
+                                    <span class="translation">Pagado</span>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -386,25 +395,20 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger mr-auto clear-btn">
                         <span class="btn-label">
-                            <span class="display-ruby">
-                                <span class="label-en text-white">Clear</span>
-                                / <span class="translation">Borrar</span>
-                            </span>
+                            <span class="label-en text-white">Clear</span>
+                            <span class="translation">Borrar</span>
                         </span>
                     </button>
                     <button type="button" class="btn save-btn">
                         <span class="save-btn-spinner" aria-hidden="true"></span>
                         <span class="save-btn-label">
-                            <span class="display-ruby">
-                                <span class="label-en save-btn-label-en text-white">Save</span>
-                                / <span class="translation save-btn-label-es">Guardar</span>
-                            </span>
+                            <span class="label-en save-btn-label-en text-white">Save</span>
+                            <span class="translation save-btn-label-es">Guardar</span>
                         </span>
                     </button>
                 </div>
             </form>
         </div>
     </div>
-</div>
 </div>
 <!-- End of Client Info Modal -->

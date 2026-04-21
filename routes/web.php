@@ -136,6 +136,7 @@ Route::middleware('verified')->group(function () {
 Route::prefix('admin')->namespace('Admin')->middleware(['verified', 'auth.admin'])->group(function () {
     Route::get('/', 'HomeController@index');
     Route::get('/email', 'HomeController@email');
+    Route::post('/email/send', 'HomeController@sendEmail');
 
     ## Pairs
     Route::get('pairs', 'PairController@index');

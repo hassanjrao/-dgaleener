@@ -12,11 +12,17 @@
         <div class="data-cache-client-panel">
             <div class="data-cache-client-toolbar">
                 <div class="data-cache-client-heading">
-                    <h2>{{ __('Client Info') }}</h2>
+                    <h2 class="data-cache-bilingual-heading">
+                        <span class="data-cache-label-en">{{ __('Client Info') }}</span>
+                        <span class="data-cache-label-es">Información del cliente</span>
+                    </h2>
                 </div>
                 <button class="btn data-cache-create-btn" data-toggle="modal" data-target="#clientInfoModal" data-title="New Client">
                     <i class="fa fa-plus" aria-hidden="true"></i>
-                    <span>{{ __('Create New Client') }}</span>
+                    <span class="data-cache-bilingual-button">
+                        <span class="data-cache-label-en">{{ __('Create New Client') }}</span>
+                        <span class="data-cache-label-es">Crear nuevo cliente</span>
+                    </span>
                 </button>
             </div>
 

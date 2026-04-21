@@ -81,15 +81,61 @@ td button:disabled {
   background-color: #3e3e3b;
 }
 
-.data-cache-section h3 {
-  color: #fff;
-  margin: 0;
-  text-decoration: none;
-}
-
 .data-cache-section img {
   height: 70px;
   margin-bottom: 10px;
+}
+
+.data-cache-bilingual-label,
+.data-cache-bilingual-heading,
+.data-cache-bilingual-button,
+.data-cache-menu-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.data-cache-label-en,
+.data-cache-label-es {
+  display: block;
+  line-height: 1.2;
+}
+
+.data-cache-label-en {
+  color: inherit;
+}
+
+.data-cache-label-es {
+  color: #ff6b4a;
+}
+
+.data-cache-section .data-cache-bilingual-label {
+  align-items: center;
+}
+
+.data-cache-section .data-cache-label-en {
+  color: #fff;
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.data-cache-section .data-cache-label-es {
+  color: #ffd0c6;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.data-cache-menu-label {
+  align-items: center;
+}
+
+.data-cache-menu-label .data-cache-label-en {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.data-cache-menu-label .data-cache-label-es {
+  font-size: 0.82rem;
 }
 
 #clientInfoModal,
@@ -173,10 +219,18 @@ td button:disabled {
 }
 
 .data-cache-client-heading h2 {
+  margin: 0;
+}
+
+.data-cache-client-heading .data-cache-label-en {
   color: #16324f;
   font-size: 1.5rem;
   font-weight: 600;
-  margin: 0;
+}
+
+.data-cache-client-heading .data-cache-label-es {
+  font-size: 0.95rem;
+  font-weight: 500;
 }
 
 .data-cache-create-btn {
@@ -192,6 +246,21 @@ td button:disabled {
   justify-content: center;
   min-height: 44px;
   padding: 0 18px;
+}
+
+.data-cache-create-btn .data-cache-bilingual-button {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.data-cache-create-btn .data-cache-label-en {
+  color: #fff;
+  font-weight: 600;
+}
+
+.data-cache-create-btn .data-cache-label-es {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.82rem;
 }
 
 .data-cache-create-btn:hover,
@@ -368,6 +437,82 @@ td button:disabled {
   color: #94a3b8 !important;
 }
 
+.data-cache-help-intro {
+  margin-bottom: 24px;
+}
+
+.data-cache-help-title {
+  margin: 0 0 12px;
+}
+
+.data-cache-help-title .data-cache-label-en {
+  color: #16324f;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.data-cache-help-title .data-cache-label-es {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.data-cache-help-intro p {
+  color: #475569;
+  margin: 0 0 10px;
+}
+
+.data-cache-help-intro-es {
+  color: #64748b;
+}
+
+.data-cache-help-item {
+  margin-bottom: 20px;
+}
+
+.data-cache-help-card {
+  background: #fff;
+  border: 1px solid #d8e1eb;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+  height: 100%;
+  padding: 20px;
+}
+
+.data-cache-help-card-title {
+  margin: 0 0 14px;
+}
+
+.data-cache-help-card-title .data-cache-label-en {
+  color: #16324f;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.data-cache-help-card-title .data-cache-label-es {
+  font-size: 0.92rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.data-cache-help-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.data-cache-help-list li {
+  color: #334155;
+  margin-bottom: 8px;
+}
+
+.data-cache-help-list-es {
+  margin-top: 16px;
+}
+
+.data-cache-help-list-es li {
+  color: #64748b;
+}
+
 @media only screen and (min-width: 992px) {
   .data-cache-client-page .table-responsive {
     overflow-x: visible;
@@ -414,5 +559,10 @@ td button:disabled {
 
   .data-cache-create-btn {
     width: 100%;
+  }
+
+  .data-cache-create-btn .data-cache-bilingual-button {
+    align-items: center;
+    text-align: center;
   }
 }

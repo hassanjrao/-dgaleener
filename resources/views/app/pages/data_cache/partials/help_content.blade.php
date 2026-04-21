@@ -1,116 +1,232 @@
 @php
-    $guideUrl = asset('assets/files/'.rawurlencode('Anew Avenue - Preferences.pdf'));
     $helpSections = [
         [
-            'title_en' => 'Getting Started',
-            'title_es' => 'Primeros pasos',
+            'title_en' => '1. Welcome',
+            'title_es' => '1. Bienvenida',
             'english' => [
-                'Create your account, sign in, and save your profile details before starting a session.',
-                'Open Preferences to add your practice details, upload a logo, and set your profile picture.',
-                'Use Bio-Connect after setup so your profile, messaging, and community features match your current account details.',
+                'Welcome to Anew Avenue Biomagnetism.',
+                'Use this guide to move through the app from setup to sessions and Bio-Connect.',
             ],
             'spanish' => [
-                'Cree su cuenta, inicie sesión y guarde los datos de su perfil antes de comenzar una sesión.',
-                'Abra Preferencias para agregar los datos de su consulta, cargar un logotipo y establecer su foto de perfil.',
-                'Use Bio-Connect después de la configuración para que su perfil, mensajería y funciones comunitarias coincidan con los datos actuales de su cuenta.',
+                'Bienvenido a Anew Avenue Biomagnetism.',
+                'Use esta guía para recorrer la aplicación desde la configuración hasta las sesiones y Bio-Connect.',
             ],
         ],
         [
-            'title_en' => 'Client Records',
-            'title_es' => 'Registros de clientes',
+            'title_en' => '2. Sign In and Account Setup',
+            'title_es' => '2. Inicio de sesión y configuración de cuenta',
             'english' => [
-                'Open Client Info from Data Cache to add a client, review intake details, and keep contact information current.',
-                'Use the client record to edit notes, upload consent forms, and review past work from one place.',
-                'View Details opens the client Bio or Chakra cache directly so you can move from history to treatment quickly.',
+                'Open the gateway, sign in to your account, or create a new account if you are a first-time user.',
+                'After registration, return to the login screen and enter your email and password.',
             ],
             'spanish' => [
-                'Abra Información del cliente desde Data Cache para agregar un cliente, revisar los datos de ingreso y mantener actualizada la información de contacto.',
-                'Use el registro del cliente para editar notas, cargar consentimientos y revisar el trabajo anterior desde un solo lugar.',
-                'Ver detalles abre directamente la caché Bio o Chakra del cliente para pasar del historial al tratamiento con rapidez.',
+                'Abra la entrada principal, inicie sesión en su cuenta o cree una cuenta nueva si es su primera vez.',
+                'Después del registro, vuelva a la pantalla de inicio de sesión e ingrese su correo electrónico y contraseña.',
             ],
         ],
         [
-            'title_en' => 'Body and Chakra Scans',
-            'title_es' => 'Escaneos de cuerpo y chakra',
+            'title_en' => '3. Open Preferences',
+            'title_es' => '3. Abrir Preferencias',
             'english' => [
-                'Choose Body Scan or Chakra Scan from the client session and load the correct model before adding pairs.',
-                'Add pairs from the guided scan or search directly in the cache when you already know the point.',
-                'Mark the session done when treatment is complete, then print or email the finished scan session from the session view.',
+                'Open Preferences from Data Cache to complete your main account details.',
+                'This is where your practice information and profile settings are saved.',
             ],
             'spanish' => [
-                'Elija Body Scan o Chakra Scan desde la sesión del cliente y cargue el modelo correcto antes de agregar pares.',
-                'Agregue pares desde el escaneo guiado o búsquelos directamente en la caché cuando ya conozca el punto.',
-                'Marque la sesión como finalizada cuando termine el tratamiento y luego imprima o envíe por correo la sesión terminada desde la vista de sesión.',
+                'Abra Preferencias desde Data Cache para completar los datos principales de su cuenta.',
+                'Aquí se guardan la información de su consulta y la configuración de su perfil.',
             ],
         ],
         [
-            'title_en' => 'Data Cache and Bio-Connect',
-            'title_es' => 'Data Cache y Bio-Connect',
+            'title_en' => '4. Practice Details and Logo',
+            'title_es' => '4. Datos de la consulta y logotipo',
             'english' => [
-                'Use Data Cache to compare repeated pairs, search by point, and review client sessions by history instead of memory.',
-                'Bio-Connect gives you access to profile sharing, messages, friends, and group discussions in the same workflow.',
-                'Keep profile details current so shared records, invitations, and contact information stay accurate throughout the app.',
+                'Fill in your name, business details, location, address, country, and zip code.',
+                'Choose the logo option you want shown in your account.',
             ],
             'spanish' => [
-                'Use Data Cache para comparar pares repetidos, buscar por punto y revisar sesiones de clientes por historial en lugar de memoria.',
-                'Bio-Connect le da acceso a compartir perfil, mensajes, amigos y discusiones de grupo dentro del mismo flujo de trabajo.',
-                'Mantenga actualizados los datos del perfil para que los registros compartidos, las invitaciones y la información de contacto sigan siendo correctos en toda la aplicación.',
+                'Complete su nombre, datos del negocio, ubicación, dirección, país y código postal.',
+                'Elija la opción de logotipo que desea mostrar en su cuenta.',
+            ],
+        ],
+        [
+            'title_en' => '5. Profile Picture and Bio-Connect Profile',
+            'title_es' => '5. Foto de perfil y perfil de Bio-Connect',
+            'english' => [
+                'Upload your profile picture and save your preferences.',
+                'Your Bio-Connect profile uses these saved details for sharing and networking inside the app.',
+            ],
+            'spanish' => [
+                'Cargue su foto de perfil y guarde sus preferencias.',
+                'Su perfil de Bio-Connect usa estos datos guardados para compartir y conectar dentro de la aplicación.',
+            ],
+        ],
+        [
+            'title_en' => '6. Music and Playlist Tools',
+            'title_es' => '6. Herramientas de música y listas',
+            'english' => [
+                'Use the music dropdown to upload tracks and create playlists.',
+                'The briefcase toolbar gives you quick access to your saved app tools.',
+            ],
+            'spanish' => [
+                'Use el menú de música para cargar pistas y crear listas de reproducción.',
+                'La barra del portafolio le da acceso rápido a sus herramientas guardadas en la aplicación.',
+            ],
+        ],
+        [
+            'title_en' => '7. Open Client Info',
+            'title_es' => '7. Abrir Información del cliente',
+            'english' => [
+                'Go to Data Cache and open Client Info to add or manage client records.',
+                'This area stores contact details, date of birth, emergency contact details, and session pricing.',
+            ],
+            'spanish' => [
+                'Vaya a Data Cache y abra Información del cliente para agregar o administrar registros de clientes.',
+                'Esta área guarda datos de contacto, fecha de nacimiento, datos de emergencia y precio de la sesión.',
+            ],
+        ],
+        [
+            'title_en' => '8. Add or Edit a Client',
+            'title_es' => '8. Agregar o editar un cliente',
+            'english' => [
+                'Use Create New Client to add a record and Save when the form is complete.',
+                'Use the edit action to update an existing client when details change.',
+            ],
+            'spanish' => [
+                'Use Crear nuevo cliente para agregar un registro y Guardar cuando el formulario esté completo.',
+                'Use la acción de editar para actualizar un cliente existente cuando cambien los datos.',
+            ],
+        ],
+        [
+            'title_en' => '9. Medical Notes and Consent Forms',
+            'title_es' => '9. Notas médicas y formularios de consentimiento',
+            'english' => [
+                'Open the client record to review medical notes and history.',
+                'Upload consent forms so all required documents stay attached to the client record.',
+            ],
+            'spanish' => [
+                'Abra el registro del cliente para revisar notas médicas e historial.',
+                'Cargue formularios de consentimiento para que todos los documentos necesarios queden adjuntos al registro del cliente.',
+            ],
+        ],
+        [
+            'title_en' => '10. Start a Body Scan or Chakra Scan',
+            'title_es' => '10. Iniciar un Body Scan o Chakra Scan',
+            'english' => [
+                'Choose Body Scan or Chakra Scan after loading a client.',
+                'The selected client carries forward so you can work directly inside the session.',
+            ],
+            'spanish' => [
+                'Elija Body Scan o Chakra Scan después de cargar un cliente.',
+                'El cliente seleccionado se mantiene para que pueda trabajar directamente dentro de la sesión.',
+            ],
+        ],
+        [
+            'title_en' => '11. Model View and Pair Selection',
+            'title_es' => '11. Vista del modelo y selección de pares',
+            'english' => [
+                'Use the male or female model view and switch between front and back as needed.',
+                'Zoom in when you need a closer view before placing a pair.',
+            ],
+            'spanish' => [
+                'Use la vista del modelo masculino o femenino y cambie entre frente y espalda según sea necesario.',
+                'Acerque la vista cuando necesite ver mejor antes de colocar un par.',
+            ],
+        ],
+        [
+            'title_en' => '12. Guided Scan and Saved Pairs',
+            'title_es' => '12. Escaneo guiado y pares guardados',
+            'english' => [
+                'Follow the guided scan in alphabetical pair order when you want full step-by-step support.',
+                'Bookmark important locations so they can be found quickly later.',
+            ],
+            'spanish' => [
+                'Siga el escaneo guiado en orden alfabético de pares cuando quiera apoyo paso a paso.',
+                'Marque ubicaciones importantes para encontrarlas rápidamente más adelante.',
+            ],
+        ],
+        [
+            'title_en' => '13. Use Data Cache During Sessions',
+            'title_es' => '13. Usar Data Cache durante las sesiones',
+            'english' => [
+                'Experienced users can search Data Cache directly by typing the location or pair name.',
+                'Select the plus action to add the pair into the current session without repeating the full search flow.',
+            ],
+            'spanish' => [
+                'Los usuarios con experiencia pueden buscar Data Cache directamente escribiendo la ubicación o el nombre del par.',
+                'Seleccione la acción de suma para agregar el par a la sesión actual sin repetir todo el flujo de búsqueda.',
+            ],
+        ],
+        [
+            'title_en' => '14. Finish, Print, and Email Sessions',
+            'title_es' => '14. Finalizar, imprimir y enviar sesiones',
+            'english' => [
+                'Mark the session done when treatment is complete.',
+                'From the session view, print or email the completed scan details to the client when needed.',
+            ],
+            'spanish' => [
+                'Marque la sesión como finalizada cuando el tratamiento esté completo.',
+                'Desde la vista de sesión, imprima o envíe por correo los detalles del escaneo al cliente cuando sea necesario.',
+            ],
+        ],
+        [
+            'title_en' => '15. Review Client History',
+            'title_es' => '15. Revisar historial del cliente',
+            'english' => [
+                'Open the client view to review details and previous scan work.',
+                'This lets you continue care from history instead of starting from memory each time.',
+            ],
+            'spanish' => [
+                'Abra la vista del cliente para revisar los detalles y el trabajo de escaneos anteriores.',
+                'Esto le permite continuar la atención desde el historial en lugar de empezar desde la memoria cada vez.',
+            ],
+        ],
+        [
+            'title_en' => '16. Bio-Connect, Friends, and Groups',
+            'title_es' => '16. Bio-Connect, amigos y grupos',
+            'english' => [
+                'Use Bio-Connect to manage your profile, follow activity, connect with friends, and join group discussions.',
+                'Keep your address and account details current so your shared profile displays the correct information.',
+            ],
+            'spanish' => [
+                'Use Bio-Connect para administrar su perfil, seguir la actividad, conectar con amigos y participar en discusiones de grupo.',
+                'Mantenga su dirección y datos de cuenta actualizados para que su perfil compartido muestre la información correcta.',
             ],
         ],
     ];
 @endphp
 
-<div class="help-summary">
-    <h4 style="margin-top: 0;">Help</h4>
-    <p style="margin-bottom: 8px;">
-        Use the quick guide below for the main workflow, then open the full illustrated manual for screen-by-screen steps.
+<div class="data-cache-help-intro">
+    <h3 class="data-cache-help-title">
+        <span class="data-cache-label-en">Help</span>
+        <span class="data-cache-label-es">Ayuda</span>
+    </h3>
+    <p>
+        Use the instructions below as the in-app guide for setup, client records, scans, and Bio-Connect.
     </p>
-    <p style="margin-bottom: 18px; color: #4a5568;">
-        Use la guía rápida a continuación para el flujo principal y luego abra el manual ilustrado completo para ver instrucciones pantalla por pantalla.
-    </p>
-    <p style="margin-bottom: 0;">
-        <a class="btn btn-primary" href="{{ $guideUrl }}" target="_blank" rel="noopener">
-            Open Full Guide<br>
-            <small>Abrir guía completa</small>
-        </a>
+    <p class="data-cache-help-intro-es">
+        Use las instrucciones a continuación como guía dentro de la aplicación para la configuración, los registros de clientes, los escaneos y Bio-Connect.
     </p>
 </div>
 
-<div class="row" style="margin-top: 20px;">
+<div class="row data-cache-help-grid">
     @foreach ($helpSections as $section)
-        <div class="col-md-6" style="margin-bottom: 20px;">
-            <div class="panel panel-default" style="height: 100%; margin-bottom: 0;">
-                <div class="panel-heading">
-                    <strong>{{ $section['title_en'] }}</strong><br>
-                    <small>{{ $section['title_es'] }}</small>
-                </div>
-                <div class="panel-body">
-                    <ul style="padding-left: 18px; margin-bottom: 16px;">
-                        @foreach ($section['english'] as $item)
-                            <li>{{ $item }}</li>
-                        @endforeach
-                    </ul>
-                    <ul style="padding-left: 18px; margin-bottom: 0; color: #4a5568;">
-                        @foreach ($section['spanish'] as $item)
-                            <li>{{ $item }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+        <div class="col-md-6 data-cache-help-item">
+            <div class="data-cache-help-card">
+                <h4 class="data-cache-help-card-title">
+                    <span class="data-cache-label-en">{{ $section['title_en'] }}</span>
+                    <span class="data-cache-label-es">{{ $section['title_es'] }}</span>
+                </h4>
+                <ul class="data-cache-help-list">
+                    @foreach ($section['english'] as $item)
+                        <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+                <ul class="data-cache-help-list data-cache-help-list-es">
+                    @foreach ($section['spanish'] as $item)
+                        <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
             </div>
         </div>
     @endforeach
-</div>
-
-<div class="panel panel-default" style="margin-bottom: 0;">
-    <div class="panel-heading">
-        <strong>Illustrated Manual</strong><br>
-        <small>Manual ilustrado</small>
-    </div>
-    <div class="panel-body" style="padding: 0;">
-        <iframe
-            src="{{ $guideUrl }}"
-            title="Anew Avenue Data Cache help guide"
-            style="width: 100%; min-height: 720px; border: 0;"
-        ></iframe>
-    </div>
 </div>

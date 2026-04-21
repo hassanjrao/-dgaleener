@@ -48,6 +48,29 @@
                     margin: 0 0 16px;
                 }
 
+                .email-content a {
+                    color: #2f80ed;
+                }
+
+                .email-button {
+                    display: inline-block;
+                    padding: 12px 20px;
+                    border-radius: 4px;
+                    background-color: #2f80ed;
+                    color: #ffffff !important;
+                    font-weight: 700;
+                    text-decoration: none;
+                }
+
+                .email-link {
+                    word-break: break-all;
+                }
+
+                .email-note {
+                    color: #475569;
+                    font-size: 14px;
+                }
+
                 .details-table {
                     width: 100%;
                     margin: 16px 0;
