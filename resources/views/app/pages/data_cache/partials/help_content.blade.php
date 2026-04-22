@@ -133,15 +133,13 @@
             ],
         ],
         [
-            'title_en' => '12. Guided Scan and Saved Pairs',
-            'title_es' => '12. Escaneo guiado y pares guardados',
+            'title_en' => '12. Guided Scan',
+            'title_es' => '12. Escaneo guiado',
             'english' => [
-                'Follow the guided scan in alphabetical pair order when you want full step-by-step support.',
-                'Bookmark important locations so they can be found quickly later.',
+                'Follow the anatomical guided scan for a seamless scan that flows between connected areas, or use the alphabetical list for step-by-step placement.',
             ],
             'spanish' => [
-                'Siga el escaneo guiado en orden alfabético de pares cuando quiera apoyo paso a paso.',
-                'Marque ubicaciones importantes para encontrarlas rápidamente más adelante.',
+                'Siga el escaneo guiado anatómico para un escaneo fluido que fluye entre áreas conectadas, o utilice la lista alfabética para la colocación paso a paso.',
             ],
         ],
         [
