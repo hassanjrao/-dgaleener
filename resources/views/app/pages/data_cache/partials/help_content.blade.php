@@ -168,12 +168,10 @@
             'title_en' => '15. Review Client History',
             'title_es' => '15. Revisar historial del cliente',
             'english' => [
-                'Open the client view to review client details and previous scan work.',
-                'This lets you continue care from saved history instead of starting from memory each time.',
+                'Open the client view to review details and previous scan work. This allows you to continue care by keeping up with both past and present sessions, while also viewing all clients and pairs to identify similarities and possible new pairs along the way.',
             ],
             'spanish' => [
-                'Abra la vista del cliente para revisar los detalles del cliente y el trabajo de escaneos anteriores.',
-                'Esto le permite continuar la atención desde el historial guardado en lugar de empezar desde la memoria cada vez.',
+                'Abra la vista del cliente para revisar los detalles y el trabajo de escaneos anteriores. Esto le permite continuar la atención al mantenerse al día con las sesiones pasadas y presentes, además de ver todos los clientes y pares para identificar similitudes y posibles pares nuevos en el camino.',
             ],
         ],
         [
