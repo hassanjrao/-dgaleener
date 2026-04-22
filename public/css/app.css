@@ -16824,6 +16824,12 @@ body {
   height: 35px;
 }
 
+.row-2-bilingual {
+  height: auto;
+  min-height: 56px;
+  padding: 6px 0 8px;
+}
+
 .row-3 {
   background-color: #31b6e8;
 }
@@ -16944,7 +16950,96 @@ body {
 
 .header h3 {
   font-size: 1.75rem;
+  margin: 0;
   padding-top: 2px;
+}
+
+.header-title {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  gap: 10px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 0;
+  max-width: 100%;
+  text-align: center;
+}
+
+.header-title-row {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.header-title-bilingual {
+  gap: 12px;
+  padding-top: 0;
+}
+
+.header-title-copy {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  line-height: 1.08;
+}
+
+.header-title-en {
+  display: block;
+  font-size: 1.45rem;
+  font-weight: 500;
+}
+
+.header-title-es {
+  color: #ff6b4a;
+  display: block;
+  font-size: .88rem;
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.header-title-icon {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  margin-bottom: 0;
+  padding-left: 0;
+  width: 36px;
+}
+
+@media only screen and (max-width: 768px) {
+  .row-2-bilingual {
+    min-height: 52px;
+    padding: 5px 10px 7px;
+  }
+
+  .header-title-en {
+    font-size: 1.15rem;
+  }
+
+  .header-title-es {
+    font-size: .78rem;
+  }
+
+  .header-title-icon {
+    width: 30px;
+  }
 }
 
 .body-inner-brown {

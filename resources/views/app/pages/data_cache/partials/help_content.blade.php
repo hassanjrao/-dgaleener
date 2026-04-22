@@ -109,15 +109,15 @@
             ],
         ],
         [
-            'title_en' => '10. Start a Body Scan or Chakra Scan',
-            'title_es' => '10. Iniciar un Body Scan o Chakra Scan',
+            'title_en' => '10. Start a Body or Chakra Scan',
+            'title_es' => '10. Iniciar un Body o Chakra Scan',
             'english' => [
-                'Choose Body Scan or Chakra Scan after loading a client.',
-                'The selected client stays active so you can work directly inside the scan session.',
+                'Once a client is loaded, their information carries forward into the workspace.',
+                'Simply select View Details or the Scan interface to enter the active session and begin your work.',
             ],
             'spanish' => [
-                'Elija Body Scan o Chakra Scan después de cargar un cliente.',
-                'El cliente seleccionado permanece activo para que pueda trabajar directamente dentro de la sesión de escaneo.',
+                'Al cargar un cliente, su información se transfiere al espacio de trabajo.',
+                'Solo seleccione View Details o la interfaz de Scan para entrar en la sesión activa y comenzar su trabajo.',
             ],
         ],
         [
