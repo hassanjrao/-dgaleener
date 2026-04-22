@@ -146,12 +146,10 @@
             'title_en' => '13. Use Data Cache During Sessions',
             'title_es' => '13. Usar Data Cache durante las sesiones',
             'english' => [
-                'Experienced users can search Data Cache directly by typing a location or pair name.',
-                'Select the plus action to add the pair to the current session without repeating the full search process.',
+                'The user can search the Data Cache directly by typing the location or pair name.',
             ],
             'spanish' => [
-                'Los usuarios con experiencia pueden buscar en Data Cache directamente escribiendo una ubicación o el nombre del par.',
-                'Seleccione la acción de suma para agregar el par a la sesión actual sin repetir todo el proceso de búsqueda.',
+                'El usuario puede buscar en el Data Cache directamente escribiendo la ubicación o el nombre del par.',
             ],
         ],
         [
