@@ -7478,7 +7478,7 @@ function DataCacheClientShowBioCtrl($scope, $filter, $window, Client, Pair, Scan
         var confirmDialog = confirm("Are you sure you wish to print this scan session?");
         if (confirmDialog == true) {
             _this.loaded = false;
-            $window.open('/scan_sessions/' + session.id + '/export', '_blank');
+            $window.open('/scan_sessions/' + session.id + '/print', '_blank');
             _this.loaded = true;
         }
     };
@@ -7650,7 +7650,7 @@ function DataCacheClientShowChakraCtrl($scope, $filter, $window, Client, Pair, S
         var confirmDialog = confirm("Are you sure you wish to print this scan session?");
         if (confirmDialog == true) {
             _this.loaded = false;
-            $window.open('/scan_sessions/' + session.id + '/export', '_blank');
+            $window.open('/scan_sessions/' + session.id + '/print', '_blank');
             _this.loaded = true;
         }
     };
@@ -8060,6 +8060,7 @@ angular.module('AnewApp').controller('BioConnectFriendRequestsCtrl', BioConnectF
 function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
     var _this = this;
     var searchDebounce;
+    var requestSequence = 0;
 
     _this.searchText = '';
     _this.users = [];
@@ -8085,10 +8086,15 @@ function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
         }
     }
 
+    function currentSearchText() {
+        return (_this.searchText || '').trim();
+    }
+
     function loadUsers(reset) {
         var page = reset ? 1 : _this.usersPage;
+        var requestId;
 
-        if (_this.usersLoading || !_this.usersHasMore && !reset) {
+        if ((_this.usersLoading && !reset) || !_this.usersHasMore && !reset) {
             return;
         }
 
@@ -8096,15 +8102,23 @@ function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
         _this.usersLoadingMore = !reset;
 
         if (reset) {
+            _this.users = [];
             _this.usersLoaded = false;
             _this.usersHasMore = true;
+            _this.usersPage = 1;
         }
+
+        requestId = ++requestSequence;
 
         User.prototype.Me.friends_available({
             page: page,
             per_page: _this.usersPerPage,
-            search: _this.searchText
+            search: currentSearchText()
         }, function (response) {
+            if (requestId !== requestSequence) {
+                return;
+            }
+
             var records = response.data || [];
 
             if (reset) {
@@ -8121,6 +8135,10 @@ function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
 
             $timeout(maybeLoadMore, 0);
         }, function () {
+            if (requestId !== requestSequence) {
+                return;
+            }
+
             _this.usersLoaded = true;
             _this.usersLoading = false;
             _this.usersLoadingMore = false;
@@ -8347,7 +8365,7 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
     };
 
     _this.deleteBookmark = function (bookmark) {
-        var confirmDialog = confirm("Are you sure you wish to delete this bookmark?");
+        var confirmDialog = confirm("Are you sure you wish to delete this bookmark? / ¿Está seguro de que desea eliminar este marcador?");
         if (confirmDialog == true) {
             User.prototype.Me.delete_bookmark({ id: bookmark.id }, function (_bookmark) {
                 index = _this.bookmarks.indexOf(bookmark);
@@ -8590,7 +8608,7 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
     this.deletePair = function (event, model_label_id) {
         event.preventDefault();
 
-        var confirmDialog = confirm("Are you sure you wish to delete this model label?");
+        var confirmDialog = confirm("Are you sure you wish to delete this model label? / ¿Está seguro de que desea eliminar esta etiqueta del modelo?");
         if (confirmDialog == true) {
             ModelLabel.delete({ id: model_label_id }, function () {
                 location.reload();
@@ -8648,7 +8666,7 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
         if (this.search.params.text != '' && initialCount >= totalCount) {
             initialCount = totalCount;
         }
-        this.search.meta.pageStatus = "Displaying " + initialCount + " of " + totalCount + " results.";
+        this.search.meta.pageStatus = "Displaying " + initialCount + " of " + totalCount + " results. / Mostrando " + initialCount + " de " + totalCount + " resultados.";
     };
 
     this.addPairToClient = function (pair) {
@@ -8657,7 +8675,7 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
         }
 
         _this = this;
-        var confirmDialog = confirm("Are you sure you wish to add this pair?");
+        var confirmDialog = confirm("Are you sure you wish to add this pair? / ¿Está seguro de que desea agregar este par?");
         if (confirmDialog == true) {
             scan_session_pair = new ScanSession.prototype.ScanSessionPair({ scan_session_id: _this.client.scan_session_id, pair_id: pair.id });
             scan_session_pair.$save(function () {
@@ -8672,7 +8690,7 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
         }
 
         _this = this;
-        var confirmDialog = confirm("Are you sure you wish to remove this pair?");
+        var confirmDialog = confirm("Are you sure you wish to remove this pair? / ¿Está seguro de que desea eliminar este par?");
         if (confirmDialog == true) {
             ScanSession.prototype.ScanSessionPair.delete({ scan_session_id: this.client.scan_session_id, id: pair.id }, function () {
                 pair._delete = false;

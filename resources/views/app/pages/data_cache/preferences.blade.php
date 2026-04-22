@@ -7,7 +7,7 @@
     <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Data Cache', 'menu' => 'data_cache'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'menu' => 'data_cache'])
     <div class="container" style="margin-top: 20px; margin-bottom: 110px;">
         <div class="row">
             <div class="col-md-10 offset-md-1">

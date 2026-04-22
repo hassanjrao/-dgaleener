@@ -1,6 +1,7 @@
 function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
     var _this = this;
     var searchDebounce;
+    var requestSequence = 0;
 
     _this.searchText = '';
     _this.users = [];
@@ -26,10 +27,15 @@ function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
         }
     }
 
+    function currentSearchText() {
+        return (_this.searchText || '').trim();
+    }
+
     function loadUsers(reset) {
         var page = reset ? 1 : _this.usersPage;
+        var requestId;
 
-        if (_this.usersLoading || (!_this.usersHasMore && !reset)) {
+        if ((_this.usersLoading && !reset) || (!_this.usersHasMore && !reset)) {
             return;
         }
 
@@ -37,15 +43,23 @@ function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
         _this.usersLoadingMore = !reset;
 
         if (reset) {
+            _this.users = [];
             _this.usersLoaded = false;
             _this.usersHasMore = true;
+            _this.usersPage = 1;
         }
+
+        requestId = ++requestSequence;
 
         User.prototype.Me.friends_available({
             page: page,
             per_page: _this.usersPerPage,
-            search: _this.searchText
+            search: currentSearchText()
         }, function(response) {
+            if (requestId !== requestSequence) {
+                return;
+            }
+
             var records = response.data || [];
 
             if (reset) {
@@ -62,6 +76,10 @@ function BioConnectFindFriendsCtrl($scope, $timeout, $window, User) {
 
             $timeout(maybeLoadMore, 0);
         }, function() {
+            if (requestId !== requestSequence) {
+                return;
+            }
+
             _this.usersLoaded = true;
             _this.usersLoading = false;
             _this.usersLoadingMore = false;

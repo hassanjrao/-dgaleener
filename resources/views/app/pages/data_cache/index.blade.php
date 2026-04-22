@@ -7,7 +7,7 @@
     <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Data Cache'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos'])
     <div class="container data-cache">
         <div class="row justify-content-center text-center" style="margin-bottom: 20px;">
             <div class="row justify-content-center signup-form-row">

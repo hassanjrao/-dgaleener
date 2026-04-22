@@ -47,13 +47,15 @@ class ScanSessionController extends Controller
     {
         $paypalConfig = Config::get('paypal');
 
-        $this->apiContext = new ApiContext(
-            new OAuthTokenCredential(
-                $paypalConfig['client_id'],
-                $paypalConfig['secret']
-        )
-        );
-        $this->apiContext->setConfig($paypalConfig['settings']);
+        if (!empty($paypalConfig['client_id']) && !empty($paypalConfig['secret'])) {
+            $this->apiContext = new ApiContext(
+                new OAuthTokenCredential(
+                    $paypalConfig['client_id'],
+                    $paypalConfig['secret']
+                )
+            );
+            $this->apiContext->setConfig($paypalConfig['settings']);
+        }
     }
 
     public function export($id)
@@ -77,10 +79,31 @@ class ScanSessionController extends Controller
             return response()->json(['error' => 'Unauthorized Access'], 401);
         }
     }
+
+    public function print($id)
+    {
+        $scanSession = ScanSession::findOrFail($id);
+
+        if ($scanSession->paid) {
+            return response()->json(['error' => 'Unauthorized Access'], 401);
+        }
+
+        if (!empty($scanSession) && ($scanSession->user_id == Auth::user()->id || Auth::user()->isAdmin())) {
+            return view('app.pages.scan_sessions.print', [
+                'scanSession' => $scanSession,
+            ]);
+        }
+
+        return response()->json(['error' => 'Unauthorized Access'], 401);
+    }
     
     public function payment(Request $request, $id)
     {
         $scanSession = ScanSession::findOrFail($id);
+
+        if (empty($this->apiContext)) {
+            return redirect()->to(URL::route('app.dashboard'))->with('message.fail', 'Payment is not configured right now.');
+        }
 
         if ($scanSession->paid) {
             return redirect()->to(URL::route('app.dashboard'))->with('message.fail', 'You have already paid this scan session. Action Forbidden.');
@@ -142,6 +165,10 @@ class ScanSessionController extends Controller
     public function status(Request $request, $id)
     {
         $scanSession = ScanSession::findOrFail($id);
+
+        if (empty($this->apiContext)) {
+            return redirect()->to(URL::route('app.dashboard'))->with('message.fail', 'Payment is not configured right now.');
+        }
 
         $paymentId = Session::get('paymentId');
         Session::forget('paymentId');

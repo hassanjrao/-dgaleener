@@ -36,7 +36,7 @@
         </a>
     </div>
     <div class="col-md-2 text-center">
-        <a href="#" data-toggle="modal" data-target="#preferencesModal">
+        <a href="{{ url('/data_cache/preferences') }}">
             <img src="{{ asset('/images/iconimages/friendicon24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
             <div class="headericontext data-cache-menu-label {{ Request::path() == 'data_cache/preferences' ? 'active' : '' }}">
                 <span class="data-cache-label-en">Preferences</span>

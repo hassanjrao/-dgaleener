@@ -153,7 +153,7 @@ function DataCacheClientShowChakraCtrl($scope, $filter, $window, Client, Pair, S
         var confirmDialog = confirm("Are you sure you wish to print this scan session?")
         if (confirmDialog == true) {
             _this.loaded = false
-            $window.open('/scan_sessions/'+session.id+'/export', '_blank')
+            $window.open('/scan_sessions/'+session.id+'/print', '_blank')
             _this.loaded = true
         }
     }

@@ -60,10 +60,50 @@ body {
 }
 
 .profile-image {
+  background-color: #fff;
+  border: 3px solid rgba(255, 255, 255, .95);
   border-radius: 50%;
   height: 48px;
+  object-fit: cover;
+  padding: 4px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, .18);
   vertical-align: middle;
   width: 48px;
+}
+
+.bioconnect-bilingual-label {
+  align-items: center;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+
+.bioconnect-bilingual-label--left {
+  justify-content: flex-start;
+}
+
+.bioconnect-bilingual-label--center {
+  justify-content: center;
+}
+
+.bioconnect-label-en,
+.bioconnect-label-es {
+  display: inline-block;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.bioconnect-label-en {
+  border-right: 1px solid currentColor;
+  color: inherit;
+  font-weight: 600;
+  padding-right: 8px;
+}
+
+.bioconnect-label-es {
+  color: #ff6b4a;
+  padding-left: 2px;
 }
 
 .main-body {
@@ -210,9 +250,14 @@ body {
 
 @media only screen and (max-width: 768px) {
   .profile-image {
+    background-color: #fff;
+    border: 3px solid rgba(255, 255, 255, .95);
     border-radius: 50%;
     height: auto;
     max-width: 104px;
+    object-fit: cover;
+    padding: 6px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .18);
     vertical-align: middle;
     width: 100%;
   }

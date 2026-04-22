@@ -4,6 +4,7 @@
 @stop
 @section('styles')
     @parent
+    <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
 
     <style>
         .info-page {
@@ -15,7 +16,7 @@
     </style>
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Data Cache'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos'])
     <div class="row info-page">
         <div class="col-md-6">
             <p class="text-center" style="margin-bottom: 40px;">

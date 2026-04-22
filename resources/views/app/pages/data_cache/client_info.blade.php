@@ -7,7 +7,7 @@
     <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Data Cache', 'menu' => 'data_cache', 'section' => 'client_info'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'menu' => 'data_cache', 'section' => 'client_info'])
     <div id="content-container" class="data-cache-client-page">
         <div class="data-cache-client-panel">
             <div class="data-cache-client-toolbar">

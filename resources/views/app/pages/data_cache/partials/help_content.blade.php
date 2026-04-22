@@ -64,12 +64,12 @@
             'title_en' => '6. Music and Playlist Tools',
             'title_es' => '6. Herramientas de música y listas',
             'english' => [
-                'Use the music dropdown to upload tracks and create playlists.',
-                'The briefcase toolbar gives you quick access to your saved app tools.',
+                'The briefcase toolbar opens to reveal your client list and scan sessions.',
+                'After selecting a scan session, click Play on the music bar to fill the space with relaxing audio for your client throughout the session.',
             ],
             'spanish' => [
-                'Use el menú de música para cargar pistas y crear listas de reproducción.',
-                'La barra del portafolio le da acceso rápido a sus herramientas guardadas en la aplicación.',
+                'La barra del portafolio se abre para mostrar su lista de clientes y las sesiones de escaneo.',
+                'Después de seleccionar una sesión de escaneo, haga clic en Reproducir en la barra de música para llenar el espacio con audio relajante para su cliente durante toda la sesión.',
             ],
         ],
         [
@@ -113,11 +113,11 @@
             'title_es' => '10. Iniciar un Body Scan o Chakra Scan',
             'english' => [
                 'Choose Body Scan or Chakra Scan after loading a client.',
-                'The selected client carries forward so you can work directly inside the session.',
+                'The selected client stays active so you can work directly inside the scan session.',
             ],
             'spanish' => [
                 'Elija Body Scan o Chakra Scan después de cargar un cliente.',
-                'El cliente seleccionado se mantiene para que pueda trabajar directamente dentro de la sesión.',
+                'El cliente seleccionado permanece activo para que pueda trabajar directamente dentro de la sesión de escaneo.',
             ],
         ],
         [
@@ -148,12 +148,12 @@
             'title_en' => '13. Use Data Cache During Sessions',
             'title_es' => '13. Usar Data Cache durante las sesiones',
             'english' => [
-                'Experienced users can search Data Cache directly by typing the location or pair name.',
-                'Select the plus action to add the pair into the current session without repeating the full search flow.',
+                'Experienced users can search Data Cache directly by typing a location or pair name.',
+                'Select the plus action to add the pair to the current session without repeating the full search process.',
             ],
             'spanish' => [
-                'Los usuarios con experiencia pueden buscar Data Cache directamente escribiendo la ubicación o el nombre del par.',
-                'Seleccione la acción de suma para agregar el par a la sesión actual sin repetir todo el flujo de búsqueda.',
+                'Los usuarios con experiencia pueden buscar en Data Cache directamente escribiendo una ubicación o el nombre del par.',
+                'Seleccione la acción de suma para agregar el par a la sesión actual sin repetir todo el proceso de búsqueda.',
             ],
         ],
         [
@@ -172,12 +172,12 @@
             'title_en' => '15. Review Client History',
             'title_es' => '15. Revisar historial del cliente',
             'english' => [
-                'Open the client view to review details and previous scan work.',
-                'This lets you continue care from history instead of starting from memory each time.',
+                'Open the client view to review client details and previous scan work.',
+                'This lets you continue care from saved history instead of starting from memory each time.',
             ],
             'spanish' => [
-                'Abra la vista del cliente para revisar los detalles y el trabajo de escaneos anteriores.',
-                'Esto le permite continuar la atención desde el historial en lugar de empezar desde la memoria cada vez.',
+                'Abra la vista del cliente para revisar los detalles del cliente y el trabajo de escaneos anteriores.',
+                'Esto le permite continuar la atención desde el historial guardado en lugar de empezar desde la memoria cada vez.',
             ],
         ],
         [

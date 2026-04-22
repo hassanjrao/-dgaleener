@@ -6,6 +6,7 @@
     @if (!empty($content))
         {!! \App\Support\EmailContentFormatter::toHtml($content) !!}
     @endif
+    <p>The completed scan session summary is below.</p>
     <table role="presentation" class="details-table">
         <tr>
             <td class="details-label">Client Name:</td>
@@ -32,4 +33,5 @@
             </td>
         </tr>
     </table>
+    <p class="email-note">The complete scan worksheet is attached for your records.</p>
 @endsection
