@@ -362,7 +362,8 @@ class FriendController extends BaseController
                             $reverseQuery->where('relationships.friend_id', '=', $user->id)
                                 ->whereColumn('relationships.user_id', 'users.id');
                         });
-                    });
+                    })
+                    ->where('accepted', 1);
             })
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($searchQuery) use ($search) {
