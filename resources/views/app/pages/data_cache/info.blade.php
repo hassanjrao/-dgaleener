@@ -16,7 +16,7 @@
     </style>
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'image_url' => '/images/iconimages/briefcase80.png', 'image_class' => 'header-title-icon-white'])
     <div class="row info-page">
         <div class="col-md-6">
             <p class="text-center" style="margin-bottom: 40px;">

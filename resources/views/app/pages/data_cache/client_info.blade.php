@@ -7,7 +7,7 @@
     <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'menu' => 'data_cache', 'section' => 'client_info'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'image_url' => '/images/iconimages/briefcase80.png', 'image_class' => 'header-title-icon-white', 'menu' => 'data_cache', 'section' => 'client_info'])
     <div id="content-container" class="data-cache-client-page">
         <div class="data-cache-client-panel">
             <div class="data-cache-client-toolbar">

@@ -18,7 +18,7 @@
                             @endif
                             @if ($hasTitleIcon)
                                 <span class="header-title-icon-wrap">
-                                    <img src="{{ \App\Support\VersionedAsset::url($image_url) }}" class="header-title-icon" alt="{{ env('APP_TITLE') }}">
+                                    <img src="{{ \App\Support\VersionedAsset::url($image_url) }}" class="header-title-icon {{ $image_class ?? '' }}" alt="{{ env('APP_TITLE') }}">
                                 </span>
                             @endif
                         </span>

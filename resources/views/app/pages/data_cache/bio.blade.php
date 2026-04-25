@@ -7,7 +7,7 @@
     <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'menu' => 'data_cache'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'image_url' => '/images/iconimages/briefcase80.png', 'image_class' => 'header-title-icon-white', 'menu' => 'data_cache'])
     <div style="margin: 20px 50px; margin-bottom: 110px;" ng-cloak="" ng-controller="DataCacheBioCtrl as ctrl">
         <div class="row" style="width: 100%; padding: 10px 0; display: block; margin-bottom: 20px;">
             <a href="/data_cache"><button class="btn-data-cache">BACK</button></a>

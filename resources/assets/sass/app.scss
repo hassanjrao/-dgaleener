@@ -232,6 +232,10 @@ body {
   width: 36px;
 }
 
+.header-title-icon-white {
+  filter: brightness(0) invert(1);
+}
+
 .row-2-title-icon-only .header-title-icon {
   width: 30px;
 }
