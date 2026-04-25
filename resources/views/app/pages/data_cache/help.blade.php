@@ -4,7 +4,7 @@
 @stop
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
     @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'menu' => 'data_cache'])

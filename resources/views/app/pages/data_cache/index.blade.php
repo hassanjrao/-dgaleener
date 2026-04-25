@@ -4,14 +4,14 @@
 @stop
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
     @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos'])
     <div class="container data-cache">
         <div class="row justify-content-center text-center" style="margin-bottom: 20px;">
             <div class="row justify-content-center signup-form-row">
-                <a href="/data_cache/bio">
+                <a href="{{ route('app.bodyscan') }}">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/bio.png')}}" alt="{{ env('APP_TITLE') }}"></img>
                         <div class="data-cache-bilingual-label text-center">
@@ -23,8 +23,8 @@
             </div>
         </div>
         <div class="row justify-content-center text-center" style="margin-bottom: 20px;">
-            <div class="row justify-content-center signup-form-row text-center">
-                <a href="/data_cache/client_info">
+            <div class="row justify-content-center signup-form-row text-center data-cache-secondary-row">
+                <a href="/data_cache/client_info" class="data-cache-link-client">
                     <div class="data-cache-section adjust">
                         <img src="{{asset('/images/data_cache/client.png')}}" alt="{{ env('APP_TITLE') }}"></img>
                         <div class="data-cache-bilingual-label text-center">
@@ -33,7 +33,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="/data_cache/chakra">
+                <a href="{{ route('app.chakrascan') }}" class="data-cache-link-chakra">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/chakra.png')}}" alt="{{ env('APP_TITLE') }}"></img>
                         <div class="data-cache-bilingual-label text-center">

@@ -64,12 +64,12 @@
             'title_en' => '6. Music and Playlist Tools',
             'title_es' => '6. Herramientas de música y listas',
             'english' => [
-                'The briefcase toolbar opens to reveal your client list and scan sessions.',
-                'After selecting a scan session, click Play on the music bar to fill the space with relaxing audio for your client throughout the session.',
+                'Use the music dropdown to upload tracks and create playlists.',
+                'The briefcase toolbar opens to reveal your client list; after selecting a scan session, simply click Play on the music bar to fill the space with relaxing audio for your client.',
             ],
             'spanish' => [
-                'La barra del portafolio se abre para mostrar su lista de clientes y las sesiones de escaneo.',
-                'Después de seleccionar una sesión de escaneo, haga clic en Reproducir en la barra de música para llenar el espacio con audio relajante para su cliente durante toda la sesión.',
+                'Use el menú de música para cargar pistas y crear listas de reproducción.',
+                'La barra del portafolio se abre para mostrar su lista de clientes; después de seleccionar una sesión de escaneo, simplemente haga clic en Reproducir en la barra de música para llenar el espacio con audio relajante para su cliente.',
             ],
         ],
         [
@@ -112,12 +112,14 @@
             'title_en' => '10. Start a Body or Chakra Scan',
             'title_es' => '10. Iniciar un Body o Chakra Scan',
             'english' => [
+                'Choose Body Scan or Chakra Scan after loading a client.',
                 'Once a client is loaded, their information carries forward into the workspace.',
-                'Simply select View Details or the Scan interface to enter the active session and begin your work.',
+                'Simply select View Details or View Through Scan to enter the active session and begin your work.',
             ],
             'spanish' => [
+                'Elija Body Scan o Chakra Scan después de cargar un cliente.',
                 'Al cargar un cliente, su información se transfiere al espacio de trabajo.',
-                'Solo seleccione View Details o la interfaz de Scan para entrar en la sesión activa y comenzar su trabajo.',
+                'Solo seleccione View Details o View Through Scan para entrar en la sesión activa y comenzar su trabajo.',
             ],
         ],
         [
@@ -137,9 +139,11 @@
             'title_es' => '12. Escaneo guiado',
             'english' => [
                 'Follow the anatomical guided scan for a seamless scan that flows between connected areas, or use the alphabetical list for step-by-step placement.',
+                'Bookmark important locations so they can be found quickly later.',
             ],
             'spanish' => [
                 'Siga el escaneo guiado anatómico para un escaneo fluido que fluye entre áreas conectadas, o utilice la lista alfabética para la colocación paso a paso.',
+                'Marque ubicaciones importantes para encontrarlas rápidamente más adelante.',
             ],
         ],
         [
@@ -147,9 +151,11 @@
             'title_es' => '13. Usar Data Cache durante las sesiones',
             'english' => [
                 'The user can search the Data Cache directly by typing the location or pair name.',
+                'Select the plus action to add the pair into the current session without repeating the full search flow.',
             ],
             'spanish' => [
                 'El usuario puede buscar en el Data Cache directamente escribiendo la ubicación o el nombre del par.',
+                'Seleccione la acción de suma para agregar el par a la sesión actual sin repetir todo el flujo de búsqueda.',
             ],
         ],
         [
@@ -168,10 +174,12 @@
             'title_en' => '15. Review Client History',
             'title_es' => '15. Revisar historial del cliente',
             'english' => [
-                'Open the client view to review details and previous scan work. This allows you to continue care by keeping up with both past and present sessions, while also viewing all clients and pairs to identify similarities and possible new pairs along the way.',
+                'Open the client view to review details and previous scan work.',
+                'This allows you to continue care by keeping up with both past and present sessions, while also viewing all clients and pairs to identify similarities and possible new pairs along the way.',
             ],
             'spanish' => [
-                'Abra la vista del cliente para revisar los detalles y el trabajo de escaneos anteriores. Esto le permite continuar la atención al mantenerse al día con las sesiones pasadas y presentes, además de ver todos los clientes y pares para identificar similitudes y posibles pares nuevos en el camino.',
+                'Abra la vista del cliente para revisar los detalles y el trabajo de escaneos anteriores.',
+                'Esto le permite continuar la atención al mantenerse al día con las sesiones pasadas y presentes, además de ver todos los clientes y pares para identificar similitudes y posibles pares nuevos en el camino.',
             ],
         ],
         [

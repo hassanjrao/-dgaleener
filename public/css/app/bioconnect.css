@@ -3,7 +3,41 @@ body {
 }
 
 .bioconnect-menu {
-  height: 55px !important;
+  height: auto !important;
+  min-height: 74px;
+  padding: 4px 0 6px;
+}
+
+.bioconnect-menu > [class*="col-"] {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.bioconnect-menu a {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #fff;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  line-height: 1.15;
+  min-height: 62px;
+  text-decoration: none;
 }
 
 .card-holder {
@@ -74,8 +108,8 @@ body {
 .bioconnect-bilingual-label {
   align-items: center;
   display: inline-flex;
-  flex-wrap: wrap;
-  gap: 4px;
+  flex-direction: column;
+  gap: 1px;
   justify-content: center;
 }
 
@@ -89,21 +123,20 @@ body {
 
 .bioconnect-label-en,
 .bioconnect-label-es {
-  display: inline-block;
+  display: block;
   line-height: 1.15;
   white-space: nowrap;
 }
 
 .bioconnect-label-en {
-  border-right: 1px solid currentColor;
   color: inherit;
   font-weight: 600;
-  padding-right: 8px;
 }
 
 .bioconnect-label-es {
-  color: #ff6b4a;
-  padding-left: 2px;
+  color: inherit;
+  font-weight: 500;
+  opacity: 0.92;
 }
 
 .main-body {
@@ -130,6 +163,8 @@ body {
   }
   .bioconnect-menu {
     height: auto !important;
+    min-height: 0;
+    padding: 8px 0;
   }
   .avatar {
     margin: 10px 0;

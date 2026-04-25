@@ -106,7 +106,8 @@ td button:disabled {
 }
 
 .data-cache-label-es {
-  color: #ff6b4a;
+  color: inherit;
+  font-weight: 500;
 }
 
 .data-cache-section .data-cache-bilingual-label {
@@ -120,7 +121,7 @@ td button:disabled {
 }
 
 .data-cache-section .data-cache-label-es {
-  color: #ffd0c6;
+  color: rgba(255, 255, 255, 0.9);
   font-size: 1rem;
   font-weight: 500;
 }
@@ -525,14 +526,29 @@ td button:disabled {
 }
 
 @media only screen and (max-width: 767px) {
-  .data-cache .adjust {
-    margin-right: 20px;
+  .data-cache-secondary-row {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
   }
-}
-
-@media only screen and (max-width: 767px) {
+  .data-cache-link-chakra {
+    -webkit-box-ordinal-group: 2;
+        -ms-flex-order: 1;
+            order: 1;
+  }
+  .data-cache-link-client {
+    margin-top: 20px;
+    -webkit-box-ordinal-group: 3;
+        -ms-flex-order: 2;
+            order: 2;
+  }
+  .data-cache-secondary-row .adjust,
   .data-cache .adjust {
-    margin-right: 20px;
+    margin-right: 0;
   }
 }
 

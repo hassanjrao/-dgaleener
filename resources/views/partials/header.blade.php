@@ -1,19 +1,29 @@
 <section class="header">
     @include('partials.auth')
-    <div class="row row-2 {{ !empty($title_es) ? 'row-2-bilingual' : '' }}">
-        <div class="col-md-12 text-center {{ !empty($title_es) ? 'header-title-row' : '' }}">
+    @php
+        $hasTitleEs = !empty($title_es);
+        $hasTitleIcon = !empty($image_url);
+        $hasEnhancedTitle = $hasTitleEs || $hasTitleIcon;
+    @endphp
+    <div class="row row-2 {{ $hasEnhancedTitle ? 'row-2-bilingual' : '' }} {{ $hasTitleIcon && !$hasTitleEs ? 'row-2-title-icon-only' : '' }}">
+        <div class="col-md-12 text-center {{ $hasEnhancedTitle ? 'header-title-row' : '' }}">
             @if (!empty($title))
-                <h3 class="header-title {{ !empty($title_es) ? 'header-title-bilingual' : '' }}">
-                    @if (!empty($title_es))
+                <h3 class="header-title {{ $hasEnhancedTitle ? 'header-title-bilingual' : '' }}">
+                    @if ($hasEnhancedTitle)
                         <span class="header-title-copy">
                             <span class="header-title-en">{{ $title }}</span>
+                            @if ($hasTitleEs)
+                            <span class="header-title-divider"></span>
                             <span class="header-title-es">{{ $title_es }}</span>
+                            @endif
+                            @if ($hasTitleIcon)
+                                <span class="header-title-icon-wrap">
+                                    <img src="{{ \App\Support\VersionedAsset::url($image_url) }}" class="header-title-icon" alt="{{ env('APP_TITLE') }}">
+                                </span>
+                            @endif
                         </span>
                     @else
                         {{ $title }}
-                    @endif
-                    @if (!empty($image_url))
-                        <img src="{{asset($image_url)}}" class="header-title-icon" alt="{{ env('APP_TITLE') }}">
                     @endif
                 </h3>
             @endif

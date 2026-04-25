@@ -16826,8 +16826,13 @@ body {
 
 .row-2-bilingual {
   height: auto;
-  min-height: 56px;
-  padding: 6px 0 8px;
+  min-height: 78px;
+  padding: 6px 0 10px;
+}
+
+.row-2-title-icon-only {
+  min-height: 58px;
+  padding: 4px 0 6px;
 }
 
 .row-3 {
@@ -16843,8 +16848,9 @@ body {
 }
 
 .headerimageicon {
+  display: block;
   height: auto;
-  margin-top: 5px;
+  margin: 5px auto 4px;
   max-width: 24px;
   width: 100%;
 }
@@ -16983,7 +16989,6 @@ body {
 }
 
 .header-title-bilingual {
-  gap: 12px;
   padding-top: 0;
 }
 
@@ -16998,6 +17003,7 @@ body {
   -webkit-box-orient: vertical;
   -ms-flex-direction: column;
       flex-direction: column;
+  gap: 2px;
   line-height: 1.08;
 }
 
@@ -17008,11 +17014,28 @@ body {
 }
 
 .header-title-es {
-  color: #ff6b4a;
+  color: inherit;
   display: block;
-  font-size: .88rem;
-  font-weight: 600;
-  margin-top: 3px;
+  font-size: .84rem;
+  font-weight: 500;
+}
+
+.header-title-divider {
+  border-top: 1px solid currentColor;
+  display: block;
+  opacity: .75;
+  width: 180px;
+}
+
+.header-title-icon-wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 2px;
+  width: 100%;
 }
 
 .header-title-icon {
@@ -17023,10 +17046,19 @@ body {
   width: 36px;
 }
 
+.row-2-title-icon-only .header-title-icon {
+  width: 30px;
+}
+
 @media only screen and (max-width: 768px) {
   .row-2-bilingual {
-    min-height: 52px;
-    padding: 5px 10px 7px;
+    min-height: 72px;
+    padding: 5px 10px 9px;
+  }
+
+  .row-2-title-icon-only {
+    min-height: 54px;
+    padding: 4px 10px 6px;
   }
 
   .header-title-en {
@@ -17035,6 +17067,10 @@ body {
 
   .header-title-es {
     font-size: .78rem;
+  }
+
+  .header-title-divider {
+    width: 140px;
   }
 
   .header-title-icon {

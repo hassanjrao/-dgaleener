@@ -2,7 +2,7 @@
 <div class="row row-3 bioconnect-menu">
     <div class="col-md-6 text-center">
         <a href="{{ url('/bioconnect') }}">
-            <img src="{{ asset('/images/iconimages/friendicon24.png') }}" class="headerimageicon">
+            <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/friendicon24.png') }}" class="headerimageicon">
             <div class="headericontext {{ Request::path() == 'bioconnect' ? 'active' : '' }}">
                 <span class="bioconnect-bilingual-label bioconnect-bilingual-label--center">
                     <span class="bioconnect-label-en">Users</span>
@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-6 text-center">
         <a href="{{ url('/bioconnect/groups') }}">
-            <img src="{{ asset('/images/iconimages/groupicon24.png') }}" class="headerimageicon">
+            <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/groupicon24.png') }}" class="headerimageicon">
             <div class="headericontext {{ Request::path() == 'bioconnect/groups' ? 'active' : '' }}">
                 <span class="bioconnect-bilingual-label bioconnect-bilingual-label--center">
                     <span class="bioconnect-label-en">Discussions</span>
@@ -28,7 +28,7 @@
     <div class="col-md-1"></div>
     <div class="col-md-2 text-center">
         <a href="{{ url('/bioconnect/profile') }}">
-            <img src="{{ asset('/images/iconimages/profile24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
+            <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/profile24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
             <div class="headericontext {{ Request::path() == 'bioconnect/profile' ? 'active' : '' }}">
                 <span class="bioconnect-bilingual-label bioconnect-bilingual-label--center">
                     <span class="bioconnect-label-en">Profile</span>
@@ -39,7 +39,7 @@
     </div>
     <div class="col-md-2 text-center">
         <a href="{{ url('/bioconnect/activities') }}">
-            <img src="{{ asset('/images/iconimages/activity24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
+            <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/activity24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
             <div class="headericontext {{ Request::path() == 'bioconnect/activities' ? 'active' : '' }}">
                 <span class="bioconnect-bilingual-label bioconnect-bilingual-label--center">
                     <span class="bioconnect-label-en">Activities</span>
@@ -50,7 +50,7 @@
     </div>
     <div class="col-md-2 text-center">
         <a href="{{ url('/bioconnect/friends') }}">
-            <img src="{{ asset('/images/iconimages/friendicon24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
+            <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/friendicon24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
             <div class="headericontext {{ Request::path() == 'bioconnect/friends' || Request::path() == 'bioconnect/friends/find' ? 'active' : '' }}">
                 <span class="bioconnect-bilingual-label bioconnect-bilingual-label--center">
                     <span class="bioconnect-label-en">Friends</span>
@@ -61,7 +61,7 @@
     </div>
     <div class="col-md-2 text-center">
         <a href="{{ url('/bioconnect/groups') }}">
-            <img src="{{ asset('/images/iconimages/groupicon24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
+            <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/groupicon24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
             <div class="headericontext {{ Request::path() == 'bioconnect/groups' ? 'active' : '' }}">
                 <span class="bioconnect-bilingual-label bioconnect-bilingual-label--center">
                     <span class="bioconnect-label-en">Groups</span>
@@ -73,7 +73,7 @@
     <div class="col-md-2 text-center"> 		
         <span class="notify-counter" style="display:none;"></span>
         <a id="see_notifi" href="#">
-            <img src="{{ asset('/images/iconimages/notification24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
+            <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/notification24.png') }}" class="headerimageicon" alt="{{ env('APP_TITLE') }}">
             <div class="headericontext">
                 <span class="bioconnect-bilingual-label bioconnect-bilingual-label--center">
                     <span class="bioconnect-label-en">Notifications</span>

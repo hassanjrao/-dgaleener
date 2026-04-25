@@ -4,8 +4,8 @@
 @stop
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/bioconnect.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app/bioconnect/profile.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect/profile.css') }}" rel="stylesheet">
 @stop
 @section('content')
     @include('partials.header', ['title' => 'Bio Connect', 'image_url' => '/images/iconimages/share24.png', 'menu' => 'bioconnect'])

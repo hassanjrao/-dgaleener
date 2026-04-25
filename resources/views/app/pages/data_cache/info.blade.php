@@ -4,7 +4,7 @@
 @stop
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 
     <style>
         .info-page {

@@ -6,8 +6,8 @@
 
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/bioconnect.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/app/bioconnect-card.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect-card.css') }}" rel="stylesheet">
 @stop
 
 @section('content')

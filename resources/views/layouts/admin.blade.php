@@ -6,8 +6,8 @@
 
         @section('styles')
         <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/app/admin.css') }}" rel="stylesheet">
+        <link href="{{ \App\Support\VersionedAsset::url('css/app.css') }}" rel="stylesheet">
+        <link href="{{ \App\Support\VersionedAsset::url('css/app/admin.css') }}" rel="stylesheet">
         <style>
             .editor-edit,
             .editor-remove {
@@ -31,9 +31,9 @@
         </div>
         @section('javascripts')
             <!-- Scripts -->
-            <script src="{{ asset('js/manifest.js') }}"></script>
-            <script src="{{ asset('js/vendor.js') }}"></script>
-            <script src="{{ asset('js/app.js') }}"></script>
+            <script src="{{ \App\Support\VersionedAsset::url('js/manifest.js') }}"></script>
+            <script src="{{ \App\Support\VersionedAsset::url('js/vendor.js') }}"></script>
+            <script src="{{ \App\Support\VersionedAsset::url('js/app.js') }}"></script>
         @show
     </body>
 </html>

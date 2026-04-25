@@ -4,10 +4,10 @@
 @stop
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Clients Chakra Scan Data Cache', 'title_es' => 'Caché de datos de Chakra de clientes', 'menu' => 'data_cache'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'menu' => 'data_cache'])
     <div style="margin: 20px 50px; margin-bottom: 110px;" ng-cloak="" ng-controller="DataCacheChakraCtrl as ctrl">
         <div class="row" style="width: 100%; padding: 10px 0; display: block; margin-bottom: 20px;">
             <a href="/data_cache"><button class="btn-data-cache">BACK</button></a>

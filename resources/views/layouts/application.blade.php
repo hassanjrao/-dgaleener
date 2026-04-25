@@ -6,7 +6,7 @@
 
         @section('styles')
             <!-- Styles -->
-            <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+            <link href="{{ \App\Support\VersionedAsset::url('css/app.css') }}" rel="stylesheet">
         @show
 
         <title>@yield('page-title')</title>
@@ -56,8 +56,8 @@
             </script>
 
             @if(!in_array(Route::getCurrentRoute()->uri(), ['home', 'media', 'playlist']) && Auth::user() && Auth::user()->hasVerifiedEmail() && Auth::user()->hasValidSubscription())
-                <script src="{{ asset('js/jquery.jplayer.js') }}" type="text/javascript"></script>
-                <script src="{{ asset('js/jplayer.playlist.js') }}" type="text/javascript"></script>
+                <script src="{{ \App\Support\VersionedAsset::url('js/jquery.jplayer.js') }}" type="text/javascript"></script>
+                <script src="{{ \App\Support\VersionedAsset::url('js/jplayer.playlist.js') }}" type="text/javascript"></script>
                 <script type="text/javascript">
                     $(document).ready(function() {
                         var jPlayerConfig = {
