@@ -46,3 +46,7 @@ yarn-error.log
 ## Ignore some Cypress directory or files
 /cypress/videos
 /cypress/screenshots
+laradock/workspace/insecure_id_rsa
+storage/storage-backup
+.zip*
+*.zip
