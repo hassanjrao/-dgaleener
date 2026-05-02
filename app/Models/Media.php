@@ -34,9 +34,10 @@ class Media extends Base
         parent::boot();
 
         static::deleting(function ($media) {
-            $partial_url = 'audio_files/'.$media->s3_name;
-            if (\Storage::disk('s3')->exists($partial_url)) {
-                \Storage::disk('s3')->delete('/'.$partial_url);
+            foreach ($media->audioStoragePaths() as $partialUrl) {
+                if (\Storage::disk('s3')->exists($partialUrl)) {
+                    \Storage::disk('s3')->delete('/'.$partialUrl);
+                }
             }
 
             foreach ($media->mediaPlaylists()->get() as $mediaPlaylist) {
@@ -47,7 +48,79 @@ class Media extends Base
 
     public function file_url()
     {
-        return $this->awsAssetsUrl('/audio_files/'.$this->s3_name);
+        $partialUrl = $this->resolveAudioStoragePath();
+
+        if (! $partialUrl) {
+            return null;
+        }
+
+        return $this->audioUrlForPath($partialUrl);
+    }
+
+    public function resolveAudioStoragePath(array $availablePaths = null)
+    {
+        $availableLookup = null;
+
+        if ($availablePaths !== null) {
+            $availableLookup = array_fill_keys($availablePaths, true);
+        }
+
+        foreach ($this->audioStoragePaths() as $partialUrl) {
+            if ($availableLookup !== null) {
+                if (! isset($availableLookup[$partialUrl])) {
+                    continue;
+                }
+            } elseif (! \Storage::disk('s3')->exists($partialUrl)) {
+                continue;
+            }
+
+            if ($partialUrl !== 'audio_files/'.$this->s3_name) {
+                \Log::info('Using fallback media path for audio file.', [
+                    'media_id' => $this->id,
+                    'file_name' => $this->file_name,
+                    's3_name' => $this->s3_name,
+                    'resolved_path' => $partialUrl,
+                ]);
+            }
+
+            return $partialUrl;
+        }
+
+        return null;
+    }
+
+    public function audioUrlForPath($partialUrl)
+    {
+        $encodedPath = implode('/', array_map('rawurlencode', explode('/', ltrim($partialUrl, '/'))));
+
+        return $this->awsAssetsUrl('/'.$encodedPath);
+    }
+
+    protected function audioStoragePaths()
+    {
+        $paths = [];
+
+        if (! empty($this->s3_name)) {
+            $paths[] = 'audio_files/'.$this->s3_name;
+
+            $normalizedS3Name = preg_replace('/^\d+_/', '', $this->s3_name);
+
+            if (! empty($normalizedS3Name)) {
+                $paths[] = 'audio_files/'.$normalizedS3Name;
+            }
+        }
+
+        $fileName = trim((string) $this->file_name);
+
+        if ($fileName !== '') {
+            $paths[] = 'audio_files/'.$fileName;
+
+            if (! preg_match('/\.(mp3|wav|m4a)$/i', $fileName)) {
+                $paths[] = 'audio_files/'.$fileName.'.mp3';
+            }
+        }
+
+        return array_values(array_unique($paths));
     }
 
     public function mediaPlaylists()
@@ -64,8 +137,6 @@ class Media extends Base
     {
         return $this->belongsTo(User::class);
     }
-
-    protected $appends = ['file_url'];
 
     public function getFileUrlAttribute()
     {

@@ -4,10 +4,10 @@
 @stop
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Clients Chakra Scan Data Cache', 'menu' => 'data_cache'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'image_url' => '/images/iconimages/briefcase80.png', 'image_class' => 'header-title-icon-white', 'menu' => 'data_cache'])
     <div style="margin: 20px 50px; margin-bottom: 110px;" ng-cloak="" ng-controller="DataCacheChakraCtrl as ctrl">
         <div class="row" style="width: 100%; padding: 10px 0; display: block; margin-bottom: 20px;">
             <a href="/data_cache"><button class="btn-data-cache">BACK</button></a>
@@ -18,6 +18,7 @@
             <b class="pull-right" style="padding: 8px;">Clients:</b>
         </div>
         <div class="loader" style="margin:0 auto; margin-top: 100px;" ng-if="!ctrl.loaded"></div>
+        <h5 class="text-center" style="margin: 30px 0; color: #c0392b;" ng-if="ctrl.loaded && ctrl.errorMessage"><% ctrl.errorMessage %></h5>
         <div class="row" style="width: 100%; padding: 10px 0; display: block; margin-bottom: 20px;" ng-if="(ctrl.displayed_pairs | valPresent) && ctrl.loaded">
             <input type="text" placeholder="Search" ng-model="ctrl.searchText" style="width: 30%; height: 40px;" ></input>
             <button class="btn-data-cache pull-right" style="height: 40px;" ng-click="ctrl.refreshScanSession()">Refresh</button>

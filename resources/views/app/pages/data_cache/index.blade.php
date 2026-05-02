@@ -4,33 +4,42 @@
 @stop
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
-    @include('partials.header', ['title' => 'Data Cache'])
+    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'image_url' => '/images/iconimages/briefcase80.png', 'image_class' => 'header-title-icon-white'])
     <div class="container data-cache">
         <div class="row justify-content-center text-center" style="margin-bottom: 20px;">
             <div class="row justify-content-center signup-form-row">
-                <a href="/data_cache/bio">
+                <a href="{{ route('app.bodyscan') }}">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/bio.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                        <h3 class="text-center">BIO</h3>
+                        <div class="data-cache-bilingual-label text-center">
+                            <span class="data-cache-label-en">Bio</span>
+                            <span class="data-cache-label-es">Bio</span>
+                        </div>
                     </div>
                 </a>
             </div>
         </div>
         <div class="row justify-content-center text-center" style="margin-bottom: 20px;">
-            <div class="row justify-content-center signup-form-row text-center">
-                <a href="/data_cache/client_info">
+            <div class="row justify-content-center signup-form-row text-center data-cache-secondary-row">
+                <a href="/data_cache/client_info" class="data-cache-link-client">
                     <div class="data-cache-section adjust">
                         <img src="{{asset('/images/data_cache/client.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                        <h3 class="text-center">CLIENT INFO</h3>
+                        <div class="data-cache-bilingual-label text-center">
+                            <span class="data-cache-label-en">Client Info</span>
+                            <span class="data-cache-label-es">Información del cliente</span>
+                        </div>
                     </div>
                 </a>
-                <a href="/data_cache/chakra">
+                <a href="{{ route('app.chakrascan') }}" class="data-cache-link-chakra">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/chakra.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                        <h3 class="text-center">CHAKRA</h3>
+                        <div class="data-cache-bilingual-label text-center">
+                            <span class="data-cache-label-en">Chakra</span>
+                            <span class="data-cache-label-es">Chakra</span>
+                        </div>
                     </div>
                 </a>
             </div>
@@ -39,16 +48,22 @@
             <div class="row justify-content-center signup-form-row">
                 <div class="data-cache-section" data-toggle="modal" data-target="#preferencesModal">
                     <img src="{{asset('/images/data_cache/preferences.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                    <h3 class="text-center">PREFERENCES</h3>
+                    <div class="data-cache-bilingual-label text-center">
+                        <span class="data-cache-label-en">Preferences</span>
+                        <span class="data-cache-label-es">Preferencias</span>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="row justify-content-center text-center">
             <div class="row justify-content-center signup-form-row">
-                <a href="{{ asset('assets/files/Anew Avenue - Preferences.pdf') }}" target="_blank">
+                <a href="{{ url('/data_cache/help') }}">
                     <div class="data-cache-section">
                         <img src="{{asset('/images/data_cache/help.png')}}" alt="{{ env('APP_TITLE') }}"></img>
-                        <h3 class="text-center">HELP</h3>
+                        <div class="data-cache-bilingual-label text-center">
+                            <span class="data-cache-label-en">Help</span>
+                            <span class="data-cache-label-es">Ayuda</span>
+                        </div>
                     </div>
                 </a>
             </div>

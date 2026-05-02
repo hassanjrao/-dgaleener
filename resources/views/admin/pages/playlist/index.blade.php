@@ -198,10 +198,11 @@
         function listenPlaylist(id, name){
             $("#playerModalTitle").html(name);
             var get_mediaurl= '{{ url("/admin/playlist/media/")}}'+'/'+id;
-            $.get(get_mediaurl, function(data){
-                data = JSON.parse(data);
-                console.log(data);
-                if(data){
+            $.ajax({
+                url: get_mediaurl,
+                dataType: 'json'
+            }).done(function(data){
+                if (Array.isArray(data) && data.length > 0) {
                     new jPlayerPlaylist({
                         jPlayer: "#jquery_jplayer_2",
                         cssSelectorAncestor: "#jp_container_2"
@@ -216,8 +217,13 @@
                         smoothPlayBar: true,
                         keyEnabled: true
                     });
+                    $('#playerModal').modal('show');
+                } else {
+                    alert('No playable media files were found for this playlist.');
                 }
-                $('#playerModal').modal('show');
+            }).fail(function(xhr){
+                console.error('Unable to load playlist media.', xhr);
+                alert('Unable to load playlist media right now.');
             });
         }
 

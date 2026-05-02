@@ -21,12 +21,12 @@ class ProductController extends Controller
 
     public function bio()
     {
-        return view('app.pages.products.bio');
+        return redirect()->route('app.products.index');
     }
 
     public function chakra()
     {
-        return view('app.pages.products.chakra');
+        return redirect()->route('app.products.index');
     }
 
     //only load shipping address view if cart have data

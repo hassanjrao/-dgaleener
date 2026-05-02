@@ -117,6 +117,7 @@ Route::middleware('verified')->group(function () {
     
     ## Scan Sessions
     Route::get('/scan_sessions/{id}/export', 'ScanSessionController@export');
+    Route::get('/scan_sessions/{id}/print', 'ScanSessionController@print')->name('app.scanSessions.print');
     Route::get('/scan_sessions/{id}/payment', 'ScanSessionController@payment')->name('app.scanSessions.payment');
     Route::get('/scan_sessions/{id}/payment/status', 'ScanSessionController@status')->name('app.scanSessions.payment.status');
     Route::get('/scan_sessions/{id}/payment/request', 'ScanSessionController@requestPayment')->name('app.scanSessions.payment.request');
@@ -136,6 +137,7 @@ Route::middleware('verified')->group(function () {
 Route::prefix('admin')->namespace('Admin')->middleware(['verified', 'auth.admin'])->group(function () {
     Route::get('/', 'HomeController@index');
     Route::get('/email', 'HomeController@email');
+    Route::post('/email/send', 'HomeController@sendEmail');
 
     ## Pairs
     Route::get('pairs', 'PairController@index');

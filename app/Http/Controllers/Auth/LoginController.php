@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -45,5 +46,13 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if (method_exists($user, 'hasVerifiedEmail') && ! $user->hasVerifiedEmail()) {
+            return redirect()->route('verification.notice')
+                ->with('message.fail', 'Your email address is not verified yet. Please check your inbox or resend the verification email.');
+        }
     }
 }

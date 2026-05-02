@@ -21,14 +21,15 @@ let frameworks = [
  ]
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const shouldCleanBuildOutput = process.env.CLEAN_BUILD === '1';
 const pathsToClean = [
     'public/assets',
     'public/css',
-    'public/fonts', 
+    'public/fonts',
     'public/images',
     'public/js'
-]
-const cleanOptions = { verbose: true, dry: false }
+];
+const cleanOptions = { verbose: true, dry: false };
 
 mix
    .extract(frameworks)
@@ -58,11 +59,14 @@ mix
    // Fonts
    .copyDirectory('resources/assets/fonts', 'public/fonts')
    .copyDirectory('node_modules/font-awesome/fonts', 'public/fonts')
-   // Assets
-   .copyDirectory('resources/assets', 'public/assets')
-   // Configurations
-   .webpackConfig({
+   // Raw runtime assets intentionally served from /assets
+   .copyDirectory('resources/assets/3d_models', 'public/assets/3d_models')
+   .copyDirectory('resources/assets/files', 'public/assets/files');
+
+if (shouldCleanBuildOutput) {
+   mix.webpackConfig({
       plugins: [
          new CleanWebpackPlugin(pathsToClean, cleanOptions),
       ]
    });
+}

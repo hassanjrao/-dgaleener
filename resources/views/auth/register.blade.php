@@ -17,6 +17,16 @@
                 {{ session('status') }}
             </div>
         @endif
+        @if (session('message.success'))
+            <div class="alert alert-success">
+                {{ session('message.success') }}
+            </div>
+        @endif
+        @if (session('message.fail'))
+            <div class="alert alert-danger">
+                {{ session('message.fail') }}
+            </div>
+        @endif
         <div class="text-center" style="margin-bottom: 24px;">
             <b><u>15 days Free Trial. No Card Needed. No Risk.</b></u>
         </div>

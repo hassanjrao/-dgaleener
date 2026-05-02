@@ -3,12 +3,17 @@
     {{ 'Anew Avenue Biomagnestim | Biomagnetism Body Scan' }}
 @stop
 @section('content')
+<<<<<<< HEAD
     @include('partials.header', [
         'title' => 'Body Scan',
         'image_url' => '/images/iconimages/humanicon48.png',
         'show_how_to_scan' => true,
     ])
     @php($target = request()->target ?? 'female')
+=======
+    @include('partials.header', ['title' => 'Body Scan', 'title_es' => 'Escaneo corporal', 'image_url' => '/images/iconimages/humanicon48.png'])
+    @php ($target = request()->target ?? 'female')
+>>>>>>> dev
     <div style="display: none;" id="scanType" data-value="body_scan"></div>
     <div style="display: none;" id="modelTarget" data-value="{{ $target }}"></div>
     <div style="display: none;" id="userIsAdmin" data-value="{{ Auth::user()->isAdmin() ? 'administrator' : '' }}"></div>
@@ -26,14 +31,15 @@
                     <div id="toggleModel" class="scan-toggle-model" style="display: none;">
                         @if ($target == 'male')
                             <a href="/bodyscan?target=female&guided=<% ctrl.guided_scan %>">
-                                <button>Switch to Female</button>
+                                <button>Switch to Female / Cambiar a femenino</button>
                             </a>
                         @else
                             <a href="/bodyscan?target=male&guided=<% ctrl.guided_scan %>">
-                                <button>Switch to Male</button>
+                                <button>Switch to Male / Cambiar a masculino</button>
                             </a>
                         @endif
                         <span style="margin: 0 30px;">
+<<<<<<< HEAD
                             <button id="zoomIn" ng-click="ctrl.zoomIn($event)">
                                 Zoom In
                             </button>
@@ -59,6 +65,31 @@
                                         <span id="pointY" data-value="0" style="display: none;">Point Y: 0</span>
                                         <span id="pointZ" data-value="0" style="display: none;">Point Z: 0</span>
                                     @endif
+=======
+                        <button id="zoomIn" ng-click="ctrl.zoomIn($event)">
+                            Zoom In / Acercar
+                        </button>
+                        <button id="zoomOut" ng-click="ctrl.zoomOut($event)">
+                            Zoom Out / Alejar
+                        </button>
+                        <span style="margin: 0 30px;">
+                        <button id="prevPoint" ng-click="ctrl.prevPoint($event)">
+                            Previous / Anterior
+                        </button>
+                        <button id="nextPoint" ng-click="ctrl.nextPoint($event)">
+                            Next / Siguiente
+                        </button>
+                        <span style="margin: 0 30px;">
+                        @if(Auth::user()->isAdmin())
+                            <button id="addPoint" data-toggle="modal" data-target="#modelLabelModal" data-title="Add Model Label / Agregar etiqueta del modelo" ng-if="!(ctrl.client | valPresent)" disabled>Add / Agregar</button>
+                            <!-- <br>
+                            <span id="mouseX">Mouse X: 0</span>
+                            <span id="mouseY">Mouse Y: 0</span> -->
+                            <span id="pointX" data-value="0" style="display: none;">Point X: 0</span>
+                            <span id="pointY" data-value="0" style="display: none;">Point Y: 0</span>
+                            <span id="pointZ" data-value="0" style="display: none;">Point Z: 0</span>
+                        @endif
+>>>>>>> dev
                     </div>
                 </div>
                 <div class="col-md-6 col-xs-6 scan-point-container" ng-cloak="">
@@ -68,8 +99,12 @@
                     <div class="row scan-search-box" ng-if="ctrl.model_labels.length > 0">
                         <img src="{{ asset('/images/scan-search-icon.png') }}" alt="{{ env('APP_TITLE') }}"></img>
                         <form>
+<<<<<<< HEAD
                             <input type="text" placeholder="Search..." ng-model="ctrl.search.params.text"
                                 style="width: calc(100% - 66px)"></input>
+=======
+                            <input type="text" placeholder="Search... / Buscar..." ng-model="ctrl.search.params.text" style="width: calc(100% - 66px)"></input>
+>>>>>>> dev
                             <select ng-model="ctrl.search.meta.perPage" style="width: 62px; height: 28px;">
                                 <option ng-repeat="itemsPerPage in ctrl.search.perPageOptions" ng-value="itemsPerPage">
                                     <% itemsPerPage %></option>
@@ -78,6 +113,7 @@
                     </div>
                     <div class="row" style="margin: 8px 0;">
                         @if ($request->guided == 'true')
+<<<<<<< HEAD
                             <a href="/bodyscan?target=<% ctrl.search.params.target %>&guided=false">
                                 <button style="margin: 8px; margin-right: 0;">Switch to Non Guided Scan</button>
                             </a>
@@ -98,28 +134,50 @@
                             ng-disabled="!(bookmark_record.name | valPresent)">Save</button>
                         <button style="margin-left: 8px;" ng-click="ctrl.clearBookmark()"
                             ng-if="(bookmark_record.id | valPresent)">Cancel</button>
+=======
+                        <a href="/bodyscan?target=<% ctrl.search.params.target %>&guided=false">
+                            <button style="margin: 8px; margin-right: 0;">Switch to Non Guided Scan / Cambiar a escaneo no guiado</button>
+                        </a>
+                        @else
+                        <a href="/bodyscan?target=<% ctrl.search.params.target %>&guided=true">
+                            <button style="margin: 8px; margin-right: 0;">Switch to Guided Scan / Cambiar a escaneo guiado</button>
+                        </a>
+                        @endif
+                        <button class="pull-right" style="margin: 8px; margin-right: 0;" ng-click="ctrl.showBookmark = (ctrl.showBookmark ? false : true)"><% ctrl.showBookmark ? 'Hide Bookmarks / Ocultar marcadores' : 'Show Bookmarks / Mostrar marcadores' %></button>
+                    </div>
+                    <div class="row" style="margin: 8px;" ng-if="ctrl.showBookmark">
+                        <input type="text" ng-model="bookmark_record.name" style="<% (bookmark_record.id | valPresent) ? 'width: calc(100% - 129px)' : 'width: calc(100% - 57px)' %>" placeholder="Bookmark Title / Título del marcador"></input>
+                        <button style="margin-left: 8px;" ng-click="ctrl.saveBookmark(bookmark_record)" ng-disabled="!(bookmark_record.name | valPresent)">Save / Guardar</button>
+                        <button style="margin-left: 8px;" ng-click="ctrl.clearBookmark()" ng-if="(bookmark_record.id | valPresent)">Cancel / Cancelar</button>
+>>>>>>> dev
                         <div class="text-center" style="margin: 16px 0; width: 100%;">
-                            <span ng-if="!(ctrl.bookmarks | valPresent)">You have no saved bookmarks.</span>
+                            <span ng-if="!(ctrl.bookmarks | valPresent)">You have no saved bookmarks. / No tiene marcadores guardados.</span>
                         </div>
                         <table border="1" style="width: 100%; margin: 8px 32px;" ng-if="ctrl.bookmarks | valPresent">
                             <tr>
-                                <th class="text-center">Name</th>
-                                <th class="text-center">Created At</th>
+                                <th class="text-center">Name / Nombre</th>
+                                <th class="text-center">Created At / Creado el</th>
                                 <th class="text-center" style="width: 120px;"></th>
                             </tr>
                             <tr ng-repeat="bookmark in ctrl.bookmarks track by bookmark.id">
                                 <td><a href="<% bookmark.url %>"><% bookmark.name %></a></td>
                                 <td><% bookmark.created_at %></td>
                                 <td class="text-center">
+<<<<<<< HEAD
                                     <button ng-if="bookmark.editable" ng-click="ctrl.editBookmark(bookmark)"
                                         ng-disabled="(bookmark_record.id | valPresent)">Edit</button>
                                     <button ng-if="bookmark.deletable" style="color: red;"
                                         ng-click="ctrl.deleteBookmark(bookmark)"
                                         ng-disabled="(bookmark_record.id | valPresent)">Delete</button>
+=======
+                                    <button ng-if="bookmark.editable" ng-click="ctrl.editBookmark(bookmark)" ng-disabled="(bookmark_record.id | valPresent)">Edit / Editar</button>
+                                    <button ng-if="bookmark.deletable" style="color: red;" ng-click="ctrl.deleteBookmark(bookmark)" ng-disabled="(bookmark_record.id | valPresent)">Delete / Eliminar</button>
+>>>>>>> dev
                                 </td>
                             </tr>
                         </table>
                     </div>
+<<<<<<< HEAD
                     <div class="row" style="margin: 8px 0;"
                         ng-if="(ctrl.model_labels.length > 0) && !ctrl.disable_client_selection">
                         <label style="margin: 8px;" ng-if="ctrl.clients | valPresent">Client:</label>
@@ -149,6 +207,23 @@
                         <span style="margin-left: 50px; margin-top: 10px;"
                             ng-if="(ctrl.model_labels | filter: { point: { name: ctrl.search.params.text } }).length == 0">No
                             results found.</span>
+=======
+                    <div class="row" style="margin: 8px 0;" ng-if="(ctrl.model_labels.length > 0) && !ctrl.disable_client_selection">
+                        <label style="margin: 8px;" ng-if="ctrl.clients | valPresent">Client / Cliente:</label>
+                            <select class="form-control" id="client_id" name="client_id" ng-model="ctrl.client" style="width: calc(100% - 219px)" ng-if="ctrl.clients | valPresent">
+                                <option ng-value="null">(No client selected / Ningún cliente seleccionado)</option>
+                                <option ng-repeat="client in ctrl.clients | where: { gender: ctrl.search.params.target, user_id: {{ Auth::user()->id }} } track by client.id" ng-value="<% client %>"><% client.name %></option>
+                            </select>
+                        <a href="/data_cache/clients/<% ctrl.client.id %>?scan_type=body_scan" target="_blank"><button class="btn-data-cache" style="margin: 8px; margin-right: 0; width: 90px;" ng-disabled="!(ctrl.client | valPresent)" ng-if="ctrl.clients | valPresent">View / Ver</button></a>
+                        <a href="/data_cache/client_info" target="_blank"><button class="btn-data-cache" style="margin: 8px; width: 90px;" ng-disabled="ctrl.client | valPresent" ng-if="ctrl.clients | valPresent">Add / Agregar</button></a>
+                    </div>
+                    <div class="text-center">
+                        <span style="font-size: 16.5px;" ng-if="(ctrl.client | valPresent) && !(ctrl.client.scan_session_id | valPresent)">No active scan session for this client. / No hay una sesión de escaneo activa para este cliente. <a href="/data_cache/clients/<% ctrl.client.id %>">Click here to create a scan session. / Haga clic aquí para crear una sesión de escaneo.</a></span>
+                    </div>
+                    <h5 ng-if="ctrl.model_labels.length > 0" style="margin: 8px 0;"><% ctrl.search.meta.pageStatus %></h5>
+                    <div class="row second-layer">
+                        <span style="margin-left: 50px; margin-top: 10px;" ng-if="(ctrl.model_labels | filter: { point: { name: ctrl.search.params.text } }).length == 0">No results found. / No se encontraron resultados.</span>
+>>>>>>> dev
                         <ul id="accordion" ng-if="ctrl.model_labels.length > 0" style="width: 100%;">
                             <li
                                 ng-repeat="model_label in ctrl.model_labels | orderBy: ctrl.orderBy | filter: { point: { name: ctrl.search.params.text } } | unique: 'point.name' | slice: ctrl.search.meta.startPos:ctrl.search.meta.startPos+ctrl.search.meta.perPage">
@@ -187,6 +262,7 @@
                                                                 disabled="" style="width: 60px; max-width: 120px;">
                                                         </span>
                                                         <div style="float: right;">
+<<<<<<< HEAD
                                                             <button class="get-coordinates"
                                                                 ng-click="ctrl.getCoordinates($event, label.id)">Get
                                                                 Coordinates</button>
@@ -196,32 +272,37 @@
                                                                 data-id="<% label.id %>">Edit</button>
                                                             <button class="editor-remove"
                                                                 ng-click="ctrl.deletePair($event, label.id)">Delete</button>
+=======
+                                                            <button class="get-coordinates" ng-click="ctrl.getCoordinates($event, label.id)">Get Coordinates / Obtener coordenadas</button>
+                                                            <button class="editor-edit" data-toggle="modal" data-target="#modelLabelModal" data-title="Edit Model Label / Editar etiqueta del modelo" data-id="<% label.id %>">Edit / Editar</button>
+                                                            <button class="editor-remove" ng-click="ctrl.deletePair($event, label.id)">Delete / Eliminar</button>
+>>>>>>> dev
                                                         </div>
                                                     </td>
                                                 </tr>
                                             @endif
                                             <tr>
-                                                <td>Points/Name:</td>
+                                                <td>Points/Name / Puntos/Nombre:</td>
                                                 <td><% model_label.point.name || '-' %></td>
                                             </tr>
                                             <tr>
-                                                <td>Radical:</td>
+                                                <td>Radical / Radical:</td>
                                                 <td><% model_label.point.radical || '-' %></td>
                                             </tr>
                                             <tr>
-                                                <td>Start/Origin:</td>
+                                                <td>Start/Origin / Inicio/Origen:</td>
                                                 <td><% model_label.point.origins || '-' %></td>
                                             </tr>
                                             <tr>
-                                                <td>Leads/Symptoms:</td>
+                                                <td>Leads/Symptoms / Señales/Síntomas:</td>
                                                 <td><% model_label.point.symptoms || '-' %></td>
                                             </tr>
                                             <tr>
-                                                <td>Path/Route/Cause and Effect:</td>
+                                                <td>Path/Route/Cause and Effect / Ruta/Causa y efecto:</td>
                                                 <td><% model_label.point.paths || '-' %></td>
                                             </tr>
                                             <tr>
-                                                <td>Alternative Routes:</td>
+                                                <td>Alternative Routes / Rutas alternativas:</td>
                                                 <td><% model_label.point.alternative_routes || '-' %></td>
                                             </tr>
                                         </tbody>
@@ -368,6 +449,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
+<<<<<<< HEAD
                 <div class="modal-header">
                     <h5 class="modal-title" id="modelLabelModalTitle"></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -402,12 +484,52 @@
                                 <input type="number" class="form-control" id="point_z" name="point_z" required>
                             </div>
                         </div>
+=======
+            <div class="modal-header">
+                <h5 class="modal-title" id="modelLabelModalTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+            <div class="modal-body">
+                <input type="hidden" id="model_label_id" name="model_label_id">
+                <input type="hidden" id="scan_type" name="scan_type">
+                <input type="hidden" id="target" name="target">
+                <div class="form-group">
+                    <label for="label">Point / Punto</label>
+                    <select class="form-control" id="pair_id" name="pair_id" required>
+                        @foreach(\App\Models\Pair::orderBy('name', 'asc')->where('scan_type', '=', 'body_scan')->get() as $pair)
+                            <option value="{{$pair->id}}">{{$pair->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <label>Point Coordinates / Coordenadas del punto</label>
+                <div class="form-group row">
+                    <div class="col">
+                        <label>X</label>
+                        <input type="number" class="form-control" id="point_x" name="point_x" required>
+>>>>>>> dev
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary save-btn">Save</button>
                     </div>
+<<<<<<< HEAD
                 </form>
+=======
+                    <div class="col">
+                        <label>Z</label>
+                        <input type="number" class="form-control" id="point_z" name="point_z" required>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close / Cerrar</button>
+                <button type="button" class="btn btn-primary save-btn">Save / Guardar</button>
+            </div>
+            </form>
+>>>>>>> dev
             </div>
         </div>
     </div>

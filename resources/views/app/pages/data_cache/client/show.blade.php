@@ -4,7 +4,7 @@
 @stop
 @section('styles')
     @parent
-    <link href="{{ asset('css/app/data_cache.css') }}" rel="stylesheet">
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
 @stop
 @section('content')
     @php ($scan_type = request()->scan_type ?? 'body_scan')
@@ -59,7 +59,7 @@
                             <th style="width: 171px;">Date Started</th>
                             <th style="width: 250px;">Scan Type</th>
                             <th style="width: 171px;">Date Ended</th>
-                            <th style="width: 150px;"></th>
+                            <th style="width: 320px;"></th>
                         <tr>
                     </thead>
                     <tbody>
@@ -69,12 +69,12 @@
                             <td style="padding-left: 20px;"><% scan_session.scan_type == 'body_scan' ? 'Body Scan' : 'Chakra Scan' %></td>
                             <td style="text-align: center;"><% (scan_session.date_ended | date: 'MMM dd, yyyy') || '-' %></td>
                             <td style="text-align: right;">
-                                <a href="/data_cache/clients/<% scan_session.client_id %>/<% scan_session.scan_type == 'body_scan' ? 'bio' : 'chakra' %>?ssid=<% scan_session.id %>" target="_blank"><button><i class="fa fa-eye"></i> View Details</button></a>
-                                <a href="/<% scan_session.scan_type == 'body_scan' ? 'bodyscan' : 'chakrascan' %>?target=<% scan_session.client.gender %>&ssid=<% scan_session.id %>" target="_blank"><button><i class="fa fa-eye"></i> View thru scan</button></a>
+                                <a href="/data_cache/clients/<% scan_session.client_id %>/<% scan_session.scan_type == 'body_scan' ? 'bio' : 'chakra' %>?ssid=<% scan_session.id %>" target="_blank"><button><i class="fa fa-eye"></i> View Details / Ver detalles</button></a>
+                                <a href="/<% scan_session.scan_type == 'body_scan' ? 'bodyscan' : 'chakrascan' %>?target=<% scan_session.client.gender %>&ssid=<% scan_session.id %>" target="_blank"><button><i class="fa fa-eye"></i> View Through Scan / Ver a través del escaneo</button></a>
                                 <br>
-                                <button style="width: 153px;" ng-click="ctrl.markDoneScanSession(scan_session)" ng-if="scan_session.editable && !(scan_session.date_ended | valPresent)"><i class="fa fa-check"></i> Mark As Done</button>
-                                <button  style="width: 153px;" ng-click="ctrl.markUndoneScanSession(scan_session)" ng-if="scan_session.editable && (scan_session.date_ended | valPresent)"><i class="fa fa-close"></i> Mark As Undone</button>
-                                <button style="color: red;" ng-click="ctrl.deleteScanSession(scan_session)" ng-if="scan_session.deletable"><i class="fa fa-trash"></i> Delete</button>
+                                <button style="width: 220px;" ng-click="ctrl.markDoneScanSession(scan_session)" ng-if="scan_session.editable && !(scan_session.date_ended | valPresent)"><i class="fa fa-check"></i> Mark As Done / Marcar como hecho</button>
+                                <button  style="width: 240px;" ng-click="ctrl.markUndoneScanSession(scan_session)" ng-if="scan_session.editable && (scan_session.date_ended | valPresent)"><i class="fa fa-close"></i> Mark As Undone / Marcar como no hecho</button>
+                                <button style="color: red;" ng-click="ctrl.deleteScanSession(scan_session)" ng-if="scan_session.deletable"><i class="fa fa-trash"></i> Delete / Eliminar</button>
                             </td>
                         </tr>
                     </tbody>

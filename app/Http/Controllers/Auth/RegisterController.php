@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
@@ -49,11 +52,49 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'type' => 'required|in:practitioner,therapist',
             'name' => 'required|string|max:255|unique:users',
             'username' => 'required|string|min:8|unique:users',
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6|confirmed',
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+
+        DB::beginTransaction();
+
+        try {
+            $user = $this->create($request->all());
+
+            DB::commit();
+
+            $this->guard()->login($user);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('Registration failed.', [
+                'email' => $request->input('email'),
+                'username' => $request->input('username'),
+                'exception' => $e,
+            ]);
+
+            return redirect()->back()
+                ->withInput($request->except('password', 'password_confirmation'))
+                ->with('message.fail', 'Registration failed. Please try again. If the problem continues, contact support.');
+        }
+
+        $mailError = $this->sendVerificationEmail($user);
+
+        if ($mailError) {
+            return redirect()->route('verification.notice')
+                ->with('message.fail', 'Your account was created, but we could not send the verification email right now. Please use resend and try again in a moment.');
+        }
+
+        return redirect()->route('verification.notice')
+            ->with('message.success', 'Your account was created successfully. Please check your email to verify your account.');
     }
 
     /**
@@ -73,5 +114,26 @@ class RegisterController extends Controller
         $user->assignRole($data['type']);
 
         return $user;
+    }
+
+    protected function sendVerificationEmail(User $user)
+    {
+        if (! method_exists($user, 'sendEmailVerificationNotification')) {
+            return false;
+        }
+
+        try {
+            $user->sendEmailVerificationNotification();
+
+            return false;
+        } catch (\Throwable $e) {
+            Log::error('Unable to send verification email after registration.', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'exception' => $e,
+            ]);
+
+            return true;
+        }
     }
 }

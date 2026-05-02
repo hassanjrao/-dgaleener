@@ -38,7 +38,7 @@
 </div>
 <hr>
 <label>Publish Date</label>
-<input type="date" class="form-control" id="published_at" name="published_at"  value="{{ !empty($post->published_at) ? \Carbon\Carbon::parse($post->published_at)->format('Y-m-d') : \Carbon\Carbon::now()->format('Y/m/d') }}">
+<input type="date" class="form-control" id="published_at" name="published_at"  value="{{ !empty($post->published_at) ? \Carbon\Carbon::parse($post->published_at)->format('Y-m-d') : \Carbon\Carbon::now()->format('Y-m-d') }}">
 <br>
 <div class="form-group">
     <label for="post_content">Content</label>

@@ -139,6 +139,13 @@ function DataCacheClientShowBioCtrl($scope, $filter, $window, Client, Pair, Scan
             ScanSession.mail({ id: session.id }, function(_session){
                 _this.loaded = true
                 alert('Email sent successfully.')
+            }, function(response) {
+                _this.loaded = true
+                var message = 'Unable to email the client right now.'
+                if (response && response.data && response.data.error && response.data.error.message) {
+                    message = response.data.error.message
+                }
+                alert(message)
             })
         }
     }
@@ -147,7 +154,7 @@ function DataCacheClientShowBioCtrl($scope, $filter, $window, Client, Pair, Scan
         var confirmDialog = confirm("Are you sure you wish to print this scan session?")
         if (confirmDialog == true) {
             _this.loaded = false
-            $window.open('/scan_sessions/'+session.id+'/export', '_blank')
+            $window.open('/scan_sessions/'+session.id+'/print', '_blank')
             _this.loaded = true
         }
     }

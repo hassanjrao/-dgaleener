@@ -1,7 +1,7 @@
 <!-- Scripts -->
-<script src="{{ asset('js/manifest.js') }}"></script>
-<script src="{{ asset('js/vendor.js') }}"></script>
-<script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ \App\Support\VersionedAsset::url('js/manifest.js') }}"></script>
+<script src="{{ \App\Support\VersionedAsset::url('js/vendor.js') }}"></script>
+<script src="{{ \App\Support\VersionedAsset::url('js/app.js') }}"></script>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ env('GOOGLE_ANALYTICS_ID') }}"></script>
 <script>

@@ -10,12 +10,12 @@ function UserFactory($resource, API_PREFIX) {
         friends: {
             method: 'GET',
             url: API_PREFIX + '/users/me/friends',
-            isArray: true
+            isArray: false
         },
         friends_available: {
             method: 'GET',
             url: API_PREFIX + '/users/me/friends/available',
-            isArray: true
+            isArray: false
         },
         add_friend: {
             method: 'POST',
@@ -29,7 +29,7 @@ function UserFactory($resource, API_PREFIX) {
         friend_requests: {
             method: 'GET',
             url: API_PREFIX + '/users/me/friend_requests',
-            isArray: true
+            isArray: false
         },
         accept_friend_request: {
             method: 'PUT',

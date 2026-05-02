@@ -150,7 +150,7 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
     }
 
     _this.deleteBookmark = function(bookmark) {
-        var confirmDialog = confirm("Are you sure you wish to delete this bookmark?");
+        var confirmDialog = confirm("Are you sure you wish to delete this bookmark? / ¿Está seguro de que desea eliminar este marcador?");
         if (confirmDialog == true) {
             User.prototype.Me.delete_bookmark({ id: bookmark.id}, function(_bookmark){
                 index = _this.bookmarks.indexOf(bookmark)
@@ -379,7 +379,7 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
     this.deletePair = function(event, model_label_id){
         event.preventDefault();
         
-        var confirmDialog = confirm("Are you sure you wish to delete this model label?");
+        var confirmDialog = confirm("Are you sure you wish to delete this model label? / ¿Está seguro de que desea eliminar esta etiqueta del modelo?");
         if (confirmDialog == true) {
             ModelLabel.delete( { id: model_label_id }, function(){
                 location.reload();
@@ -437,14 +437,14 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
         if (this.search.params.text != '' && initialCount >= totalCount) {
             initialCount = totalCount
         }
-        this.search.meta.pageStatus = "Displaying " + initialCount + " of " + totalCount + " results.";
+        this.search.meta.pageStatus = "Displaying " + initialCount + " of " + totalCount + " results. / Mostrando " + initialCount + " de " + totalCount + " resultados.";
     }
 
     this.addPairToClient = function(pair) {
         if (this.client.scan_session_id == undefined) { return }
 
         _this = this;
-        var confirmDialog = confirm("Are you sure you wish to add this pair?");
+        var confirmDialog = confirm("Are you sure you wish to add this pair? / ¿Está seguro de que desea agregar este par?");
         if (confirmDialog == true) {
             scan_session_pair = new ScanSession.prototype.ScanSessionPair({ scan_session_id: _this.client.scan_session_id, pair_id: pair.id });
             scan_session_pair.$save(function(){
@@ -457,7 +457,7 @@ function ModelLabelsCtrl($scope, $filter, ModelLabel, ClientPair, Client, ScanSe
         if (this.client.scan_session_id == undefined) { return }
 
         _this = this;
-        var confirmDialog = confirm("Are you sure you wish to remove this pair?");
+        var confirmDialog = confirm("Are you sure you wish to remove this pair? / ¿Está seguro de que desea eliminar este par?");
         if (confirmDialog == true) {
             ScanSession.prototype.ScanSessionPair.delete({ scan_session_id: this.client.scan_session_id, id: pair.id }, function() {
                 pair._delete = false

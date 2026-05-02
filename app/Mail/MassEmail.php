@@ -31,6 +31,7 @@ class MassEmail extends Mailable
     public function build()
     {
         return $this->view('emails.mass')
+                    ->text('emails.plain.mass')
                     ->subject($this->data['subject'])
                     ->with([ 'content' => $this->data['content'] ]);
     }

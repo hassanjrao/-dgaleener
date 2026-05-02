@@ -23,7 +23,7 @@ class MediaController extends BaseController
         $condition = Auth::user()->can('browse', Media::class);
 
         if ($condition) {
-            $medias = Media::all();
+            $medias = Media::all()->each->append('file_url');
 
             return response()->json($medias, Response::HTTP_OK);
         } else {
@@ -50,6 +50,8 @@ class MediaController extends BaseController
             $media = new Media($params);
 
             if ($media->save()) {
+                $media->append('file_url');
+
                 return response()->json($media, Response::HTTP_CREATED);
             } else {
                 return $this->sendInvalidResponse($media->getErrors());
@@ -72,6 +74,8 @@ class MediaController extends BaseController
         $condition = Auth::user()->can('read', $media);
 
         if ($condition) {
+            $media->append('file_url');
+
             return response()->json($media, Response::HTTP_OK);
         } else {
             return $this->sendUnauthorizedResponse();
@@ -98,6 +102,8 @@ class MediaController extends BaseController
             }
 
             if ($media->update($params)) {
+                $media->append('file_url');
+
                 return response()->json($media, Response::HTTP_OK);
             } else {
                 return $this->sendInvalidResponse($media->getErrors());

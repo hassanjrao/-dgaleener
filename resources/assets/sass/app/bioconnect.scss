@@ -3,7 +3,26 @@ body {
 }
 
 .bioconnect-menu {
-  height: 55px !important;
+  height: auto !important;
+  min-height: 74px;
+  padding: 4px 0 6px;
+
+  > [class*='col-'] {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  a {
+    align-items: center;
+    color: #fff;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    line-height: 1.15;
+    min-height: 62px;
+    text-decoration: none;
+  }
 }
 
 .card-holder {
@@ -41,10 +60,49 @@ body {
 }
 
 .profile-image {
+  background-color: #fff;
+  border: 3px solid rgba(255, 255, 255, .95);
   border-radius: 50%;
   height: 48px;
+  object-fit: cover;
+  padding: 4px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, .18);
   vertical-align: middle;
   width: 48px;
+}
+
+.bioconnect-bilingual-label {
+  align-items: center;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+  justify-content: center;
+}
+
+.bioconnect-bilingual-label--left {
+  justify-content: flex-start;
+}
+
+.bioconnect-bilingual-label--center {
+  justify-content: center;
+}
+
+.bioconnect-label-en,
+.bioconnect-label-es {
+  display: block;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.bioconnect-label-en {
+  color: inherit;
+  font-weight: 600;
+}
+
+.bioconnect-label-es {
+  color: inherit;
+  font-weight: 500;
+  opacity: .92;
 }
 
 .main-body {
@@ -73,6 +131,8 @@ body {
 
   .bioconnect-menu {
     height: auto !important;
+    min-height: 0;
+    padding: 8px 0;
   }
 
   .avatar {
@@ -193,9 +253,14 @@ body {
 
 @media only screen and (max-width: 768px) {
   .profile-image {
+    background-color: #fff;
+    border: 3px solid rgba(255, 255, 255, .95);
     border-radius: 50%;
     height: auto;
     max-width: 104px;
+    object-fit: cover;
+    padding: 6px;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .18);
     vertical-align: middle;
     width: 100%;
   }

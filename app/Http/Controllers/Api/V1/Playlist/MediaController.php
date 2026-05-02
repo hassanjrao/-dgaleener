@@ -26,7 +26,7 @@ class MediaController extends BaseController
         $playlist = Playlist::findOrFail($playlist_id);
 
         if ($playlist->user_id == Auth::user()->id || Auth::user()->isAdmin()) {
-            $medias = $playlist->medias()->get();
+            $medias = $playlist->medias()->get()->each->append('file_url');
 
             return response()->json($medias, Response::HTTP_OK);
         } else {
@@ -46,6 +46,7 @@ class MediaController extends BaseController
 
         if ($playlist->user_id == Auth::user()->id || Auth::user()->isAdmin()) {
             $media = $playlist->medias()->findOrFail($id);
+            $media->append('file_url');
 
             return response()->json($media, Response::HTTP_OK);
         } else {

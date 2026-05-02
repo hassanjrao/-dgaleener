@@ -1,4 +1,4 @@
 @extends('layouts.mailer')
 @section('content')
-    {!! $content !!}
+    {!! \App\Support\EmailContentFormatter::toHtml($content) !!}
 @endsection

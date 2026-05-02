@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 
 use Auth;
-use DataTables;
 use DB;
+use DataTables;
 
 use App\Models\Playlist;
 use App\Models\Media;
@@ -59,23 +59,26 @@ class PlaylistController extends BaseController
 
     public function getMedia($playlist_id)
     {
-        $mediaArr = array();
-        if (!empty($playlist_id)) {
-            $medialist = DB::select("SELECT media.* 
-                                    FROM media_playlists
-                                    JOIN media ON media_playlists.media_id = media.id
-                                    WHERE media_playlists.playlist_id = ". $playlist_id);
+        $mediaArr = [];
 
-            if (count($medialist) > 0) {
-                foreach ($medialist as $media) {
-                    $mediaArr[] = array(
-                        'title' => $media->file_name,
-                        'mp3'   => $media->file_url
-                    );
+        if (! empty($playlist_id)) {
+            $playlist = Playlist::with('medias')->findOrFail($playlist_id);
+
+            foreach ($playlist->medias as $media) {
+                $fileUrl = $media->file_url;
+
+                if (empty($fileUrl)) {
+                    continue;
                 }
+
+                $mediaArr[] = [
+                    'title' => $media->file_name,
+                    'mp3' => $fileUrl,
+                ];
             }
         }
-        echo json_encode($mediaArr);
+
+        return response()->json($mediaArr, 200, [], JSON_UNESCAPED_SLASHES);
     }
 
     public function allMedia($playlist_id)

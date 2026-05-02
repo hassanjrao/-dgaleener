@@ -1,38 +1,24 @@
 @extends('layouts.mailer')
 @section('styles')
     @parent
-    
-    <style type="text/css">
-        td {
-            padding: 0 10px;
-        }
-    </style>
 @stop
 @section('content')
-    {!! $content !!}
-    <br>
-    <br>
-    <table>
+    {!! \App\Support\EmailContentFormatter::toHtml($content) !!}
+    <table role="presentation" class="details-table">
         <tr>
-            <td>
-                Full Name:
-            </td>
+            <td class="details-label">Full Name:</td>
             <td>
                 {{ $name }}
             </td>
         </tr>
         <tr>
-            <td>
-                Email Address:
-            </td>
+            <td class="details-label">Email Address:</td>
             <td>
                 {{ $email }}
             </td>
         </tr>
         <tr>
-            <td>
-                Phone Number:
-            </td>
+            <td class="details-label">Phone Number:</td>
             <td>
                 {{ $phone_no ?? '(Not indicated)' }}
             </td>

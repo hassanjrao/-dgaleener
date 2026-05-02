@@ -32,6 +32,7 @@ class OrderEmail extends Mailable
     public function build()
     {
         return $this->view('emails.order')
+                    ->text('emails.plain.order')
                     ->subject(env('APP_TITLE').' | Order for '.$this->order->description);
     }
 }

@@ -6,7 +6,7 @@
 
         @section('styles')
             <!-- Styles -->
-            <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+            <link href="{{ \App\Support\VersionedAsset::url('css/app.css') }}" rel="stylesheet">
         @show
 
         <title>@yield('page-title')</title>
@@ -28,22 +28,39 @@
                 $(document).ready(function() {
                     $('[data-toggle="tooltip"]').tooltip();
 
-                    $('input[type="date"]').addClass('date').attr('type','text');
+                    var supportsNativeDateInput = (function() {
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'date');
 
-                    $('input[type="date"]').keydown(function(e) {
-                        e.preventDefault();
-                    });
+                        return input.type === 'date';
+                    })();
 
-                    $datepicker_inputs = $('.date');
-                    $.each($datepicker_inputs, function(index, element) {
-                        $(element).datepicker({ dateFormat: "yy/mm/dd" });  
+                    if (!supportsNativeDateInput) {
+                        $('input[type="date"]').each(function(index, element) {
+                            var $element = $(element);
+
+                            $element.attr('type', 'text').addClass('date-fallback');
+                        });
+
+                        $('.date-fallback').datepicker({
+                            dateFormat: 'yy-mm-dd',
+                            changeMonth: true,
+                            changeYear: true
+                        });
+                    }
+
+                    $('.js-datepicker').datepicker({
+                        dateFormat: 'mm/dd/yy',
+                        changeMonth: true,
+                        changeYear: true,
+                        yearRange: '1900:+0'
                     });
                 });
             </script>
 
-            @if(!in_array(Route::getCurrentRoute()->uri(), ['home', 'media', 'playlist']) && Auth::user())
-                <script src="{{ asset('js/jquery.jplayer.js') }}" type="text/javascript"></script>
-                <script src="{{ asset('js/jplayer.playlist.js') }}" type="text/javascript"></script>
+            @if(!in_array(Route::getCurrentRoute()->uri(), ['home', 'media', 'playlist']) && Auth::user() && Auth::user()->hasVerifiedEmail() && Auth::user()->hasValidSubscription())
+                <script src="{{ \App\Support\VersionedAsset::url('js/jquery.jplayer.js') }}" type="text/javascript"></script>
+                <script src="{{ \App\Support\VersionedAsset::url('js/jplayer.playlist.js') }}" type="text/javascript"></script>
                 <script type="text/javascript">
                     $(document).ready(function() {
                         var jPlayerConfig = {
@@ -62,16 +79,24 @@
                         }
 
                         var allMediaUrl = '{{ url("/media/all")}}';
-                        $.get(allMediaUrl, function(data){
-                            data = JSON.parse(data);
-                            if(data){
+                        $.ajax({
+                            url: allMediaUrl,
+                            dataType: 'json',
+                            cache: false
+                        }).done(function(data){
+                            if (Array.isArray(data) && data.length > 0) {
                                 new jPlayerPlaylist({
                                     jPlayer: "#jquery_jplayer_all",
                                     cssSelectorAncestor: "#jp_container_all"
                                 }, data, 
                                 jPlayerConfig);
+                                $('#jp_container_all').show();
+                            } else {
+                                $('#jp_container_all').hide();
                             }
-                            $('#playerModal').modal('show');
+                        }).fail(function(xhr){
+                            $('#jp_container_all').hide();
+                            console.error('Unable to load media playlist.', xhr);
                         });
                     });
                 </script>
