@@ -5,20 +5,22 @@
         $hasTitleIcon = !empty($image_url);
         $hasEnhancedTitle = $hasTitleEs || $hasTitleIcon;
     @endphp
-    <div class="row row-2 {{ $hasEnhancedTitle ? 'row-2-bilingual' : '' }} {{ $hasTitleIcon && !$hasTitleEs ? 'row-2-title-icon-only' : '' }}">
-        <div class="col-md-12 text-center {{ $hasEnhancedTitle ? 'header-title-row' : '' }}">
+    <div class="row row-2 {{ $hasEnhancedTitle ? 'row-2-bilingual' : '' }} {{ $hasTitleIcon && !$hasTitleEs ? 'row-2-title-icon-only' : '' }}"
+        style="display: flex; align-items: center; justify-content: center; min-height: 60px; height: auto;">
+        <div style="flex: 1; text-align: center;" class="{{ $hasEnhancedTitle ? 'header-title-row' : '' }}">
             @if (!empty($title))
                 <h3 class="header-title {{ $hasEnhancedTitle ? 'header-title-bilingual' : '' }}">
                     @if ($hasEnhancedTitle)
                         <span class="header-title-copy">
                             <span class="header-title-en">{{ $title }}</span>
                             @if ($hasTitleEs)
-                            <span class="header-title-divider"></span>
-                            <span class="header-title-es">{{ $title_es }}</span>
+                                <span class="header-title-divider"></span>
+                                <span class="header-title-es">{{ $title_es }}</span>
                             @endif
                             @if ($hasTitleIcon)
                                 <span class="header-title-icon-wrap">
-                                    <img src="{{ \App\Support\VersionedAsset::url($image_url) }}" class="header-title-icon {{ $image_class ?? '' }}" alt="{{ env('APP_TITLE') }}">
+                                    <img src="{{ \App\Support\VersionedAsset::url($image_url) }}"
+                                        class="header-title-icon {{ $image_class ?? '' }}" alt="{{ env('APP_TITLE') }}">
                                 </span>
                             @endif
                         </span>
