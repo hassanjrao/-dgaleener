@@ -1,9 +1,9 @@
 <section class="header">
     @include('partials.auth')
-    <div class="row row-2" style="position: relative;">
-        <div class="col-md-12 text-center">
+    <div class="row row-2" style="display: flex; align-items: center; justify-content: center; position: relative;">
+        <div style="flex: 1; text-align: center;">
             @if (!empty($title))
-                <h3>
+                <h3 style="margin: 0;">
                     {{ $title }}
                     @if (!empty($image_url))
                         <img src="{{ asset($image_url) }}" style="padding-left: 10px; width: 36px; margin-bottom: 5px;"
@@ -13,7 +13,7 @@
             @endif
         </div>
         @if (!empty($show_how_to_scan))
-            <div style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%);">
+            <div style="flex-shrink: 0; padding-right: 20px;">
                 <button type="button" data-toggle="modal" data-target="#howToScanModal"
                     style="background: #6a3aab; color: #fff; border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; line-height: 1.2;">
                     <img src="{{ asset('/images/iconimages/humanicon48.png') }}" alt=""
