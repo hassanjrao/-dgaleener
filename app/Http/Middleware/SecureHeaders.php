@@ -32,13 +32,13 @@ class SecureHeaders
         $cspStyleSrc = "style-src 'self' 'unsafe-inline' https://cdn.gtranslate.net";
 
         if (app()->environment('production')) {
-            $cspDefaultSrc = $cspDefaultSrc." https: ; upgrade-insecure-requests;";
-            $cspFontSrc = $cspFontSrc." https:";
-            $cspScriptSrc = $cspScriptSrc." https:";
-            $cspStyleSrc = $cspStyleSrc." https:";
+            $cspDefaultSrc = $cspDefaultSrc . " https: ; upgrade-insecure-requests;";
+            $cspFontSrc = $cspFontSrc . " https:";
+            $cspScriptSrc = $cspScriptSrc . " https:";
+            $cspStyleSrc = $cspStyleSrc . " https:";
 
             if (!empty(env('SENTRY_REPORT_URI'))) {
-                $reportUri = "report-uri ".env('SENTRY_REPORT_URI');
+                $reportUri = "report-uri " . env('SENTRY_REPORT_URI');
             }
         }
 
