@@ -61,6 +61,7 @@ class MediaController extends Controller
     {
         $medias = Media::query()->select(['id', 'file_name', 'description', 'user_id']);
 
+        dd($medias->get());
         return DataTables::eloquent($medias)
             ->addColumn('action', function ($media) {
                 $media->setAppends([]);
