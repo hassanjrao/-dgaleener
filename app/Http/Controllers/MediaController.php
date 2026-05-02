@@ -28,9 +28,7 @@ class MediaController extends Controller
 
     public function index()
     {
-        dd('sd');
         $playlists = Playlist::all()->toArray();
-        dd(Media::all()->toArray());
         return view('app.pages.media.index', compact('playlists'));
     }
 
@@ -62,6 +60,7 @@ class MediaController extends Controller
     public function datatables()
     {
         $medias = Media::query()->select(['id', 'file_name', 'description', 'user_id']);
+
         return DataTables::eloquent($medias)
             ->addColumn('action', function ($media) {
                 $media->setAppends([]);
