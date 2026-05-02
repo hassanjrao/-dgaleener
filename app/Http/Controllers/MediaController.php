@@ -28,6 +28,7 @@ class MediaController extends Controller
 
     public function index()
     {
+        dd('asdasd');
         $playlists = Playlist::all()->toArray();
         return view('app.pages.media.index', compact('playlists'));
     }
