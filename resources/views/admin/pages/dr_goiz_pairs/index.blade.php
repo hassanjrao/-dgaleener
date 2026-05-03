@@ -255,55 +255,50 @@
                         data: 'place',
                         name: 'place',
                         render: function(data, type, row) {
-                            var out = data || '';
-                            if (row.place_es) out +=
-                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
-                                row.place_es + '</span>';
-                            return out;
+                            var en = data || '';
+                            var es = row.place_es || '';
+                            return en + (es ? ' / <span style="color:#888;font-style:italic;">' +
+                                es + '</span>' : '');
                         }
                     },
                     {
                         data: 'resonance',
                         name: 'resonance',
                         render: function(data, type, row) {
-                            var out = data || '';
-                            if (row.resonance_es) out +=
-                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
-                                row.resonance_es + '</span>';
-                            return out;
+                            var en = data || '';
+                            var es = row.resonance_es || '';
+                            return en + (es ? ' / <span style="color:#888;font-style:italic;">' +
+                                es + '</span>' : '');
                         }
                     },
                     {
                         data: 'name',
                         name: 'name',
                         render: function(data, type, row) {
-                            var out = data || '';
-                            if (row.name_es) out +=
-                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
-                                row.name_es + '</span>';
-                            return out;
+                            var en = data || '';
+                            var es = row.name_es || '';
+                            return en + (es ? ' / <span style="color:#888;font-style:italic;">' +
+                                es + '</span>' : '');
                         }
                     },
                     {
                         data: 'characteristic',
                         name: 'characteristic',
                         render: function(data, type, row) {
-                            var out = data || '';
-                            if (row.characteristic_es) out +=
-                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
-                                row.characteristic_es + '</span>';
-                            return out;
+                            var en = data || '';
+                            var es = row.characteristic_es || '';
+                            return en + (es ? ' / <span style="color:#888;font-style:italic;">' +
+                                es + '</span>' : '');
                         }
                     },
                     {
                         data: 'description',
                         name: 'description',
                         render: function(data, type, row) {
-                            var out = data || '';
-                            if (row.description_es) out +=
-                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
-                                row.description_es + '</span>';
-                            return out;
+                            var en = data || '';
+                            var es = row.description_es || '';
+                            return en + (es ? ' / <span style="color:#888;font-style:italic;">' +
+                                es + '</span>' : '');
                         }
                     },
                     {
