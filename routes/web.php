@@ -29,6 +29,8 @@ Route::get('/bodyscan/info', 'BodyScanController@info')->name('app.bodyscan.info
 Route::get('/chakrascan/info', 'ChakraScanController@info')->name('app.chakrascan.info');
 Route::get('/data_cache/info', 'DataCacheController@info')->name('app.data_cache.info');
 
+Route::get('/dr-goiz-pairs', 'DrGoizPairController@index')->name('app.dr_goiz_pairs');
+
 Route::get('/products', 'ProductController@index')->name('app.products.index');
 Route::get('/products/bio', 'ProductController@bio')->name('app.products.bio');
 Route::get('/products/chakra', 'ProductController@chakra')->name('app.products.chakra');
@@ -49,10 +51,10 @@ Route::get('/magnetictherapyblog/{slug}', 'BlogController@show')->name('app.blog
 Route::middleware('verified')->group(function () {
     # Body Scan
     Route::get('/bodyscan', 'BodyScanController@index')->name('app.bodyscan');
-    
+
     # Chakra Scan
     Route::get('/chakrascan', 'ChakraScanController@index')->name('app.chakrascan');
-    
+
     # Bio Connect
     Route::get('/bioconnect/profile', 'BioConnectController@profile');
     Route::get('/bioconnect/profile/update', 'BioConnectController@updateProfile');
@@ -64,7 +66,7 @@ Route::middleware('verified')->group(function () {
     Route::get('/bioconnect/groups/mydiscussion', 'BioConnectController@groups_mydiscussion');
     Route::get('/bioconnect/groups/mycomment', 'BioConnectController@groups_mycomment');
     Route::get('/bioconnect/groups/mostcomments', 'BioConnectController@groups_mostcomments');
-    
+
     # Data Cache
     Route::get('/data_cache', 'DataCacheController@index')->name('app.data_cache');
     Route::get('/data_cache/client_info', 'DataCacheController@client_info');
@@ -81,7 +83,7 @@ Route::middleware('verified')->group(function () {
 
     Route::post('/data_cache/preferences/update', array('as' => 'updatePreferences', 'uses' => 'DataCacheController@updatePreferences'));
     Route::get('/data_cache/help', 'DataCacheController@help');
-    
+
     ## Media - Audio
     Route::get('/media', 'MediaController@index');
     Route::post('/media', 'MediaController@store');
@@ -90,7 +92,7 @@ Route::middleware('verified')->group(function () {
     Route::get('/media/delete/{id}', 'MediaController@destroy');
     Route::get('/media/all', 'MediaController@allmedia');
     Route::get('/media/{id}', 'MediaController@show');
-    
+
     ## Plans
     Route::post('/plans/{id}/subscribe', 'PlanController@subscribe')->name('app.plans.subscribe');
     Route::get('/plans/{id}/subscribe/status', 'PlanController@status')->name('app.plans.subscribe.status');
@@ -114,7 +116,7 @@ Route::middleware('verified')->group(function () {
     Route::post('/posts', 'PostController@store')->name('app.posts.store');
     Route::put('/posts/{id}', 'PostController@update')->name('app.posts.update');
     Route::delete('/posts/{id}', 'PostController@destroy')->name('app.posts.destroy');
-    
+
     ## Scan Sessions
     Route::get('/scan_sessions/{id}/export', 'ScanSessionController@export');
     Route::get('/scan_sessions/{id}/print', 'ScanSessionController@print')->name('app.scanSessions.print');
@@ -124,12 +126,12 @@ Route::middleware('verified')->group(function () {
 
     ## Media Playlist
     Route::post('/mediaplaylist', 'MediaPlaylistController@store');
-    
+
     /* Profile update */
-    Route::post('saveprofile', array( 'as' => 'saveprofile', 'uses' => 'BioConnectController@saveprofile_database'));
-    
+    Route::post('saveprofile', array('as' => 'saveprofile', 'uses' => 'BioConnectController@saveprofile_database'));
+
     /* Group */
-    Route::post('savediscussions', array( 'as' => 'savediscussions', 'uses' => 'GroupController@save_discussions_database'));
+    Route::post('savediscussions', array('as' => 'savediscussions', 'uses' => 'GroupController@save_discussions_database'));
 });
 
 /*** Admin ***/
@@ -146,6 +148,9 @@ Route::prefix('admin')->namespace('Admin')->middleware(['verified', 'auth.admin'
     Route::get('pairs/datatables', 'PairController@datatables');
     Route::get('pairs/import', 'PairController@import');
     Route::post('pairs/parse', 'PairController@parse');
+
+    ## Dr Goiz Pairs
+    Route::get('dr_goiz_pairs', 'DrGoizPairController@index');
 
     ## Media
     Route::get('media', 'MediaController@index');

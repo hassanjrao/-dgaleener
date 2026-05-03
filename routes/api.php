@@ -81,7 +81,7 @@ Route::namespace('Api')->group(function () {
         Route::get('clients/{client_id}/scan_sessions/{id}', 'Client\ScanSessionController@show');
         Route::put('clients/{client_id}/scan_sessions/{id}', 'Client\ScanSessionController@update');
         Route::delete('clients/{client_id}/scan_sessions/{id}', 'Client\ScanSessionController@destroy');
-        
+
         ## Clients - Pairs
         Route::get('clients/{client_id}/pairs', 'Client\PairController@index');
         Route::get('clients/{client_id}/pairs/{id}', 'Client\PairController@show');
@@ -168,6 +168,14 @@ Route::namespace('Api')->group(function () {
         Route::get('scan_sessions/{scan_session_id}/scan_session_pairs/{id}', 'ScanSession\ScanSessionPairController@show');
         Route::put('scan_sessions/{scan_session_id}/scan_session_pairs/{id}', 'ScanSession\ScanSessionPairController@update');
         Route::delete('scan_sessions/{scan_session_id}/scan_session_pairs/{id}', 'ScanSession\ScanSessionPairController@destroy');
+
+        ## Dr Goiz Pairs
+        Route::get('dr_goiz_pairs', 'DrGoizPairController@index')->name('api.v1.dr_goiz_pairs.index');
+        Route::get('dr_goiz_pairs/datatables', 'DrGoizPairController@datatables')->name('api.v1.dr_goiz_pairs.datatables');
+        Route::post('dr_goiz_pairs', 'DrGoizPairController@store')->name('api.v1.dr_goiz_pairs.store');
+        Route::get('dr_goiz_pairs/{id}', 'DrGoizPairController@show')->name('api.v1.dr_goiz_pairs.show');
+        Route::put('dr_goiz_pairs/{id}', 'DrGoizPairController@update')->name('api.v1.dr_goiz_pairs.update');
+        Route::delete('dr_goiz_pairs/{id}', 'DrGoizPairController@destroy')->name('api.v1.dr_goiz_pairs.destroy');
 
         ## Pairs
         Route::get('pairs', 'PairController@index')->name('api.v1.pairs.index');
@@ -314,7 +322,7 @@ Route::namespace('Api')->group(function () {
 
         Route::fallback(function () {
             $status_code = Response::HTTP_NOT_FOUND;
-            
+
             $response['success'] = false;
             $response['error'] = [
                 'code' => $status_code,

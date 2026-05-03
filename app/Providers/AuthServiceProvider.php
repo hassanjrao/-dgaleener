@@ -14,6 +14,7 @@ use App\Models\Media;
 use App\Models\ModelLabel;
 use App\Models\Order;
 use App\Models\Pair;
+use App\Models\DrGoizPair;
 use App\Models\Payment;
 use App\Models\Plan;
 use App\Models\Playlist;
@@ -28,6 +29,7 @@ use App\Policies\MediaPolicy;
 use App\Policies\ModelLabelPolicy;
 use App\Policies\OrderPolicy;
 use App\Policies\PairPolicy;
+use App\Policies\DrGoizPairPolicy;
 use App\Policies\PaymentPolicy;
 use App\Policies\PlanPolicy;
 use App\Policies\PlaylistPolicy;
@@ -50,6 +52,7 @@ class AuthServiceProvider extends ServiceProvider
         ModelLabel::class => ModelLabelPolicy::class,
         Order::class => OrderPolicy::class,
         Pair::class => PairPolicy::class,
+        DrGoizPair::class => DrGoizPairPolicy::class,
         Payment::class => PaymentPolicy::class,
         Playlist::class => PlaylistPolicy::class,
         Plan::class => PlanPolicy::class,
