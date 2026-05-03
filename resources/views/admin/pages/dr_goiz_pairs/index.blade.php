@@ -31,16 +31,11 @@
             <table class="table table-hover table-bordered" id="dr_goiz_pairs">
                 <thead>
                     <tr>
-                        <th class="align-left">{{ __('Place (EN)') }}</th>
-                        <th class="align-left">{{ __('Place (ES)') }}</th>
-                        <th class="align-left">{{ __('Resonance (EN)') }}</th>
-                        <th class="align-left">{{ __('Resonance (ES)') }}</th>
-                        <th class="align-left">{{ __('Name (EN)') }}</th>
-                        <th class="align-left">{{ __('Name (ES)') }}</th>
-                        <th class="align-left">{{ __('Characteristic (EN)') }}</th>
-                        <th class="align-left">{{ __('Characteristic (ES)') }}</th>
-                        <th class="align-left">{{ __('Description (EN)') }}</th>
-                        <th class="align-left">{{ __('Description (ES)') }}</th>
+                        <th class="align-left">{{ __('Place') }}</th>
+                        <th class="align-left">{{ __('Resonance') }}</th>
+                        <th class="align-left">{{ __('Name') }}</th>
+                        <th class="align-left">{{ __('Characteristic') }}</th>
+                        <th class="align-left">{{ __('Description') }}</th>
                         <th class="align-left">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
@@ -258,43 +253,58 @@
                 },
                 columns: [{
                         data: 'place',
-                        name: 'place'
-                    },
-                    {
-                        data: 'place_es',
-                        name: 'place_es'
+                        name: 'place',
+                        render: function(data, type, row) {
+                            var out = data || '';
+                            if (row.place_es) out +=
+                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
+                                row.place_es + '</span>';
+                            return out;
+                        }
                     },
                     {
                         data: 'resonance',
-                        name: 'resonance'
-                    },
-                    {
-                        data: 'resonance_es',
-                        name: 'resonance_es'
+                        name: 'resonance',
+                        render: function(data, type, row) {
+                            var out = data || '';
+                            if (row.resonance_es) out +=
+                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
+                                row.resonance_es + '</span>';
+                            return out;
+                        }
                     },
                     {
                         data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'name_es',
-                        name: 'name_es'
+                        name: 'name',
+                        render: function(data, type, row) {
+                            var out = data || '';
+                            if (row.name_es) out +=
+                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
+                                row.name_es + '</span>';
+                            return out;
+                        }
                     },
                     {
                         data: 'characteristic',
-                        name: 'characteristic'
-                    },
-                    {
-                        data: 'characteristic_es',
-                        name: 'characteristic_es'
+                        name: 'characteristic',
+                        render: function(data, type, row) {
+                            var out = data || '';
+                            if (row.characteristic_es) out +=
+                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
+                                row.characteristic_es + '</span>';
+                            return out;
+                        }
                     },
                     {
                         data: 'description',
-                        name: 'description'
-                    },
-                    {
-                        data: 'description_es',
-                        name: 'description_es'
+                        name: 'description',
+                        render: function(data, type, row) {
+                            var out = data || '';
+                            if (row.description_es) out +=
+                                '<br><span style="color:#888;font-style:italic;font-size:0.9em;">' +
+                                row.description_es + '</span>';
+                            return out;
+                        }
                     },
                     {
                         data: 'id',
