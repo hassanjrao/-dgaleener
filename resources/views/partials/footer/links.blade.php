@@ -27,8 +27,8 @@
             <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/share80.png') }}" class="footer-images" alt="{{ env('APP_TITLE') }}">
         </a>
     </div>
-    <div class="col-md-1 text-center" data-toggle="tooltip" data-placement="top" title="More / Más">
-        <a href="/products">
+    <div class="col-md-1 text-center" data-toggle="tooltip" data-placement="top" title="Dr. Goiz Pairs / Pares del Dr. Goiz">
+        <a href="{{ route('app.dr_goiz_pairs') }}">
             <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/more80.png') }}" class="footer-images" alt="{{ env('APP_TITLE') }}">
         </a>
     </div>
@@ -59,8 +59,8 @@
             <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/share80.png') }}" class="footer-images" alt="{{ env('APP_TITLE') }}">
         </a>
     </div>
-    <div class="col-md-2 text-center" data-toggle="tooltip" data-placement="top" title="More / Más">
-        <a href="/products">
+    <div class="col-md-2 text-center" data-toggle="tooltip" data-placement="top" title="Dr. Goiz Pairs / Pares del Dr. Goiz">
+        <a href="{{ route('app.dr_goiz_pairs') }}">
             <img src="{{ \App\Support\VersionedAsset::url('/images/iconimages/more80.png') }}" class="footer-images" alt="{{ env('APP_TITLE') }}">
         </a>
     </div>
