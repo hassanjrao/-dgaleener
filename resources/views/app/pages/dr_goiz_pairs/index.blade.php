@@ -20,7 +20,7 @@
         <div class="row justify-content-center" style="margin-bottom: 16px;">
             <div class="col-12 text-center"
                 style="background: #1a5276; color: #fff; font-weight: bold; padding: 8px 0; font-size: 14px; letter-spacing: 0.5px;">
-                250 Classic Dr. Goiz Pairs &nbsp;|&nbsp; 250 Pares Clásicos del Dr. Goiz
+                228 Classic Dr. Goiz Pairs &nbsp;|&nbsp; 228 Pares Clásicos del Dr. Goiz
             </div>
         </div>
 
