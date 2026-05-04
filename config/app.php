@@ -163,9 +163,8 @@ return [
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-        Waavi\Sanitizer\Laravel\SanitizerServiceProvider::class,
         Felixkiss\UniqueWithValidator\ServiceProvider::class,
-        
+
     ],
 
     /*
@@ -216,7 +215,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Security' => GrahamCampbell\Security\Facades\Security::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'Sanitizer' => Waavi\Sanitizer\Laravel\Facade::class
 
     ],
 
