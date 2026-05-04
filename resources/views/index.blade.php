@@ -68,8 +68,8 @@
                 <li>
                     <a href="{{ route('app.dr_goiz_pairs') }}">
                         <img src="{{ asset('images/homepage/more.png') }}"
-                            alt="{{ env('APP_TITLE') }} | Dr Goiz Pairs" />
-                        <span>FREE Dr Goiz PAIRS</span>
+                            alt="{{ env('APP_TITLE') }} | FREE PROTOCOL PAIRS" />
+                        <span>FREE PROTOCOL PAIRS</span>
                     </a>
                 </li>
             </ul>

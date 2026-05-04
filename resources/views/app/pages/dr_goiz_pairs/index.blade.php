@@ -1,10 +1,10 @@
 @extends('layouts.application')
 @section('page-title')
-    {{ 'Anew Avenue Biomagnetism | Dr. Goiz Pairs' }}
+    {{ 'Anew Avenue Biomagnetism | FREE PROTOCOL PAIRS' }}
 @stop
 @section('content')
     @include('partials.header', [
-        'title' => 'Dr. Goiz Pairs',
+        'title' => 'FREE PROTOCOL PAIRS',
         'image_url' => '/images/iconimages/humanicon48.png',
     ])
 
@@ -20,7 +20,7 @@
         <div class="row justify-content-center" style="margin-bottom: 16px;">
             <div class="col-12 text-center"
                 style="background: #1a5276; color: #fff; font-weight: bold; padding: 8px 0; font-size: 14px; letter-spacing: 0.5px;">
-                228 Classic Dr. Goiz Pairs &nbsp;|&nbsp; 228 Pares Clásicos del Dr. Goiz
+                228 Classic FREE PROTOCOL PAIRS &nbsp;|&nbsp; 228 Pares Clásicos de Protocolo Gratis
             </div>
         </div>
 
