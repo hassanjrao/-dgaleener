@@ -13,12 +13,15 @@
 
 Auth::routes(['verify' => true]);
 
+// Route::get('/signup', 'HomeController@signup')->name('app.signup');
+// Route::get('/', 'DashboardController@index')->name('app.root');
+// Route::get('/landing_page', 'HomeController@landing_page')->name('app.landing_page');
+// Route::get('/introduction', 'IntroductionController@index');
+
 Route::get('/', 'DashboardController@index')->name('app.root');
 Route::get('/home', 'DashboardController@index')->name('app.home');
-Route::get('/landing_page', 'HomeController@landing_page')->name('app.landing_page');
 Route::get('/dashboard', 'DashboardController@index')->name('app.dashboard');
-Route::get('/signup', 'HomeController@signup')->name('app.signup');
-Route::get('/introduction', 'IntroductionController@index');
+
 Route::get('/pricing', 'HomeController@pricing')->name('app.pricing')->middleware('verified');
 Route::get('/orders', 'HomeController@orders')->name('app.user.orders')->middleware('verified');
 Route::get('/payments', 'HomeController@payments')->name('app.user.payments')->middleware('verified');

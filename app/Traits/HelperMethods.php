@@ -11,13 +11,6 @@ trait HelperMethods
         return with(new static)->getTable();
     }
 
-    public static function sanitize($data, $filters = [])
-    {
-        $sanitizer  = new \Waavi\Sanitizer\Sanitizer($data, $filters);
-
-        return $sanitizer->sanitize();
-    }
-
     public function awsAssetsUrl($file_path)
     {
         $sourceUrl = env('APP_WEB_ASSETS_URL') ?: env('AWS_S3_URL');
