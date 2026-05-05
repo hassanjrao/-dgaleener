@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/pricing', 'HomeController@pricing')->name('pricing');
+// Route::get('/pricing', 'HomeController@pricing')->name('pricing');
 
 Route::get('/products', 'ProductController@index')->name('products.index');
 Route::get('/products/bio', 'ProductController@bio')->name('products.bio');

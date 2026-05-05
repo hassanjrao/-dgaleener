@@ -27,10 +27,10 @@
 
     $navItems = [
         ['key' => 'home', 'label' => 'Home', 'route' => route('app.dashboard')],
-        ['key' => 'body', 'label' => 'Body', 'route' => route('app.bodyscan.info')],
-        ['key' => 'chakra', 'label' => 'Chakra', 'route' => route('app.chakrascan.info')],
-        ['key' => 'data', 'label' => 'Data', 'route' => route('app.data_cache.info')],
-        ['key' => 'connect', 'label' => 'Connect', 'route' => route('app.bioconnect.info')],
+        ['key' => 'body', 'label' => 'Body', 'route' => route('app.bodyscan')],
+        ['key' => 'chakra', 'label' => 'Chakra', 'route' => route('app.chakrascan')],
+        ['key' => 'data', 'label' => 'Data', 'route' => route('app.data_cache')],
+        ['key' => 'connect', 'label' => 'Connect', 'route' => route('app.bioconnect')],
     ];
 @endphp
 

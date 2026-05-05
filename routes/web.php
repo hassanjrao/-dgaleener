@@ -21,12 +21,6 @@ Auth::routes(['verify' => true]);
 Route::get('/', 'DashboardController@index')->name('app.root');
 Route::get('/home', 'DashboardController@index')->name('app.home');
 Route::get('/dashboard', 'DashboardController@index')->name('app.dashboard');
-
-Route::get('/pricing', 'HomeController@pricing')->name('app.pricing')->middleware('verified');
-Route::get('/orders', 'HomeController@orders')->name('app.user.orders')->middleware('verified');
-Route::get('/payments', 'HomeController@payments')->name('app.user.payments')->middleware('verified');
-Route::get('/subscriptions', 'HomeController@subscriptions')->name('app.user.subscriptions')->middleware('verified');
-
 Route::get('/bodyscan/info', 'BodyScanController@info')->name('app.bodyscan.info');
 Route::get('/bioconnect/info', 'BioConnectController@info')->name('app.bioconnect.info');
 Route::get('/chakrascan/info', 'ChakraScanController@info')->name('app.chakrascan.info');
@@ -40,7 +34,8 @@ Route::get('/products/chakra', 'ProductController@chakra')->name('app.products.c
 Route::post('/products/checkout', 'ProductController@checkout')->name('app.products.checkout')->middleware('verified');
 Route::post('/products/checkout_with_shipping', 'ProductController@checkoutWithShipping')->name('app.products.checkoutWithShipping')->middleware('verified');
 Route::get('/products/shipping_address', 'ProductController@shippingAddress')->name('app.products.shippingAddress')->middleware('verified');
-Route::post('/usps', 'UspsController@index')->name('app.products.usps')->middleware('verified');;
+Route::post('/usps', 'UspsController@index')->name('app.products.usps')->middleware('verified');
+;
 
 Route::get('/orders/{id}/payment', 'OrderController@payment')->name('app.orders.payment')->middleware('verified');
 Route::get('/orders/{id}/payment/status', 'OrderController@payment_status')->name('app.orders.payment.status')->middleware('verified');
@@ -55,9 +50,15 @@ Route::get('/magnetictherapyblog/{slug}', 'BlogController@show')->name('app.blog
 
 
 Route::middleware('verified')->group(function () {
+
+
+    Route::get('/pricing', 'HomeController@pricing')->name('app.pricing');
+    Route::get('/orders', 'HomeController@orders')->name('app.user.orders');
+    Route::get('/payments', 'HomeController@payments')->name('app.user.payments');
+    Route::get('/subscriptions', 'HomeController@subscriptions')->name('app.user.subscriptions');
+
     # Body Scan
     Route::get('/bodyscan', 'BodyScanController@index')->name('app.bodyscan');
-
     # Chakra Scan
     Route::get('/chakrascan', 'ChakraScanController@index')->name('app.chakrascan');
 
