@@ -7,7 +7,6 @@
 
     @php
         $siteTitle = config('app.title');
-        dd($siteTitle);
         $pageTitle = trim((string) $__env->yieldContent('page-title'));
     @endphp
     <title>{{ $pageTitle !== '' ? $pageTitle . ' - ' . $siteTitle : $siteTitle }}</title>
