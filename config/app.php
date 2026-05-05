@@ -163,7 +163,7 @@ return [
 
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
-        Waavi\Sanitizer\Laravel\SanitizerServiceProvider::class,
+        // Waavi\Sanitizer\Laravel\SanitizerServiceProvider::class,
         Felixkiss\UniqueWithValidator\ServiceProvider::class,
         
     ],
