@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}"@if (!empty($useAppShell)) ng-app="AnewApp"@endif>
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @if (!empty($useAppShell))
+        @include('partials.shared.meta')
+    @else
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+    @endif
 
     @php
         $siteTitle = config('app.title');
@@ -25,6 +29,15 @@
 
     @if (!isset($hideBottomNav) || !$hideBottomNav)
         @include('partials.modern.bottom_nav')
+    @endif
+
+    @if (!empty($useAppShell))
+        @include('partials.shared.foot')
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
     @endif
 
     @stack('scripts')
