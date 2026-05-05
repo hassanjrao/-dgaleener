@@ -1,6 +1,6 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Anew Avenue Biomagnetism | Introduction to Data Cache')
+@section('page-title', 'Data Cache Info')
 
 @php
     $activeNav = 'data';

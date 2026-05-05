@@ -1,6 +1,6 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Anew Avenue Biomagnetism | Verify Email')
+@section('page-title', 'Verify Email')
 
 @php
     $hideBottomNav = true;

@@ -1,6 +1,6 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Anew Avenue Biomagnetism | Introduction to Chakra Body Scan')
+@section('page-title', 'Chakra Scan Info')
 
 @php
     $activeNav = 'chakra';

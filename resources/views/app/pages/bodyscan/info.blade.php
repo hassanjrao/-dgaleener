@@ -1,6 +1,6 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Anew Avenue Biomagnetism | Introduction to Biomagnetism Body Scan')
+@section('page-title', 'Body Scan Info')
 
 @php
     $activeNav = 'body';

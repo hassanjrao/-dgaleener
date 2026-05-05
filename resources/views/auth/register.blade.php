@@ -1,6 +1,6 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Anew Avenue Biomagnetism | Register')
+@section('page-title', 'Register')
 
 @php
     $hideBottomNav = true;
@@ -95,7 +95,7 @@
                     Already have an existing account?
                     <a href="{{ route('login') }}" class="btn btn-link p-0 align-baseline">Sign In here</a>
                 </p>
-            </div>
+            </section>
         </div>
     </main>
 @endsection

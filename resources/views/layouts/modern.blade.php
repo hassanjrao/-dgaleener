@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('page-title', env('APP_TITLE'))</title>
+    @php
+        $siteTitle = config('app.title');
+        dd($siteTitle);
+        $pageTitle = trim((string) $__env->yieldContent('page-title'));
+    @endphp
+    <title>{{ $pageTitle !== '' ? $pageTitle . ' - ' . $siteTitle : $siteTitle }}</title>
 
     <link href="{{ \App\Support\VersionedAsset::url('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/modern/theme.css') }}" rel="stylesheet">

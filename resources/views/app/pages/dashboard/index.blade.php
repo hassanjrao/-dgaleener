@@ -1,6 +1,6 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Anew Avenue Biomagnetism | Dashboard')
+@section('page-title', 'Dashboard')
 
 @php
     $activeNav = 'home';

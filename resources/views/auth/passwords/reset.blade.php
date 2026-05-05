@@ -1,6 +1,6 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Anew Avenue Biomagnetism | Reset Password')
+@section('page-title', 'Reset Password')
 
 @php
     $hideBottomNav = true;
@@ -64,7 +64,7 @@
                 <p class="text-center mt-3 mb-0">
                     <a href="{{ route('login') }}" class="btn btn-link p-0">Return to Sign In</a>
                 </p>
-            </div>
+            </section>
         </div>
     </main>
 @endsection

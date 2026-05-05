@@ -1,6 +1,6 @@
 @extends('layouts.modern')
 
-@section('page-title', 'Anew Avenue Biomagnetism | Forgot Password')
+@section('page-title', 'Forgot Password')
 
 @php
     $hideBottomNav = true;
@@ -44,7 +44,7 @@
                         {{ __('Send Password Reset Link') }}
                     </button>
                 </form>
-            </div>
+            </section>
         </div>
     </main>
 @endsection
