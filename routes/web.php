@@ -13,19 +13,19 @@
 
 Auth::routes(['verify' => true]);
 
-Route::get('/', 'HomeController@preloader')->name('app.root');
-Route::get('/home', 'HomeController@index')->name('app.home');
+Route::get('/', 'DashboardController@index')->name('app.root');
+Route::get('/home', 'DashboardController@index')->name('app.home');
 Route::get('/landing_page', 'HomeController@landing_page')->name('app.landing_page');
-Route::get('/signup', 'HomeController@signup')->name('app.signup');
 Route::get('/dashboard', 'DashboardController@index')->name('app.dashboard');
+Route::get('/signup', 'HomeController@signup')->name('app.signup');
 Route::get('/introduction', 'IntroductionController@index');
 Route::get('/pricing', 'HomeController@pricing')->name('app.pricing')->middleware('verified');
 Route::get('/orders', 'HomeController@orders')->name('app.user.orders')->middleware('verified');
 Route::get('/payments', 'HomeController@payments')->name('app.user.payments')->middleware('verified');
 Route::get('/subscriptions', 'HomeController@subscriptions')->name('app.user.subscriptions')->middleware('verified');
 
-Route::get('/bioconnect/info', 'BioConnectController@info')->name('app.bioconnect.info');
 Route::get('/bodyscan/info', 'BodyScanController@info')->name('app.bodyscan.info');
+Route::get('/bioconnect/info', 'BioConnectController@info')->name('app.bioconnect.info');
 Route::get('/chakrascan/info', 'ChakraScanController@info')->name('app.chakrascan.info');
 Route::get('/data_cache/info', 'DataCacheController@info')->name('app.data_cache.info');
 
@@ -47,6 +47,9 @@ Route::get('/bioconnect/groups', 'BioConnectController@groups');
 
 Route::get('/magnetictherapyblog', 'BlogController@index')->name('app.blogs.index');
 Route::get('/magnetictherapyblog/{slug}', 'BlogController@show')->name('app.blogs.show');
+
+
+
 
 Route::middleware('verified')->group(function () {
     # Body Scan

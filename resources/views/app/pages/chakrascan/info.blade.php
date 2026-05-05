@@ -1,18 +1,27 @@
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Introduction to Chakra Body Scan'}}
-@stop
+@extends('layouts.modern')
+
+@section('page-title', 'Anew Avenue Biomagnetism | Introduction to Chakra Body Scan')
+
+@php
+    $activeNav = 'chakra';
+@endphp
+
 @section('content')
-    @include('partials.header', ['title' => 'Chakra Body Scan'])
-    <div class="row info-page">
-        <div class="col-md-3">
-            @include('app.pages.chakrascan.partials.info_menu')
+    <main class="modern-main-content">
+        <section class="mb-4">
+            <h3 class="eyebrow mb-2">Introduction</h3>
+            <h1 class="hero-heading mb-0">
+                Chakra <span class="italic-wellness">Body Scan</span>
+            </h1>
+        </section>
+
+        <div class="row modern-row-gap">
+            <div class="col-12 col-lg-4">
+                @include('app.pages.chakrascan.partials.info_menu')
+            </div>
+            <div class="col-12 col-lg-8">
+                @include('app.pages.chakrascan.partials.info_main')
+            </div>
         </div>
-        <div class="col-md-9">
-            @include('app.pages.chakrascan.partials.info_main')
-        </div>
-    </div>
+    </main>
 @endsection
-@section('javascripts')
-    @parent
-@stop

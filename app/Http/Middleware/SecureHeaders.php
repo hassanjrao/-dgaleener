@@ -29,8 +29,8 @@ class SecureHeaders
         $cspFontSrc = "font-src 'self' data: https://fonts.gstatic.com";
         $cspImageSrc = "img-src 'self' data: https://*.biomagnetism.app https://*.amazonaws.com https://www.gstatic.com https://www.googletagmanager.com https://www.google-analytics.com https://cdn.gtranslate.net https://*.gtranslate.net";
         $cspMediaSrc = "media-src 'self' https://*.biomagnetism.app https://*.amazonaws.com";
-        $cspScriptSrc = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://fonts.googleapis.com https://cdn.ravenjs.com https://cdn.gtranslate.net";
-        $cspStyleSrc = "style-src 'self' 'unsafe-inline' https://cdn.gtranslate.net";
+        $cspScriptSrc = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.ravenjs.com https://cdn.gtranslate.net https://cdn.jsdelivr.net https://code.jquery.com";
+        $cspStyleSrc = "style-src 'self' 'unsafe-inline' https://cdn.gtranslate.net https://fonts.googleapis.com https://cdn.jsdelivr.net";
 
         if (app()->environment('production')) {
             $cspDefaultSrc = $cspDefaultSrc . " https: ; upgrade-insecure-requests;";
