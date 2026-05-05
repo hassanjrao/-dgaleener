@@ -478,3 +478,66 @@ body.modern-theme {
     position: sticky;
     top: 6rem;
 }
+
+.modern-auth-wrap {
+    min-height: calc(100vh - 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modern-auth-card {
+    width: 100%;
+    max-width: 540px;
+    background: #fff;
+    border: 1px solid #dfe3e3;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+    padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .modern-auth-card {
+        padding: 2rem;
+    }
+}
+
+.modern-auth-logo {
+    width: 86px;
+    height: auto;
+}
+
+.modern-auth-title {
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+.modern-auth-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 0.35rem;
+}
+
+.modern-auth-input {
+    border-radius: 0.75rem;
+    border: 1px solid #cbd5e1;
+    min-height: 44px;
+}
+
+.modern-auth-btn-main {
+    background: #009b7d;
+    border-color: #009b7d;
+    color: #fff;
+    border-radius: 9999px;
+    font-weight: 700;
+    padding: 0.65rem 1rem;
+}
+
+.modern-auth-btn-main:hover,
+.modern-auth-btn-main:focus {
+    background: #008269;
+    border-color: #008269;
+    color: #fff;
+}

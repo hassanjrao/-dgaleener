@@ -1,94 +1,63 @@
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Login'}}
-@stop
-@section('styles')
-    @parent
-    <link href="{{ asset('css/app/sessions.css') }}" rel="stylesheet">
-@stop
+@extends('layouts.modern')
+
+@section('page-title', 'Anew Avenue Biomagnetism | Login')
+
+@php
+    $hideBottomNav = true;
+@endphp
+
 @section('content')
-<div class="row main-body">
-    <div class="col-md-4"></div>
-    <div class="col-md-4" id="login-div">
-        <span class="text-center logo-img"><img src="/images/iconimages/logo.png"></span>
-        @if (session('status'))
-            <div class="alert alert-success">
-                {{ session('status') }}
-            </div>
-        @endif
-        @if (session('message.success'))
-            <div class="alert alert-success">
-                {{ session('message.success') }}
-            </div>
-        @endif
-        @if (session('message.fail'))
-            <div class="alert alert-danger">
-                {{ session('message.fail') }}
-            </div>
-        @endif
-        <form method="POST" action="{{ route('login') }}" class="login-form">
-            @csrf
-            <div class="input-group mb-3">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon2"><img
-                                src="/images/glyphicons/png/glyphicons-social-40-e-mail.png" class="icon-img"></span>
-                    </div>
-                    <input type="text"
-                            class="form-control @error('username') is-invalid @enderror"
-                            value="{{ old('username') }}" name="username" id="username" placeholder="Username" required
-                            autofocus>
-                    @error('username')
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('username') }}</strong>
-                        </span>
-                    @enderror
+    <main class="modern-main-content">
+        <div class="modern-auth-wrap">
+            <section class="modern-auth-card">
+                <div class="text-center mb-4">
+                    <img src="/images/iconimages/logo.png" alt="{{ env('APP_TITLE') }}" class="modern-auth-logo">
+                    <h1 class="hero-heading modern-auth-title">Welcome <span class="italic-wellness">Back</span></h1>
                 </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">
-                            <img src="/images/glyphicons/png/glyphicons-204-lock.png" class="icon-img" alt="{{ env('APP_TITLE') }}">
-                        </span>
+
+                @if (session('status'))
+                    <div class="alert alert-success">{{ session('status') }}</div>
+                @endif
+                @if (session('message.success'))
+                    <div class="alert alert-success">{{ session('message.success') }}</div>
+                @endif
+                @if (session('message.fail'))
+                    <div class="alert alert-danger">{{ session('message.fail') }}</div>
+                @endif
+
+                <form method="POST" action="{{ route('login') }}">
+                    @csrf
+                    <div class="form-group mb-3">
+                        <label for="username" class="modern-auth-label">Username</label>
+                        <input type="text" class="form-control modern-auth-input @error('username') is-invalid @enderror"
+                            value="{{ old('username') }}" name="username" id="username" required autofocus>
+                        @error('username')
+                            <span class="invalid-feedback d-block"><strong>{{ $errors->first('username') }}</strong></span>
+                        @enderror
                     </div>
-                    <input type="password"
-                            class="form-control @error('password') is-invalid @enderror"
-                            value="{{ old('password') }}" name="password" id="password" placeholder="Password"
-                            required autofocus>
-                    @error('password')
-                        <span class="invalid-feedback">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="input-group mb-3">
-                    <button type="submit" class="form-control text-center create-button">
-                        {{ __('Sign In') }}
-                    </button>
-                </div>
-                <div class="input-group mb-3">
-                    <div class="offset-md-2">
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" name="remember"> Remember Me
-                            </label> 
-                            <a href="/password/reset" class="btn btn-link">Forgot your Password?</a>
-                        </div>
+
+                    <div class="form-group mb-3">
+                        <label for="password" class="modern-auth-label">Password</label>
+                        <input type="password" class="form-control modern-auth-input @error('password') is-invalid @enderror"
+                            name="password" id="password" required>
+                        @error('password')
+                            <span class="invalid-feedback d-block"><strong>{{ $errors->first('password') }}</strong></span>
+                        @enderror
                     </div>
-                    <div class="offset-md-2">
-                        <div class="checkbox">
-                            <label>
-                                Don't have an account yet? 
-                            </label> 
-                            <a href="/register" class="btn btn-link">Sign Up now</a>
-                        </div>
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <label class="mb-0"><input type="checkbox" name="remember"> Remember Me</label>
+                        <a href="{{ route('password.request') }}" class="btn btn-link p-0">Forgot your Password?</a>
                     </div>
-                </div>
+
+                    <button type="submit" class="btn modern-auth-btn-main btn-block">{{ __('Sign In') }}</button>
+                </form>
+
+                <p class="text-center mt-3 mb-0">
+                    Don't have an account yet?
+                    <a href="{{ route('register') }}" class="btn btn-link p-0 align-baseline">Sign Up now</a>
+                </p>
             </div>
-        </form>
-    </div>
-    <div class="col-md-4"></div>
-</div>
+        </div>
+    </main>
 @endsection
-@section('javascripts')
-    @parent
-@stop
