@@ -1,214 +1,331 @@
-@extends('layouts.application')
-@section('page-title')
-    {{ 'Anew Avenue Biomagnestim | Biomagnetism Chakra Scan' }}
-@stop
+@extends('layouts.modern')
+
+@php
+    $activeNav = 'chakra';
+    $useAppShell = true;
+@endphp
+
+@section('page-title', 'Chakra Scan')
+
 @section('content')
-    @include('partials.header', [
-        'title' => 'Chakra Scan',
-        'image_url' => '/images/iconimages/humanicon48.png',
-        'show_how_to_scan' => true,
-    ])
     @php($target = request()->target ?? 'female')
-    <div style="display: none;" id="scanType" data-value="chakra_scan"></div>
-    <div style="display: none;" id="modelTarget" data-value="{{ $target }}"></div>
-    <div style="display: none;" id="userIsAdmin" data-value="{{ Auth::user()->isAdmin() ? 'administrator' : '' }}"></div>
-    <div style="display: none;" id="ssid" data-value="{{ $request->ssid }}"></div>
-    <div style="display: none;" id="guided" data-value="{{ $request->guided ?? 'false' }}"></div>
-    <div style="display: none;" id="page" data-value="{{ $request->page ?? 1 }}"></div>
-    <div style="display: none;" id="perPage" data-value="{{ $request->perPage ?? 5 }}"></div>
-    <div class="container scan-container" ng-controller="ModelLabelsCtrl as ctrl">
-        <div class="loader" style="margin:0 auto; margin-top: 100px;"
-            ng-if="!(ctrl.search.meta.loaded | valPresent) || !ctrl.search.meta.loaded"></div>
-        <div class="row justify-content-center signup-form-row" ng-hide="!ctrl.search.meta.loaded">
-            <div class="row col-md-12" style="padding-left: 0;">
-                <div class="col-md-6 col-xs-6" style="padding-left: 25px;">
-                    <div id="modelcontainer" style="display: none;"></div>
-                    <div id="toggleModel" class="scan-toggle-model" style="display: none;">
-                        @if ($target == 'male')
-                            <a href="/chakrascan?target=female&guided=<% ctrl.guided_scan %>">
-                                <button>Switch to Female / Cambiar a femenino</button>
-                            </a>
-                        @else
-                            <a href="/chakrascan?target=male&guided=<% ctrl.guided_scan %>">
-                                <button>Switch to Male / Cambiar a masculino</button>
-                            </a>
-                        @endif
-                        <span style="margin: 0 30px;">
-                        <button id="zoomIn" ng-click="ctrl.zoomIn($event)">
-                            Zoom In / Acercar
-                        </button>
-                        <button id="zoomOut" ng-click="ctrl.zoomOut($event)">
-                            Zoom Out / Alejar
-                        </button>
-                        <span style="margin: 0 30px;">
-                        <button id="prevPoint" ng-click="ctrl.prevPoint($event)">
-                            Previous / Anterior
-                        </button>
-                        <button id="nextPoint" ng-click="ctrl.nextPoint($event)">
-                            Next / Siguiente
-                        </button>
-                        <span style="margin: 0 30px;">
-                        @if(Auth::user()->isAdmin())
-                            <button id="addPoint" data-toggle="modal" data-target="#modelLabelModal" data-title="Add Model Label / Agregar etiqueta del modelo" ng-if="!(ctrl.client | valPresent)" disabled>Add / Agregar</button>
-                            <!-- <br>
-                            <span id="mouseX">Mouse X: 0</span>
-                            <span id="mouseY">Mouse Y: 0</span> -->
-                            <span id="pointX" data-value="0" style="display: none;">Point X: 0</span>
-                            <span id="pointY" data-value="0" style="display: none;">Point Y: 0</span>
-                            <span id="pointZ" data-value="0" style="display: none;">Point Z: 0</span>
-                        @endif
-                    </div>
+
+    <main class="modern-main-content modern-main-content--fluid">
+        <div class="container-fluid modern-bodyscan-wrap">
+            <div class="modern-page-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+                <div>
+                    <span class="eyebrow">Biomagnetism</span>
+                    <h1 class="modern-page-title mb-0">Chakra Scan</h1>
+                    <p class="modern-page-subtitle mb-0">Interactive 3D model and chakra scan list</p>
                 </div>
-                <div class="col-md-6 col-xs-6 scan-point-container" ng-cloak="">
-                    <h6 style="font-size: 28px; text-align: center;"
-                        ng-if="(ctrl.model_labels.length > 0) && ctrl.disable_client_selection"><a
-                            href="/data_cache/clients/<% ctrl.client.id %>" target="_blank"><% ctrl.client.name %></a></h6>
-                    <div class="row scan-search-box" ng-if="ctrl.model_labels.length > 0">
-                        <img src="{{ asset('/images/scan-search-icon.png') }}" alt="{{ env('APP_TITLE') }}"></img>
-                        <form>
-                            <input type="text" placeholder="Search... / Buscar..." ng-model="ctrl.search.params.text" style="width: calc(100% - 66px)"></input>
-                            <select ng-model="ctrl.search.meta.perPage" style="width: 62px; height: 28px;">
-                                <option ng-repeat="itemsPerPage in ctrl.search.perPageOptions" ng-value="itemsPerPage">
-                                    <% itemsPerPage %></option>
-                            </select>
-                        </form>
-                    </div>
-                    <div class="row" style="margin: 8px 0;">
-                        @if ($request->guided == 'true')
-                        <a href="/chakrascan?target=<% ctrl.search.params.target %>&guided=false">
-                            <button style="margin: 8px; margin-right: 0;">Switch to Non Guided Scan / Cambiar a escaneo no guiado</button>
-                        </a>
-                        @else
-                        <a href="/chakrascan?target=<% ctrl.search.params.target %>&guided=true">
-                            <button style="margin: 8px; margin-right: 0;">Switch to Guided Scan / Cambiar a escaneo guiado</button>
-                        </a>
-                        @endif
-                        <button class="pull-right" style="margin: 8px; margin-right: 0;" ng-click="ctrl.showBookmark = (ctrl.showBookmark ? false : true)"><% ctrl.showBookmark ? 'Hide Bookmarks / Ocultar marcadores' : 'Show Bookmarks / Mostrar marcadores' %></button>
-                    </div>
-                    <div class="row" style="margin: 8px;" ng-if="ctrl.showBookmark">
-                        <input type="text" ng-model="bookmark_record.name" style="<% (bookmark_record.id | valPresent) ? 'width: calc(100% - 129px)' : 'width: calc(100% - 57px)' %>" placeholder="Bookmark Title / Título del marcador"></input>
-                        <button style="margin-left: 8px;" ng-click="ctrl.saveBookmark(bookmark_record)" ng-disabled="!(bookmark_record.name | valPresent)">Save / Guardar</button>
-                        <button style="margin-left: 8px;" ng-click="ctrl.clearBookmark()" ng-if="(bookmark_record.id | valPresent)">Cancel / Cancelar</button>
-                        <div class="text-center" style="margin: 16px 0; width: 100%;">
-                            <span ng-if="!(ctrl.bookmarks | valPresent)">You have no saved bookmarks. / No tiene marcadores guardados.</span>
+                <button type="button" class="modern-howto-btn" data-toggle="modal" data-target="#howToScanModal">
+                    <img src="{{ asset('/images/iconimages/humanicon48.png') }}" alt="" class="howto-icon">
+                    <span>How to Scan</span>
+                </button>
+            </div>
+
+            <div style="display: none;" id="scanType" data-value="chakra_scan"></div>
+            <div style="display: none;" id="modelTarget" data-value="{{ $target }}"></div>
+            <div style="display: none;" id="userIsAdmin"
+                data-value="{{ Auth::user()->isAdmin() ? 'administrator' : '' }}"></div>
+            <div style="display: none;" id="ssid" data-value="{{ $request->ssid }}"></div>
+            <div style="display: none;" id="guided" data-value="{{ $request->guided ?? 'false' }}"></div>
+            <div style="display: none;" id="page" data-value="{{ $request->page ?? 1 }}"></div>
+            <div style="display: none;" id="perPage" data-value="{{ $request->perPage ?? 5 }}"></div>
+
+            <div class="modern-scan-shell" ng-controller="ModelLabelsCtrl as ctrl">
+                <div class="loader" style="margin:0 auto; margin-top: 100px;"
+                    ng-if="!(ctrl.search.meta.loaded | valPresent) || !ctrl.search.meta.loaded"></div>
+                <div class="row g-4 align-items-start signup-form-row" ng-hide="!ctrl.search.meta.loaded">
+
+                    {{-- LEFT: 3D model card --}}
+                    <div class="col-12 col-lg-6 col-xl-6 modern-scan-model-col">
+                        <div class="modern-scan-card modern-scan-card--model">
+                            <div id="modelcontainer" style="display: none;"></div>
+                            <div id="toggleModel" class="scan-toggle-model" style="display: none;">
+                                @if ($target == 'male')
+                                    <a href="/chakrascan?target=female&guided=<% ctrl.guided_scan %>"
+                                        class="modern-toolbar-link">
+                                        <button type="button" class="modern-btn modern-btn--outline">
+                                            Switch to Female / Cambiar a femenino
+                                        </button>
+                                    </a>
+                                @else
+                                    <a href="/chakrascan?target=male&guided=<% ctrl.guided_scan %>"
+                                        class="modern-toolbar-link">
+                                        <button type="button" class="modern-btn modern-btn--outline">
+                                            Switch to Male / Cambiar a masculino
+                                        </button>
+                                    </a>
+                                @endif
+                                <span class="modern-control-group">
+                                    <button type="button" id="zoomIn" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.zoomIn($event)">
+                                        Zoom In / Acercar
+                                    </button>
+                                    <button type="button" id="zoomOut" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.zoomOut($event)">
+                                        Zoom Out / Alejar
+                                    </button>
+                                </span>
+                                <span class="modern-control-group">
+                                    <button type="button" id="prevPoint" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.prevPoint($event)">
+                                        Previous / Anterior
+                                    </button>
+                                    <button type="button" id="nextPoint" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.nextPoint($event)">
+                                        Next / Siguiente
+                                    </button>
+                                </span>
+                                @if (Auth::user()->isAdmin())
+                                    <span class="modern-control-group">
+                                        <button type="button" id="addPoint" class="modern-btn modern-btn--primary"
+                                            data-toggle="modal" data-target="#modelLabelModal"
+                                            data-title="Add Model Label / Agregar etiqueta del modelo"
+                                            ng-if="!(ctrl.client | valPresent)" disabled>Add / Agregar</button>
+                                        <span id="pointX" data-value="0" style="display: none;">Point X: 0</span>
+                                        <span id="pointY" data-value="0" style="display: none;">Point Y: 0</span>
+                                        <span id="pointZ" data-value="0" style="display: none;">Point Z: 0</span>
+                                    </span>
+                                @endif
+                            </div>
                         </div>
-                        <table border="1" style="width: 100%; margin: 8px 32px;" ng-if="ctrl.bookmarks | valPresent">
-                            <tr>
-                                <th class="text-center">Name / Nombre</th>
-                                <th class="text-center">Created At / Creado el</th>
-                                <th class="text-center" style="width: 120px;"></th>
-                            </tr>
-                            <tr ng-repeat="bookmark in ctrl.bookmarks track by bookmark.id">
-                                <td><a href="<% bookmark.url %>"><% bookmark.name %></a></td>
-                                <td><% bookmark.created_at %></td>
-                                <td class="text-center">
-                                    <button ng-if="bookmark.editable" ng-click="ctrl.editBookmark(bookmark)" ng-disabled="(bookmark_record.id | valPresent)">Edit / Editar</button>
-                                    <button ng-if="bookmark.deletable" style="color: red;" ng-click="ctrl.deleteBookmark(bookmark)" ng-disabled="(bookmark_record.id | valPresent)">Delete / Eliminar</button>
-                                </td>
-                            </tr>
-                        </table>
                     </div>
-                    <div class="row" style="margin: 8px 0;" ng-if="(ctrl.model_labels.length > 0) && !ctrl.disable_client_selection">
-                        <label style="margin: 8px;" ng-if="ctrl.clients | valPresent">Client / Cliente:</label>
-                            <select class="form-control" id="client_id" name="client_id" ng-model="ctrl.client" style="width: calc(100% - 219px)" ng-if="ctrl.clients | valPresent">
-                                <option ng-value="null">(No client selected / Ningún cliente seleccionado)</option>
-                                <option ng-repeat="client in ctrl.clients | where: { gender: ctrl.search.params.target, user_id: {{ Auth::user()->id }} } track by client.id" ng-value="<% client %>"><% client.name %></option>
-                            </select>
-                        <a href="/data_cache/clients/<% ctrl.client.id %>?scan_type=chakra_scan" target="_blank"><button class="btn-data-cache" style="margin: 8px; margin-right: 0; width: 90px;" ng-disabled="!(ctrl.client | valPresent)" ng-if="ctrl.clients | valPresent">View / Ver</button></a>
-                        <a href="/data_cache/client_info" target="_blank"><button class="btn-data-cache" style="margin: 8px; width: 90px;" ng-disabled="ctrl.client | valPresent" ng-if="ctrl.clients | valPresent">Add / Agregar</button></a>
-                    </div>
-                    <div class="text-center">
-                        <span style="font-size: 16.5px;" ng-if="(ctrl.client | valPresent) && !(ctrl.client.scan_session_id | valPresent)">No active scan session for this client. / No hay una sesión de escaneo activa para este cliente. <a href="/data_cache/clients/<% ctrl.client.id %>">Click here to create a scan session. / Haga clic aquí para crear una sesión de escaneo.</a></span>
-                    </div>
-                    <h5 ng-if="ctrl.model_labels.length > 0" style="margin: 8px 0;"><% ctrl.search.meta.pageStatus %></h5>
-                    <div class="row second-layer">
-                        <span style="margin-left: 50px; margin-top: 10px;" ng-if="(ctrl.model_labels | filter: { point: { name: ctrl.search.params.text } }).length == 0">No results found. / No se encontraron resultados.</span>
-                        <ul id="accordion" ng-if="ctrl.model_labels.length > 0" style="width: 100%;">
-                            <li
-                                ng-repeat="model_label in ctrl.model_labels | orderBy: ctrl.orderBy | filter: { point: { name: ctrl.search.params.text } } | unique: 'point.name' | slice: ctrl.search.meta.startPos:ctrl.search.meta.startPos+ctrl.search.meta.perPage">
-                                <button class="btn btn-link collapsed" ng-click="ctrl.addPairToClient(model_label.point)"
-                                    ng-if="!model_label.point._delete && (ctrl.client | valPresent) && (ctrl.client.scan_session_id | valPresent)">
-                                    <img src="{{ asset('/images/scan-btn-add.png') }}"
-                                        alt="{{ env('APP_TITLE') }}"></img>
+
+                    {{-- RIGHT: data card --}}
+                    <div class="col-12 col-lg-6 col-xl-6 modern-scan-data-col">
+                        <div class="modern-scan-card scan-point-container" ng-cloak="">
+                            <h6 style="font-size: 28px; text-align: center;"
+                                ng-if="(ctrl.model_labels.length > 0) && ctrl.disable_client_selection"><a
+                                    href="/data_cache/clients/<% ctrl.client.id %>" target="_blank"><% ctrl.client.name %></a>
+                            </h6>
+
+                            <div class="row scan-search-box" ng-if="ctrl.model_labels.length > 0">
+                                <img src="{{ asset('/images/scan-search-icon.png') }}" alt="{{ env('APP_TITLE') }}"></img>
+                                <form>
+                                    <input type="text" placeholder="Search... / Buscar..."
+                                        ng-model="ctrl.search.params.text" style="width: calc(100% - 66px)"></input>
+                                    <select ng-model="ctrl.search.meta.perPage" style="width: 62px; height: 28px;">
+                                        <option ng-repeat="itemsPerPage in ctrl.search.perPageOptions"
+                                            ng-value="itemsPerPage">
+                                            <% itemsPerPage %></option>
+                                    </select>
+                                </form>
+                            </div>
+
+                            <div class="modern-scan-toolbar">
+                                @if ($request->guided == 'true')
+                                    <a href="/chakrascan?target=<% ctrl.search.params.target %>&guided=false"
+                                        class="modern-toolbar-link">
+                                        <button type="button" class="modern-btn modern-btn--outline">
+                                            Switch to Non Guided Scan / Cambiar a escaneo no guiado
+                                        </button>
+                                    </a>
+                                @else
+                                    <a href="/chakrascan?target=<% ctrl.search.params.target %>&guided=true"
+                                        class="modern-toolbar-link">
+                                        <button type="button" class="modern-btn modern-btn--outline">
+                                            Switch to Guided Scan / Cambiar a escaneo guiado
+                                        </button>
+                                    </a>
+                                @endif
+                                <button type="button" class="modern-btn modern-btn--outline modern-toolbar-bookmark"
+                                    ng-click="ctrl.showBookmark = (ctrl.showBookmark ? false : true)">
+                                    <% ctrl.showBookmark ? 'Hide Bookmarks / Ocultar marcadores' : 'Show Bookmarks / Mostrar marcadores' %>
                                 </button>
-                                <button class="btn btn-link collapsed"
-                                    ng-click="ctrl.removePairToClient(model_label.point)"
-                                    ng-if="model_label.point._delete && (ctrl.client | valPresent) && (ctrl.client.scan_session_id | valPresent)">
-                                    <img src="{{ asset('/images/scan-btn-minus.png') }}"
-                                        alt="{{ env('APP_TITLE') }}"></img>
-                                </button>
-                                <span class="btn-link" data-toggle="collapse"
-                                    data-target="#collapse-<% model_label.id %>" aria-expanded="true"
-                                    aria-controls="collapse-<% model_label.id %>"
-                                    ng-click="ctrl.showPoints($event, model_label.id)"><% ctrl.getPairName(model_label.point)  || '-' %></span>
-                                <div id="collapse-<% model_label.id %>" class="collapse"
-                                    aria-labelledby="heading-<% model_label.id %>" data-parent="#accordion"
-                                    style="font-size: 16px;">
-                                    <table style="margin-left: 50px; margin-top: 10px; width: calc(100% - 50px);"
-                                        border="1">
-                                        <thead></thead>
-                                        <tbody>
-                                            @if (Auth::user()->isAdmin())
-                                                <tr ng-repeat="label in ctrl.model_labels | orderBy: ctrl.orderBy | filter: { point: { id: model_label.point.id, name: model_label.point.name } } track by label.id"
-                                                    ng-if="!(ctrl.client | valPresent)">
-                                                    <td colspan="2">
-                                                        <span>
-                                                            X: <input type="text" ng-value="label.point_x"
-                                                                disabled="" style="width: 60px; max-width: 120px;">
-                                                            Y: <input type="text" ng-value="label.point_y"
-                                                                disabled="" style="width: 60px; max-width: 120px;">
-                                                            Z: <input type="text" ng-value="label.point_z"
-                                                                disabled="" style="width: 60px; max-width: 120px;">
-                                                        </span>
-                                                        <div style="float: right;">
-                                                            <button class="get-coordinates" ng-click="ctrl.getCoordinates($event, label.id)">Get Coordinates / Obtener coordenadas</button>
-                                                            <button class="editor-edit" data-toggle="modal" data-target="#modelLabelModal" data-title="Edit Model Label / Editar etiqueta del modelo" data-id="<% label.id %>">Edit / Editar</button>
-                                                            <button class="editor-remove" ng-click="ctrl.deletePair($event, label.id)">Delete / Eliminar</button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                            <tr>
-                                                <td>Points/Name / Puntos/Nombre:</td>
-                                                <td><% model_label.point.name || '-' %></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Radical / Radical:</td>
-                                                <td><% model_label.point.radical || '-' %></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Start/Origin / Inicio/Origen:</td>
-                                                <td><% model_label.point.origins || '-' %></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Leads/Symptoms / Señales/Síntomas:</td>
-                                                <td><% model_label.point.symptoms || '-' %></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Path/Route/Cause and Effect / Ruta/Causa y efecto:</td>
-                                                <td><% model_label.point.paths || '-' %></td>
-                                            </tr>
-                                            <tr>
-                                                <td>Alternative Routes / Rutas alternativas:</td>
-                                                <td><% model_label.point.alternative_routes || '-' %></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            </div>
+
+                            <div class="modern-bookmark-panel" ng-if="ctrl.showBookmark">
+                                <div class="modern-bookmark-editor">
+                                    <input type="text" class="modern-bookmark-input" ng-model="bookmark_record.name"
+                                        placeholder="Bookmark Title / Título del marcador">
+                                    <button type="button" class="modern-btn modern-btn--primary"
+                                        ng-click="ctrl.saveBookmark(bookmark_record)"
+                                        ng-disabled="!(bookmark_record.name | valPresent)">Save / Guardar</button>
+                                    <button type="button" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.clearBookmark()"
+                                        ng-if="(bookmark_record.id | valPresent)">Cancel / Cancelar</button>
                                 </div>
-                            </li>
-                        </ul>
+                                <div class="modern-bookmark-empty" ng-if="!(ctrl.bookmarks | valPresent)">
+                                    You have no saved bookmarks. / No tiene marcadores guardados.
+                                </div>
+                                <table class="modern-bookmark-table" ng-if="ctrl.bookmarks | valPresent">
+                                    <thead>
+                                        <tr>
+                                            <th>Name / Nombre</th>
+                                            <th>Created At / Creado el</th>
+                                            <th class="text-end" style="width: 160px;">&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="bookmark in ctrl.bookmarks track by bookmark.id">
+                                            <td><a href="<% bookmark.url %>"><% bookmark.name %></a></td>
+                                            <td><% bookmark.created_at %></td>
+                                            <td class="text-end">
+                                                <button type="button"
+                                                    class="modern-btn modern-btn--small modern-btn--outline"
+                                                    ng-if="bookmark.editable" ng-click="ctrl.editBookmark(bookmark)"
+                                                    ng-disabled="(bookmark_record.id | valPresent)">Edit / Editar</button>
+                                                <button type="button"
+                                                    class="modern-btn modern-btn--small modern-btn--danger"
+                                                    ng-if="bookmark.deletable"
+                                                    ng-click="ctrl.deleteBookmark(bookmark)"
+                                                    ng-disabled="(bookmark_record.id | valPresent)">Delete / Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="modern-client-row"
+                                ng-if="(ctrl.model_labels.length > 0) && !ctrl.disable_client_selection">
+                                <label class="modern-client-label" ng-if="ctrl.clients | valPresent">Client /
+                                    Cliente:</label>
+                                <select class="form-control modern-client-select" id="client_id" name="client_id"
+                                    ng-model="ctrl.client" ng-if="ctrl.clients | valPresent">
+                                    <option ng-value="null">(No client selected / Ningún cliente seleccionado)</option>
+                                    <option
+                                        ng-repeat="client in ctrl.clients | where: { gender: ctrl.search.params.target, user_id: {{ Auth::user()->id }} } track by client.id"
+                                        ng-value="<% client %>"><% client.name %></option>
+                                </select>
+                                <a href="/data_cache/clients/<% ctrl.client.id %>?scan_type=chakra_scan" target="_blank"
+                                    class="modern-toolbar-link">
+                                    <button type="button" class="modern-btn modern-btn--primary btn-data-cache"
+                                        ng-disabled="!(ctrl.client | valPresent)"
+                                        ng-if="ctrl.clients | valPresent">View / Ver</button>
+                                </a>
+                                <a href="/data_cache/client_info" target="_blank" class="modern-toolbar-link">
+                                    <button type="button" class="modern-btn modern-btn--primary btn-data-cache"
+                                        ng-disabled="ctrl.client | valPresent"
+                                        ng-if="ctrl.clients | valPresent">Add / Agregar</button>
+                                </a>
+                            </div>
+
+                            <div class="text-center">
+                                <span style="font-size: 16.5px;"
+                                    ng-if="(ctrl.client | valPresent) && !(ctrl.client.scan_session_id | valPresent)">No
+                                    active scan session for this client. / No hay una sesión de escaneo activa para este
+                                    cliente.
+                                    <a href="/data_cache/clients/<% ctrl.client.id %>">Click here to create a scan
+                                        session. / Haga clic aquí para crear una sesión de escaneo.</a>
+                                </span>
+                            </div>
+
+                            <h5 ng-if="ctrl.model_labels.length > 0" style="margin: 8px 0;">
+                                <% ctrl.search.meta.pageStatus %>
+                            </h5>
+
+                            <div class="row second-layer">
+                                <span style="margin-left: 50px; margin-top: 10px;"
+                                    ng-if="(ctrl.model_labels | filter: { point: { name: ctrl.search.params.text } }).length == 0">No
+                                    results found. / No se encontraron resultados.</span>
+                                <ul id="accordion" ng-if="ctrl.model_labels.length > 0" style="width: 100%;">
+                                    <li
+                                        ng-repeat="model_label in ctrl.model_labels | orderBy: ctrl.orderBy | filter: { point: { name: ctrl.search.params.text } } | unique: 'point.name' | slice: ctrl.search.meta.startPos:ctrl.search.meta.startPos+ctrl.search.meta.perPage">
+                                        <button class="btn btn-link collapsed"
+                                            ng-click="ctrl.addPairToClient(model_label.point)"
+                                            ng-if="!model_label.point._delete && (ctrl.client | valPresent) && (ctrl.client.scan_session_id | valPresent)">
+                                            <img src="{{ asset('/images/scan-btn-add.png') }}"
+                                                alt="{{ env('APP_TITLE') }}"></img>
+                                        </button>
+                                        <button class="btn btn-link collapsed"
+                                            ng-click="ctrl.removePairToClient(model_label.point)"
+                                            ng-if="model_label.point._delete && (ctrl.client | valPresent) && (ctrl.client.scan_session_id | valPresent)">
+                                            <img src="{{ asset('/images/scan-btn-minus.png') }}"
+                                                alt="{{ env('APP_TITLE') }}"></img>
+                                        </button>
+                                        <span class="btn-link" data-toggle="collapse"
+                                            data-target="#collapse-<% model_label.id %>" aria-expanded="true"
+                                            aria-controls="collapse-<% model_label.id %>"
+                                            ng-click="ctrl.showPoints($event, model_label.id)"><% ctrl.getPairName(model_label.point) || '-' %></span>
+                                        <div id="collapse-<% model_label.id %>" class="collapse"
+                                            aria-labelledby="heading-<% model_label.id %>" data-parent="#accordion"
+                                            style="font-size: 16px;">
+                                            <table style="margin-left: 50px; margin-top: 10px; width: calc(100% - 50px);"
+                                                border="1">
+                                                <thead></thead>
+                                                <tbody>
+                                                    @if (Auth::user()->isAdmin())
+                                                        <tr ng-repeat="label in ctrl.model_labels | orderBy: ctrl.orderBy | filter: { point: { id: model_label.point.id, name: model_label.point.name } } track by label.id"
+                                                            ng-if="!(ctrl.client | valPresent)">
+                                                            <td colspan="2">
+                                                                <span>
+                                                                    X: <input type="text" ng-value="label.point_x"
+                                                                        disabled=""
+                                                                        style="width: 60px; max-width: 120px;">
+                                                                    Y: <input type="text" ng-value="label.point_y"
+                                                                        disabled=""
+                                                                        style="width: 60px; max-width: 120px;">
+                                                                    Z: <input type="text" ng-value="label.point_z"
+                                                                        disabled=""
+                                                                        style="width: 60px; max-width: 120px;">
+                                                                </span>
+                                                                <div class="modern-admin-actions">
+                                                                    <button type="button"
+                                                                        class="modern-btn modern-btn--small modern-btn--ghost get-coordinates"
+                                                                        ng-click="ctrl.getCoordinates($event, label.id)">
+                                                                        Get Coordinates / Obtener coordenadas
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="modern-btn modern-btn--small modern-btn--outline editor-edit"
+                                                                        data-toggle="modal"
+                                                                        data-target="#modelLabelModal"
+                                                                        data-title="Edit Model Label / Editar etiqueta del modelo"
+                                                                        data-id="<% label.id %>">Edit / Editar</button>
+                                                                    <button type="button"
+                                                                        class="modern-btn modern-btn--small modern-btn--danger editor-remove"
+                                                                        ng-click="ctrl.deletePair($event, label.id)">
+                                                                        Delete / Eliminar
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    @endif
+                                                    <tr>
+                                                        <td>Points/Name / Puntos/Nombre:</td>
+                                                        <td><% model_label.point.name || '-' %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Radical / Radical:</td>
+                                                        <td><% model_label.point.radical || '-' %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Start/Origin / Inicio/Origen:</td>
+                                                        <td><% model_label.point.origins || '-' %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Leads/Symptoms / Señales/Síntomas:</td>
+                                                        <td><% model_label.point.symptoms || '-' %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Path/Route/Cause and Effect / Ruta/Causa y efecto:</td>
+                                                        <td><% model_label.point.paths || '-' %></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Alternative Routes / Rutas alternativas:</td>
+                                                        <td><% model_label.point.alternative_routes || '-' %></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- How To Scan Modal -->
     <div class="modal fade" id="howToScanModal" tabindex="-1" role="dialog" aria-labelledby="howToScanModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
-                <div class="modal-header" style="background: #f5f5f5; position: relative;">
+                <div class="modal-header" style="background: #f5f5f5;">
                     <div style="text-align: center; width: 100%;">
                         <h5 class="modal-title" id="howToScanModalLabel" style="font-weight: bold; margin-bottom: 4px;">
                             How Chakra Scan Works</h5>
@@ -243,8 +360,8 @@
                             <p><strong>2. Check Each Major Chakra</strong></p>
                             <p>Place the negative magnet on the front of the chakra.<br>
                                 Observe the body&rsquo;s biofeedback response. You may monitor:<br>
-                                &nbsp;&nbsp;Right leg length &nbsp;|&nbsp; Hands or feet response &nbsp;|&nbsp; Body sway or
-                                subtle movement<br><br>
+                                &nbsp;&nbsp;Right leg length &nbsp;|&nbsp; Hands or feet response &nbsp;|&nbsp; Body sway
+                                or subtle movement<br><br>
                                 <strong>Shortening (contraction):</strong> &rarr; Place positive magnet on the back and
                                 recheck<br>
                                 <strong>Lengthening:</strong> &rarr; Reverse polarity (positive front / negative back) and
@@ -279,7 +396,8 @@
                             <p>Within the guided scan, each major chakra is followed by its related minor and micro
                                 areas.<br>
                                 If a major chakra shows imbalance, continue through the areas listed beneath it.<br>
-                                Work through the listed areas until the next major chakra appears, then continue upward.</p>
+                                Work through the listed areas until the next major chakra appears, then continue upward.
+                            </p>
                             <p style="color:#555;"><em>Dentro del escaneo guiado, cada chakra mayor es seguido por sus
                                     &aacute;reas relacionadas menores y micro.<br>
                                     Si un chakra mayor muestra desequilibrio, contin&uacute;e con las &aacute;reas listadas
@@ -315,58 +433,57 @@
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modelLabelModalTitle"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form>
-            <div class="modal-body">
-                <input type="hidden" id="model_label_id" name="model_label_id">
-                <input type="hidden" id="scan_type" name="scan_type">
-                <input type="hidden" id="target" name="target">
-                <div class="form-group">
-                    <label for="label">Point / Punto</label>
-                    <select class="form-control" id="pair_id" name="pair_id" required>
-                        @foreach(\App\Models\Pair::orderBy('name', 'asc')->where('scan_type', '=', 'chakra_scan')->get() as $pair)
-                            <option value="{{$pair->id}}">{{$pair->name}}</option>
-                        @endforeach
-                    </select>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modelLabelModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <label>Point Coordinates / Coordenadas del punto</label>
-                <div class="form-group row">
-                    <div class="col">
-                        <label>X</label>
-                        <input type="number" class="form-control" id="point_x" name="point_x" required>
+                <form>
+                    <div class="modal-body">
+                        <input type="hidden" id="model_label_id" name="model_label_id">
+                        <input type="hidden" id="scan_type" name="scan_type">
+                        <input type="hidden" id="target" name="target">
+                        <div class="form-group">
+                            <label for="label">Point / Punto</label>
+                            <select class="form-control" id="pair_id" name="pair_id" required>
+                                @foreach (\App\Models\Pair::orderBy('name', 'asc')->where('scan_type', '=', 'chakra_scan')->get() as $pair)
+                                    <option value="{{ $pair->id }}">{{ $pair->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <label>Point Coordinates / Coordenadas del punto</label>
+                        <div class="form-group row">
+                            <div class="col">
+                                <label>X</label>
+                                <input type="number" class="form-control" id="point_x" name="point_x" required>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary save-btn">Save</button>
+                            </div>
+                            <div class="col">
+                                <label>Z</label>
+                                <input type="number" class="form-control" id="point_z" name="point_z" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save-btn">Save</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close / Cerrar</button>
+                        <button type="button" class="btn btn-primary save-btn">Save / Guardar</button>
                     </div>
-                    <div class="col">
-                        <label>Z</label>
-                        <input type="number" class="form-control" id="point_z" name="point_z" required>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close / Cerrar</button>
-                <button type="button" class="btn btn-primary save-btn">Save / Guardar</button>
-            </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>
 @endsection
-@section('javascripts')
-    @parent
+
+@push('scripts')
     <script>
         $('#modelLabelModal').on('show.bs.modal', function(e) {
             var trigger = $(e.relatedTarget)
             $('#modelLabelModalTitle').text(trigger.data('title'));
 
-            // Retrieve model_label 
             $model_label_id = trigger.data('id')
             if ($model_label_id != null) {
                 $.ajax({
@@ -394,7 +511,6 @@
             }
         })
 
-        // Save a record
         $(".save-btn").click(function(e) {
             e.preventDefault();
 
@@ -453,4 +569,4 @@
             }
         });
     </script>
-@stop
+@endpush
