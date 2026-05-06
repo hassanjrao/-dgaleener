@@ -10,8 +10,8 @@
 @section('content')
     @php($target = request()->target ?? 'female')
 
-    <main class="modern-main-content">
-        <div class="container">
+    <main class="modern-main-content modern-main-content--fluid">
+        <div class="container-fluid modern-bodyscan-wrap">
             <div class="modern-page-header d-flex flex-wrap align-items-center justify-content-between gap-3">
                 <div>
                     <span class="eyebrow">Biomagnetism</span>
@@ -33,49 +33,65 @@
             <div style="display: none;" id="page" data-value="{{ $request->page ?? 1 }}"></div>
             <div style="display: none;" id="perPage" data-value="{{ $request->perPage ?? 5 }}"></div>
 
-            <div class="modern-scan-card scan-container" ng-controller="ModelLabelsCtrl as ctrl">
+            <div class="modern-scan-shell" ng-controller="ModelLabelsCtrl as ctrl">
                 <div class="loader" style="margin:0 auto; margin-top: 100px;"
                     ng-if="!(ctrl.search.meta.loaded | valPresent) || !ctrl.search.meta.loaded"></div>
-                <div class="row justify-content-center signup-form-row" ng-hide="!ctrl.search.meta.loaded">
-                    <div class="row col-md-12" style="padding-left: 0;">
-                        <div class="col-md-6 col-xs-6" style="padding-left: 25px;">
+                <div class="row g-4 align-items-start justify-content-between signup-form-row" ng-hide="!ctrl.search.meta.loaded">
+                    <div class="col-12 col-lg-6 col-xl-6 modern-scan-model-col">
+                        <div class="modern-scan-card modern-scan-card--model">
                             <div id="modelcontainer" style="display: none;"></div>
                             <div id="toggleModel" class="scan-toggle-model" style="display: none;">
                                 @if ($target == 'male')
-                                    <a href="/bodyscan?target=female&guided=<% ctrl.guided_scan %>">
-                                        <button>Switch to Female / Cambiar a femenino</button>
+                                    <a href="/bodyscan?target=female&guided=<% ctrl.guided_scan %>"
+                                        class="modern-toolbar-link">
+                                        <button type="button" class="modern-btn modern-btn--outline">
+                                            Switch to Female / Cambiar a femenino
+                                        </button>
                                     </a>
                                 @else
-                                    <a href="/bodyscan?target=male&guided=<% ctrl.guided_scan %>">
-                                        <button>Switch to Male / Cambiar a masculino</button>
+                                    <a href="/bodyscan?target=male&guided=<% ctrl.guided_scan %>"
+                                        class="modern-toolbar-link">
+                                        <button type="button" class="modern-btn modern-btn--outline">
+                                            Switch to Male / Cambiar a masculino
+                                        </button>
                                     </a>
                                 @endif
-                                <span style="margin: 0 30px;">
-                                    <button id="zoomIn" ng-click="ctrl.zoomIn($event)">
+                                <span class="modern-control-group">
+                                    <button type="button" id="zoomIn" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.zoomIn($event)">
                                         Zoom In / Acercar
                                     </button>
-                                    <button id="zoomOut" ng-click="ctrl.zoomOut($event)">
+                                    <button type="button" id="zoomOut" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.zoomOut($event)">
                                         Zoom Out / Alejar
                                     </button>
-                                    <span style="margin: 0 30px;">
-                                        <button id="prevPoint" ng-click="ctrl.prevPoint($event)">
-                                            Previous / Anterior
-                                        </button>
-                                        <button id="nextPoint" ng-click="ctrl.nextPoint($event)">
-                                            Next / Siguiente
-                                        </button>
-                                        <span style="margin: 0 30px;">
-                                            @if (Auth::user()->isAdmin())
-                                                <button id="addPoint" data-toggle="modal" data-target="#modelLabelModal"
-                                                    data-title="Add Model Label / Agregar etiqueta del modelo"
-                                                    ng-if="!(ctrl.client | valPresent)" disabled>Add / Agregar</button>
-                                                <span id="pointX" data-value="0" style="display: none;">Point X: 0</span>
-                                                <span id="pointY" data-value="0" style="display: none;">Point Y: 0</span>
-                                                <span id="pointZ" data-value="0" style="display: none;">Point Z: 0</span>
-                                            @endif
+                                </span>
+                                <span class="modern-control-group">
+                                    <button type="button" id="prevPoint" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.prevPoint($event)">
+                                        Previous / Anterior
+                                    </button>
+                                    <button type="button" id="nextPoint" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.nextPoint($event)">
+                                        Next / Siguiente
+                                    </button>
+                                </span>
+                                @if (Auth::user()->isAdmin())
+                                    <span class="modern-control-group">
+                                        <button type="button" id="addPoint" class="modern-btn modern-btn--primary"
+                                            data-toggle="modal" data-target="#modelLabelModal"
+                                            data-title="Add Model Label / Agregar etiqueta del modelo"
+                                            ng-if="!(ctrl.client | valPresent)" disabled>Add / Agregar</button>
+                                        <span id="pointX" data-value="0" style="display: none;">Point X: 0</span>
+                                        <span id="pointY" data-value="0" style="display: none;">Point Y: 0</span>
+                                        <span id="pointZ" data-value="0" style="display: none;">Point Z: 0</span>
+                                    </span>
+                                @endif
                             </div>
                         </div>
-                        <div class="col-md-6 col-xs-6 scan-point-container" ng-cloak="">
+                    </div>
+                    <div class="col-12 col-lg-6 col-xl-6 modern-scan-data-col">
+                        <div class="modern-scan-card scan-point-container" ng-cloak="">
                             <h6 style="font-size: 28px; text-align: center;"
                                 ng-if="(ctrl.model_labels.length > 0) && ctrl.disable_client_selection"><a
                                     href="/data_cache/clients/<% ctrl.client.id %>" target="_blank"><% ctrl.client.name %></a>
@@ -92,72 +108,85 @@
                                     </select>
                                 </form>
                             </div>
-                            <div class="row" style="margin: 8px 0;">
+                            <div class="modern-scan-toolbar">
                                 @if ($request->guided == 'true')
-                                    <a href="/bodyscan?target=<% ctrl.search.params.target %>&guided=false">
-                                        <button style="margin: 8px; margin-right: 0;">Switch to Non Guided Scan / Cambiar
-                                            a escaneo
-                                            no guiado</button>
+                                    <a href="/bodyscan?target=<% ctrl.search.params.target %>&guided=false"
+                                        class="modern-toolbar-link">
+                                        <button type="button" class="modern-btn modern-btn--outline">
+                                            Switch to Non Guided Scan / Cambiar a escaneo no guiado
+                                        </button>
                                     </a>
                                 @else
-                                    <a href="/bodyscan?target=<% ctrl.search.params.target %>&guided=true">
-                                        <button style="margin: 8px; margin-right: 0;">Switch to Guided Scan / Cambiar a
-                                            escaneo
-                                            guiado</button>
+                                    <a href="/bodyscan?target=<% ctrl.search.params.target %>&guided=true"
+                                        class="modern-toolbar-link">
+                                        <button type="button" class="modern-btn modern-btn--outline">
+                                            Switch to Guided Scan / Cambiar a escaneo guiado
+                                        </button>
                                     </a>
                                 @endif
-                                <button class="pull-right" style="margin: 8px; margin-right: 0;"
-                                    ng-click="ctrl.showBookmark = (ctrl.showBookmark ? false : true)"><% ctrl.showBookmark ? 'Hide Bookmarks / Ocultar marcadores' : 'Show Bookmarks / Mostrar marcadores' %></button>
+                                <button type="button" class="modern-btn modern-btn--outline modern-toolbar-bookmark"
+                                    ng-click="ctrl.showBookmark = (ctrl.showBookmark ? false : true)">
+                                    <% ctrl.showBookmark ? 'Hide Bookmarks / Ocultar marcadores' : 'Show Bookmarks / Mostrar marcadores' %>
+                                </button>
                             </div>
-                            <div class="row" style="margin: 8px;" ng-if="ctrl.showBookmark">
-                                <input type="text" ng-model="bookmark_record.name"
-                                    style="<% (bookmark_record.id | valPresent) ? 'width: calc(100% - 129px)' : 'width: calc(100% - 57px)' %>"
-                                    placeholder="Bookmark Title / Título del marcador"></input>
-                                <button style="margin-left: 8px;" ng-click="ctrl.saveBookmark(bookmark_record)"
-                                    ng-disabled="!(bookmark_record.name | valPresent)">Save / Guardar</button>
-                                <button style="margin-left: 8px;" ng-click="ctrl.clearBookmark()"
-                                    ng-if="(bookmark_record.id | valPresent)">Cancel / Cancelar</button>
-                                <div class="text-center" style="margin: 16px 0; width: 100%;">
-                                    <span ng-if="!(ctrl.bookmarks | valPresent)">You have no saved bookmarks. / No tiene
-                                        marcadores
-                                        guardados.</span>
+                            <div class="modern-bookmark-panel" ng-if="ctrl.showBookmark">
+                                <div class="modern-bookmark-editor">
+                                    <input type="text" class="modern-bookmark-input" ng-model="bookmark_record.name"
+                                        placeholder="Bookmark Title / Título del marcador">
+                                    <button type="button" class="modern-btn modern-btn--primary"
+                                        ng-click="ctrl.saveBookmark(bookmark_record)"
+                                        ng-disabled="!(bookmark_record.name | valPresent)">Save / Guardar</button>
+                                    <button type="button" class="modern-btn modern-btn--ghost"
+                                        ng-click="ctrl.clearBookmark()"
+                                        ng-if="(bookmark_record.id | valPresent)">Cancel / Cancelar</button>
                                 </div>
-                                <table border="1" style="width: 100%; margin: 8px 32px;"
-                                    ng-if="ctrl.bookmarks | valPresent">
-                                    <tr>
-                                        <th class="text-center">Name / Nombre</th>
-                                        <th class="text-center">Created At / Creado el</th>
-                                        <th class="text-center" style="width: 120px;"></th>
-                                    </tr>
-                                    <tr ng-repeat="bookmark in ctrl.bookmarks track by bookmark.id">
-                                        <td><a href="<% bookmark.url %>"><% bookmark.name %></a></td>
-                                        <td><% bookmark.created_at %></td>
-                                        <td class="text-center">
-                                            <button ng-if="bookmark.editable" ng-click="ctrl.editBookmark(bookmark)"
-                                                ng-disabled="(bookmark_record.id | valPresent)">Edit / Editar</button>
-                                            <button ng-if="bookmark.deletable" style="color: red;"
-                                                ng-click="ctrl.deleteBookmark(bookmark)"
-                                                ng-disabled="(bookmark_record.id | valPresent)">Delete / Eliminar</button>
-                                        </td>
-                                    </tr>
+                                <div class="modern-bookmark-empty" ng-if="!(ctrl.bookmarks | valPresent)">
+                                    You have no saved bookmarks. / No tiene marcadores guardados.
+                                </div>
+                                <table class="modern-bookmark-table" ng-if="ctrl.bookmarks | valPresent">
+                                    <thead>
+                                        <tr>
+                                            <th>Name / Nombre</th>
+                                            <th>Created At / Creado el</th>
+                                            <th class="text-end" style="width: 160px;">&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="bookmark in ctrl.bookmarks track by bookmark.id">
+                                            <td><a href="<% bookmark.url %>"><% bookmark.name %></a></td>
+                                            <td><% bookmark.created_at %></td>
+                                            <td class="text-end">
+                                                <button type="button" class="modern-btn modern-btn--small modern-btn--outline"
+                                                    ng-if="bookmark.editable" ng-click="ctrl.editBookmark(bookmark)"
+                                                    ng-disabled="(bookmark_record.id | valPresent)">Edit / Editar</button>
+                                                <button type="button" class="modern-btn modern-btn--small modern-btn--danger"
+                                                    ng-if="bookmark.deletable"
+                                                    ng-click="ctrl.deleteBookmark(bookmark)"
+                                                    ng-disabled="(bookmark_record.id | valPresent)">Delete / Eliminar</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </div>
-                            <div class="row" style="margin: 8px 0;"
+                            <div class="modern-client-row"
                                 ng-if="(ctrl.model_labels.length > 0) && !ctrl.disable_client_selection">
-                                <label style="margin: 8px;" ng-if="ctrl.clients | valPresent">Client / Cliente:</label>
-                                <select class="form-control" id="client_id" name="client_id" ng-model="ctrl.client"
-                                    style="width: calc(100% - 219px)" ng-if="ctrl.clients | valPresent">
+                                <label class="modern-client-label" ng-if="ctrl.clients | valPresent">Client / Cliente:</label>
+                                <select class="form-control modern-client-select" id="client_id" name="client_id"
+                                    ng-model="ctrl.client" ng-if="ctrl.clients | valPresent">
                                     <option ng-value="null">(No client selected / Ningún cliente seleccionado)</option>
                                     <option
                                         ng-repeat="client in ctrl.clients | where: { gender: ctrl.search.params.target, user_id: {{ Auth::user()->id }} } track by client.id"
                                         ng-value="<% client %>"><% client.name %></option>
                                 </select>
-                                <a href="/data_cache/clients/<% ctrl.client.id %>?scan_type=body_scan" target="_blank"><button
-                                        class="btn-data-cache" style="margin: 8px; margin-right: 0; width: 90px;"
-                                        ng-disabled="!(ctrl.client | valPresent)" ng-if="ctrl.clients | valPresent">View /
-                                        Ver</button></a>
-                                <a href="/data_cache/client_info" target="_blank"><button class="btn-data-cache"
-                                        style="margin: 8px; width: 90px;" ng-disabled="ctrl.client | valPresent"
+                                <a href="/data_cache/clients/<% ctrl.client.id %>?scan_type=body_scan" target="_blank"
+                                    class="modern-toolbar-link"><button type="button"
+                                        class="modern-btn modern-btn--primary btn-data-cache"
+                                        ng-disabled="!(ctrl.client | valPresent)"
+                                        ng-if="ctrl.clients | valPresent">View / Ver</button></a>
+                                <a href="/data_cache/client_info" target="_blank"
+                                    class="modern-toolbar-link"><button type="button"
+                                        class="modern-btn modern-btn--primary btn-data-cache"
+                                        ng-disabled="ctrl.client | valPresent"
                                         ng-if="ctrl.clients | valPresent">Add / Agregar</button></a>
                             </div>
                             <div class="text-center">
@@ -216,19 +245,23 @@
                                                                         disabled=""
                                                                         style="width: 60px; max-width: 120px;">
                                                                 </span>
-                                                                <div style="float: right;">
-                                                                    <button class="get-coordinates"
-                                                                        ng-click="ctrl.getCoordinates($event, label.id)">Get
-                                                                        Coordinates / Obtener coordenadas</button>
-                                                                    <button class="editor-edit" data-toggle="modal"
+                                                                <div class="modern-admin-actions">
+                                                                    <button type="button"
+                                                                        class="modern-btn modern-btn--small modern-btn--ghost get-coordinates"
+                                                                        ng-click="ctrl.getCoordinates($event, label.id)">
+                                                                        Get Coordinates / Obtener coordenadas
+                                                                    </button>
+                                                                    <button type="button"
+                                                                        class="modern-btn modern-btn--small modern-btn--outline editor-edit"
+                                                                        data-toggle="modal"
                                                                         data-target="#modelLabelModal"
                                                                         data-title="Edit Model Label / Editar etiqueta del modelo"
-                                                                        data-id="<% label.id %>">Edit /
-                                                                        Editar</button>
-                                                                    <button class="editor-remove"
-                                                                        ng-click="ctrl.deletePair($event, label.id)">Delete
-                                                                        /
-                                                                        Eliminar</button>
+                                                                        data-id="<% label.id %>">Edit / Editar</button>
+                                                                    <button type="button"
+                                                                        class="modern-btn modern-btn--small modern-btn--danger editor-remove"
+                                                                        ng-click="ctrl.deletePair($event, label.id)">
+                                                                        Delete / Eliminar
+                                                                    </button>
                                                                 </div>
                                                             </td>
                                                         </tr>

@@ -20,6 +20,19 @@ body.modern-theme {
     }
 }
 
+/* Full-bleed variant for content-heavy pages (e.g. body scan) */
+.modern-main-content--fluid {
+    max-width: none;
+    margin: 0;
+    padding: 1.25rem 0;
+}
+
+@media (min-width: 768px) {
+    .modern-main-content--fluid {
+        padding: 1.5rem 0;
+    }
+}
+
 .modern-brand-bar {
     width: 100%;
 }
@@ -597,14 +610,91 @@ body.modern-theme {
     filter: brightness(0) invert(1);
 }
 
+/* ===== Body Scan page wrapper (full width like legacy) ===== */
+.modern-bodyscan-wrap {
+    width: 100%;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
+@media (min-width: 992px) {
+    .modern-bodyscan-wrap {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* ===== Scan shell (Angular controller wrapper) ===== */
+.modern-scan-shell {
+    margin-top: 1.25rem;
+}
+
 /* ===== Scan card container ===== */
 .modern-scan-card {
     background: #ffffff;
     border: 1px solid #dfe3e3;
     border-radius: 1rem;
-    padding: 1.5rem;
+    padding: 1rem;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-    margin-top: 1.25rem;
+}
+
+@media (min-width: 992px) {
+    .modern-scan-card {
+        padding: 1.5rem;
+    }
+}
+
+/* Reset legacy scan-point-container top margin when used as our card */
+.modern-scan-card.scan-point-container {
+    margin-top: 0;
+}
+
+/* ===== Left: 3D model card ===== */
+.modern-scan-model-col {
+    min-width: 0;
+}
+
+.modern-scan-card--model {
+    padding: 0.75rem;
+}
+
+@media (min-width: 992px) {
+    .modern-scan-card--model {
+        padding: 1rem;
+    }
+}
+
+.modern-scan-card #modelcontainer {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    background: linear-gradient(180deg, #f6fafa 0%, #eef4f4 100%);
+}
+
+.modern-scan-card #modelcontainer > div {
+    width: 100% !important;
+    max-width: 100%;
+}
+
+.modern-scan-card #modelcontainer canvas {
+    display: block;
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+    margin: 0 auto;
+}
+
+/* Controls below the model — separated with a thin divider */
+.modern-scan-card--model .scan-toggle-model {
+    border-top: 1px solid #e2e8f0;
+    padding-top: 0.75rem;
+    margin: 0.75rem 0 0;
+}
+
+/* ===== Right: data card ===== */
+.modern-scan-data-col {
+    min-width: 0;
 }
 
 .modern-scan-card .scan-toggle-model {
@@ -612,45 +702,341 @@ body.modern-theme {
     flex-wrap: wrap;
     gap: 0.5rem;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0;
 }
 
-.modern-scan-card .scan-toggle-model > span {
+.modern-control-group {
     display: inline-flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    margin: 0 !important;
+    align-items: center;
 }
 
-.modern-scan-card .scan-toggle-model button,
-.modern-scan-card .scan-point-container button:not(.btn-link):not(.close):not(.save-btn):not(.btn-secondary):not(.btn-primary) {
-    background: #f1f5f5;
+/* ============================================================
+   UNIFIED MODERN BUTTON SYSTEM
+   Used across the body-scan / chakra-scan workspaces.
+   ============================================================ */
+.modern-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    background: #ffffff;
     color: #0f172a;
     border: 1px solid #cbd5d1;
     border-radius: 0.65rem;
-    padding: 0.45rem 0.85rem;
-    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
     font-weight: 600;
     line-height: 1.2;
-    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease,
+        color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+    -webkit-appearance: none;
+    appearance: none;
 }
 
-.modern-scan-card .scan-toggle-model button:hover,
-.modern-scan-card .scan-point-container button:not(.btn-link):not(.close):not(.save-btn):not(.btn-secondary):not(.btn-primary):hover {
+.modern-btn:hover,
+.modern-btn:focus {
+    color: #0f172a;
+    border-color: #94a3b8;
+    background: #f8fafc;
+    text-decoration: none;
+    outline: none;
+}
+
+.modern-btn:focus-visible {
+    box-shadow: 0 0 0 3px rgba(0, 155, 125, 0.18);
+}
+
+.modern-btn:active {
+    transform: translateY(1px);
+}
+
+.modern-btn[disabled],
+.modern-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* --- Variants --- */
+.modern-btn--primary {
     background: #009b7d;
     border-color: #009b7d;
-    color: #fff;
+    color: #ffffff;
 }
 
+.modern-btn--primary:hover,
+.modern-btn--primary:focus {
+    background: #00876d;
+    border-color: #00876d;
+    color: #ffffff;
+}
+
+.modern-btn--outline {
+    background: #ffffff;
+    border-color: #009b7d;
+    color: #009b7d;
+}
+
+.modern-btn--outline:hover,
+.modern-btn--outline:focus {
+    background: #009b7d;
+    border-color: #009b7d;
+    color: #ffffff;
+}
+
+.modern-btn--ghost {
+    background: #f1f5f5;
+    border-color: #d8e1e0;
+    color: #1f2937;
+}
+
+.modern-btn--ghost:hover,
+.modern-btn--ghost:focus {
+    background: #e2e9e8;
+    border-color: #b9c4c2;
+    color: #0f172a;
+}
+
+.modern-btn--danger {
+    background: #ffffff;
+    border-color: #dc2626;
+    color: #dc2626;
+}
+
+.modern-btn--danger:hover,
+.modern-btn--danger:focus {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+}
+
+.modern-btn--small {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.78rem;
+    border-radius: 0.5rem;
+}
+
+/* Wrappers for buttons inside <a> links */
+.modern-toolbar-link {
+    display: inline-flex;
+    text-decoration: none;
+}
+
+.modern-toolbar-link:hover,
+.modern-toolbar-link:focus {
+    text-decoration: none;
+}
+
+/* ===== Switch / Bookmarks toolbar (data card) ===== */
+.modern-scan-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.modern-toolbar-bookmark {
+    margin-left: auto;
+}
+
+/* ===== Bookmark editor panel ===== */
+.modern-bookmark-panel {
+    background: #f6fafa;
+    border: 1px solid #dfe3e3;
+    border-radius: 0.75rem;
+    padding: 0.85rem;
+    margin: 0 0 0.75rem 0;
+}
+
+.modern-bookmark-editor {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modern-bookmark-input {
+    flex: 1;
+    min-width: 12rem;
+    border: 1px solid #cbd5d1;
+    border-radius: 0.5rem;
+    padding: 0.45rem 0.7rem;
+    font-size: 0.9rem;
+    background: #ffffff;
+}
+
+.modern-bookmark-input:focus {
+    border-color: #009b7d;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 155, 125, 0.15);
+}
+
+.modern-bookmark-empty {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.9rem;
+    margin: 0.85rem 0 0.25rem;
+}
+
+.modern-bookmark-table {
+    width: 100%;
+    margin-top: 0.85rem;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+}
+
+.modern-bookmark-table thead th {
+    background: #eef4f4;
+    color: #475569;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.72rem;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid #dfe3e3;
+}
+
+.modern-bookmark-table tbody td {
+    background: #ffffff;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid #eef2f4;
+    vertical-align: middle;
+}
+
+.modern-bookmark-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.modern-bookmark-table .modern-btn + .modern-btn {
+    margin-left: 0.35rem;
+}
+
+.modern-bookmark-table a {
+    color: #009b7d;
+    font-weight: 600;
+}
+
+/* ===== Client selection row ===== */
+.modern-client-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0.75rem 0;
+}
+
+.modern-client-label {
+    margin: 0;
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 0.9rem;
+}
+
+.modern-client-select {
+    flex: 1;
+    min-width: 12rem;
+    border-radius: 0.5rem !important;
+    border: 1px solid #cbd5d1 !important;
+    height: auto !important;
+    padding: 0.4rem 0.65rem !important;
+    background: #fff !important;
+    font-size: 0.9rem !important;
+}
+
+.modern-client-select:focus {
+    border-color: #009b7d !important;
+    box-shadow: 0 0 0 3px rgba(0, 155, 125, 0.15) !important;
+}
+
+/* ===== Admin actions (inside accordion expand) ===== */
+.modern-admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+}
+
+/* Legacy class compatibility — mostly inert because the Blade now
+   composes them with `.modern-btn--*`, but keeps any out-of-page
+   usages from breaking. */
 .modern-scan-card .btn-data-cache {
-    background: #009b7d !important;
-    border: 1px solid #009b7d !important;
-    color: #fff !important;
+    background: #009b7d;
+    border-color: #009b7d;
+    color: #ffffff;
 }
 
-.modern-scan-card .btn-data-cache:hover {
-    background: #008269 !important;
-    border-color: #008269 !important;
+.modern-scan-card .btn-data-cache:hover,
+.modern-scan-card .btn-data-cache:focus {
+    background: #00876d;
+    border-color: #00876d;
+    color: #ffffff;
+}
+
+/* ===== Accordion list items ===== */
+.modern-scan-card #accordion > li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+/* +/- icon buttons (only the <button> ones) */
+.modern-scan-card #accordion > li > button.btn-link {
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border-radius: 50%;
+    background: #f1f5f5;
+    border: 1px solid #d8e1e0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+    flex: 0 0 auto;
+}
+
+.modern-scan-card #accordion > li > button.btn-link:hover,
+.modern-scan-card #accordion > li > button.btn-link:focus {
+    background: #e0f2ed;
+    border-color: #009b7d;
+}
+
+.modern-scan-card #accordion > li > button.btn-link img {
+    width: 14px;
+    height: 14px;
+    margin: 0 !important;
+}
+
+/* Pair-name span — plain text label, NOT an oval pill */
+.modern-scan-card #accordion > li > span.btn-link {
+    flex: 1;
+    min-width: 0;
+    display: inline-block;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    width: auto;
+    height: auto;
+    padding: 0.35rem 0.25rem;
+    color: #0f172a;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    word-break: break-word;
+}
+
+.modern-scan-card #accordion > li > span.btn-link:hover,
+.modern-scan-card #accordion > li > span.btn-link:focus {
+    color: #009b7d;
+    background: transparent;
+    text-decoration: none;
 }
 
 .modern-scan-card .scan-search-box {
