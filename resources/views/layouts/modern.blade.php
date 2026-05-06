@@ -12,6 +12,7 @@
     @php
         $siteTitle = config('app.title');
         $pageTitle = trim((string) $__env->yieldContent('page-title'));
+        $isBioconnectRoute = \Illuminate\Support\Str::startsWith(request()->path(), 'bioconnect');
 
         $currentRouteUri = optional(Route::getCurrentRoute())->uri() ?? '';
         $authUser = Auth::user();
@@ -22,7 +23,8 @@
             && (!isset($hideBottomNav) || !$hideBottomNav)
             && (!isset($hidePlayer) || !$hidePlayer);
 
-        $loadFoot = !empty($useAppShell) || $showPlayer;
+        $loadFoot = !empty($useAppShell) || $showPlayer
+            || (!empty($isBioconnectRoute) && Auth::check());
     @endphp
     <title>{{ $pageTitle !== '' ? $pageTitle . ' - ' . $siteTitle : $siteTitle }}</title>
 
@@ -34,6 +36,16 @@
 <body class="@yield('body-class', 'modern-theme')">
     @if (!isset($hideBrandBar) || !$hideBrandBar)
         @include('partials.modern.brand_bar')
+    @endif
+
+    @if (!empty($isBioconnectRoute))
+        @include('partials.modern.bioconnect_subnav')
+    @endif
+
+    @if (!empty($isBioconnectRoute) && Auth::check())
+        @push('scripts')
+            @include('partials.bioconnect.firebase_config')
+        @endpush
     @endif
 
     @yield('content')

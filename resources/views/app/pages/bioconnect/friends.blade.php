@@ -118,7 +118,6 @@
 
 @push('scripts')
     @if (!empty(Auth::user()))
-        @include('partials.bioconnect.firebase_config')
         @include('partials.bioconnect.friends_chat')
     @endif
 @endpush

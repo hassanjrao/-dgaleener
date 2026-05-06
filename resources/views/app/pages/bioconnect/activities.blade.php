@@ -113,7 +113,3 @@
         </div>
     </main>
 @endsection
-
-@push('scripts')
-    @include('partials.bioconnect.firebase_config')
-@endpush

@@ -2206,3 +2206,120 @@ body.modern-theme {
         margin-bottom: 1rem;
     }
 }
+
+/* ----- Bio Connect horizontal subnav (every /bioconnect/* page) ----- */
+.modern-bioconnect-subnav {
+    background-color: #31b6e8;
+    border-top: 2px solid #23a0d0;
+    width: 100%;
+}
+
+.modern-bioconnect-subnav__inner {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0.35rem 0.5rem 0.45rem;
+}
+
+.modern-bioconnect-subnav__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: stretch;
+    gap: 0.15rem;
+}
+
+.modern-bioconnect-subnav__list--guest .modern-bioconnect-subnav__item {
+    flex: 1 1 45%;
+    min-width: 140px;
+}
+
+.modern-bioconnect-subnav__item {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: 12rem;
+    display: flex;
+    justify-content: center;
+}
+
+.modern-bioconnect-subnav__link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    line-height: 1.15;
+    min-height: 3.75rem;
+    padding: 0.2rem 0.35rem;
+    color: #ffffff;
+    width: 100%;
+    border-radius: 0.35rem;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.modern-bioconnect-subnav__link:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.modern-bioconnect-subnav__link.is-active:hover {
+    color: #000080;
+}
+
+.modern-bioconnect-subnav__link.is-active {
+    color: #000080;
+}
+
+.modern-bioconnect-subnav__link.is-active .modern-bioconnect-subnav__label-en,
+.modern-bioconnect-subnav__link.is-active .modern-bioconnect-subnav__label-es {
+    color: #000080;
+}
+
+.modern-bioconnect-subnav__icon {
+    display: block;
+    margin: 0 auto 0.2rem;
+}
+
+.modern-bioconnect-subnav__labels {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+}
+
+.modern-bioconnect-subnav__label-en {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: inherit;
+}
+
+.modern-bioconnect-subnav__label-es {
+    font-size: 0.68rem;
+    font-weight: 500;
+    opacity: 0.95;
+    color: inherit;
+}
+
+.modern-bioconnect-subnav__item--notifications {
+    position: relative;
+}
+
+.modern-bioconnect-subnav__notifi-dropdown {
+    left: 50%;
+    transform: translateX(-50%);
+    margin-left: 0;
+}
+
+@media (max-width: 576px) {
+    .modern-bioconnect-subnav__item {
+        max-width: none;
+        flex: 1 1 42%;
+    }
+
+    .modern-bioconnect-subnav__list:not(.modern-bioconnect-subnav__list--guest) .modern-bioconnect-subnav__item {
+        flex: 1 1 32%;
+    }
+}

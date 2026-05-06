@@ -159,8 +159,6 @@
 @endsection
 
 @push('scripts')
-    @include('partials.bioconnect.firebase_config')
-
     <script type="text/javascript">
         $( document ).ready(function() {
 
