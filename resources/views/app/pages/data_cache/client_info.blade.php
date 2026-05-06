@@ -1,58 +1,67 @@
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Data Cache - Client Info'}}
-@stop
-@section('styles')
-    @parent
-    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
-@stop
-@section('content')
-    @include('partials.header', ['title' => 'Data Cache', 'title_es' => 'Caché de datos', 'image_url' => '/images/iconimages/briefcase80.png', 'image_class' => 'header-title-icon-white', 'menu' => 'data_cache', 'section' => 'client_info'])
-    <div id="content-container" class="data-cache-client-page">
-        <div class="data-cache-client-panel">
-            <div class="data-cache-client-toolbar">
-                <div class="data-cache-client-heading">
-                    <h2 class="data-cache-bilingual-heading">
-                        <span class="data-cache-label-en">{{ __('Client Info') }}</span>
-                        <span class="data-cache-label-es">Información del cliente</span>
-                    </h2>
-                </div>
-                <button class="btn data-cache-create-btn" data-toggle="modal" data-target="#clientInfoModal" data-title="New Client">
-                    <i class="fa fa-plus" aria-hidden="true"></i>
-                    <span class="data-cache-bilingual-button">
-                        <span class="data-cache-label-en">{{ __('Create New Client') }}</span>
-                        <span class="data-cache-label-es">Crear nuevo cliente</span>
-                    </span>
-                </button>
-            </div>
+@extends('layouts.modern')
 
-            <div class="data-cache-client-table-shell">
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered table-datatable" id="clients">
-                        <thead>
-                            <tr>
-                                <th class="align-center">{{ __('ID') }}</th>
-                                <th class="align-center">{{ __('First Name') }}</th>
-                                <th class="align-center">{{ __('Last Name') }}</th>
-                                <th class="align-center">{{ __('Email') }}</th>
-                                <th class="align-center">{{ __('Address') }}</th>
-                                <th class="align-center">{{ __('Phone No.') }}</th>
-                                <th class="align-center">{{ __('Date of Birth') }}</th>
-                                <th class="align-center">{{ __('Age') }}</th>
-                                <th class="align-center">{{ __('Emergency Details') }}</th>
-                                <th class="align-center">{{ __('Session Details') }}</th>
-                                <th class="align-center">{{ __('Actions') }}</th>
-                            </tr>
-                        </thead>
-                    </table>
+@section('page-title', 'Client Info')
+
+@php
+    $activeNav = 'data';
+    $useAppShell = true;
+@endphp
+
+@push('head')
+    <link href="{{ \App\Support\VersionedAsset::url('css/app/data_cache.css') }}" rel="stylesheet">
+@endpush
+
+@section('content')
+    <main class="modern-main-content modern-main-content--fluid">
+        <div class="modern-data-cache-wrap">
+            <header class="modern-page-header">
+                <div>
+                    <h1 class="modern-page-title">{{ __('Client Info') }}</h1>
+                    <p class="modern-page-subtitle">Información del cliente</p>
                 </div>
-            </div>
+                <div class="modern-page-header__actions">
+                    <a href="{{ route('app.data_cache') }}" class="modern-btn modern-btn--outline">
+                        <span aria-hidden="true">&larr;</span> Back to Data Cache
+                    </a>
+                    <button type="button" class="modern-btn modern-btn--primary"
+                            data-toggle="modal" data-target="#clientInfoModal" data-title="New Client">
+                        <span aria-hidden="true">+</span>
+                        <span>{{ __('Create New Client') }} / Crear nuevo cliente</span>
+                    </button>
+                </div>
+            </header>
+
+            <section id="content-container" class="data-cache-client-page">
+                <div class="modern-info-card data-cache-client-panel">
+                    <div class="modern-data-cache-table-shell data-cache-client-table-shell">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-datatable" id="clients">
+                                <thead>
+                                    <tr>
+                                        <th class="align-center">{{ __('ID') }}</th>
+                                        <th class="align-center">{{ __('First Name') }}</th>
+                                        <th class="align-center">{{ __('Last Name') }}</th>
+                                        <th class="align-center">{{ __('Email') }}</th>
+                                        <th class="align-center">{{ __('Address') }}</th>
+                                        <th class="align-center">{{ __('Phone No.') }}</th>
+                                        <th class="align-center">{{ __('Date of Birth') }}</th>
+                                        <th class="align-center">{{ __('Age') }}</th>
+                                        <th class="align-center">{{ __('Emergency Details') }}</th>
+                                        <th class="align-center">{{ __('Session Details') }}</th>
+                                        <th class="align-center">{{ __('Actions') }}</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
+
     @include('app.pages.data_cache.modals.client_info')
 @endsection
-@section('javascripts')
-    @parent
 
+@push('scripts')
     @include('app.pages.data_cache.modals.js.client_info')
-@stop
+@endpush

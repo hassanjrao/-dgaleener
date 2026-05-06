@@ -87,7 +87,6 @@ Route::middleware('verified')->group(function () {
     Route::get('/data_cache/preferences', 'DataCacheController@preferences');
     Route::post('/data_cache/upload_logo', 'DataCacheController@uploadLogo');
     Route::post('/data_cache/upload_consent_form', 'DataCacheController@uploadConsentForm');
-
     Route::post('/data_cache/preferences/update', array('as' => 'updatePreferences', 'uses' => 'DataCacheController@updatePreferences'));
     Route::get('/data_cache/help', 'DataCacheController@help');
 

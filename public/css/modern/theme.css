@@ -571,11 +571,23 @@ body.modern-theme {
 
 /* ===== Modern page header (reusable) ===== */
 .modern-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     background: #ffffff;
     border: 1px solid #dfe3e3;
     border-radius: 1rem;
     padding: 1.25rem 1.5rem;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.modern-page-header__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .modern-page-title {
@@ -1589,4 +1601,363 @@ body.modern-theme {
 .modern-player-bar .jp-playlist,
 .modern-player-bar .jp-no-solution {
     display: none !important;
+}
+
+/* ============================================================
+   Data Cache modern theme
+   ============================================================ */
+
+/* Generic wrapper used by all data_cache pages so child sections
+   stack with comfortable spacing inside .modern-main-content. */
+.modern-data-cache-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ----- Index dashboard tiles (Bio, Client Info, Chakra, Preferences, Help) ----- */
+.modern-data-cache-grid {
+    margin-top: 0.25rem;
+}
+
+.modern-data-cache-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    min-height: 220px;
+    padding: 2rem 1.25rem;
+    background: #ffffff;
+    border: 1px solid #dfe3e3;
+    border-radius: 1rem;
+    text-align: center;
+    color: #0f172a;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+}
+
+.modern-data-cache-tile:hover,
+.modern-data-cache-tile:focus-visible {
+    transform: translateY(-2px);
+    border-color: #14b8a6;
+    box-shadow: 0 10px 24px rgba(15, 118, 110, 0.12);
+    color: #0f172a;
+    text-decoration: none;
+    outline: none;
+}
+
+.modern-data-cache-tile--button {
+    background: #ffffff;
+    font: inherit;
+}
+
+.modern-data-cache-tile__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 92px;
+    height: 92px;
+    border-radius: 50%;
+    background: rgba(15, 118, 110, 0.08);
+}
+
+.modern-data-cache-tile__icon img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+
+.modern-data-cache-tile__label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: #0f172a;
+}
+
+.modern-data-cache-tile__label .data-cache-label-es {
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* ----- Summary / meta info-cards used on client_show, body/chakra detail ----- */
+.modern-data-cache-summary__card,
+.modern-data-cache-meta__card {
+    height: 100%;
+    line-height: 1.55;
+    color: #0f172a;
+}
+
+.modern-data-cache-meta__card {
+    color: #64748b;
+}
+
+.modern-data-cache-summary__card strong {
+    color: #0f766e;
+}
+
+/* ----- Toolbar row above tables (search, filters, refresh) ----- */
+.modern-data-cache-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.modern-data-cache-toolbar__group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modern-data-cache-toolbar__group--right {
+    margin-left: auto;
+}
+
+.modern-data-cache-toolbar__input {
+    min-width: 240px;
+}
+
+.modern-data-cache-label {
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+}
+
+/* ----- Inputs / selects (consistent with .modern-btn baseline) ----- */
+.modern-data-cache-input,
+.modern-data-cache-select {
+    display: inline-block;
+    height: 2.5rem;
+    min-height: 2.5rem;
+    padding: 0.45rem 0.75rem;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    color: #0f172a;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.modern-data-cache-input:focus,
+.modern-data-cache-select:focus {
+    outline: none;
+    border-color: #14b8a6;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+}
+
+.modern-data-cache-input:disabled,
+.modern-data-cache-select:disabled {
+    background: #f1f5f9;
+    color: #94a3b8;
+    cursor: not-allowed;
+}
+
+.modern-data-cache-select {
+    min-width: 200px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%2364748b' d='M6 8L2 4h8z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    padding-right: 1.75rem;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* ----- Form rows for "Add Scan Session" / consent form etc. ----- */
+.modern-data-cache-form-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.modern-data-cache-form-row__grow {
+    flex: 1 1 240px;
+    min-width: 0;
+}
+
+/* ----- Tables shared by all data_cache list pages ----- */
+.modern-data-cache-table-shell {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+}
+
+.modern-data-cache-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    color: #0f172a;
+    font-size: 0.92rem;
+}
+
+.modern-data-cache-table thead th {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 600;
+    text-align: left;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.modern-data-cache-table tbody td {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    vertical-align: top;
+}
+
+.modern-data-cache-table tbody tr.plain:hover td {
+    background: #f8fafc;
+}
+
+.modern-data-cache-table .header-radical {
+    background: #0f766e;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.55rem 0.75rem;
+}
+
+.modern-data-cache-client-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.modern-data-cache-client-list li {
+    margin-bottom: 0.35rem;
+}
+
+.modern-data-cache-client-list a {
+    color: #0f766e;
+    margin-left: 0.25rem;
+    text-decoration: none;
+}
+
+.modern-data-cache-client-list a:hover {
+    text-decoration: underline;
+}
+
+/* ----- Cell-level actions / icons inside tables ----- */
+.modern-data-cache-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.modern-data-cache-cell-actions {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.modern-data-cache-add-icon {
+    color: #0f766e;
+    cursor: pointer;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.modern-data-cache-add-icon:hover {
+    color: #115e59;
+    transform: scale(1.05);
+}
+
+.modern-data-cache-remove-icon,
+.modern-data-cache-remove-btn {
+    color: #dc2626;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    padding: 0;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.modern-data-cache-remove-icon:hover,
+.modern-data-cache-remove-btn:hover {
+    color: #b91c1c;
+    transform: scale(1.05);
+}
+
+/* ----- Empty / error messages ----- */
+.modern-data-cache-empty {
+    margin: 2rem 0;
+    color: #64748b;
+}
+
+.modern-data-cache-error {
+    color: #c0392b;
+    margin: 1.5rem 0;
+}
+
+/* ----- jQuery UI tabs styled to fit the modern theme ----- */
+.modern-data-cache-tabs-card {
+    padding: 1rem;
+}
+
+.modern-data-cache-tabs.ui-tabs {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+.modern-data-cache-tabs.ui-tabs .ui-tabs-nav {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.modern-data-cache-tabs.ui-tabs .ui-tabs-nav li {
+    background: transparent;
+    border: none;
+    margin: 0 0.25rem -1px 0;
+}
+
+.modern-data-cache-tabs.ui-tabs .ui-tabs-nav li a.ui-tabs-anchor {
+    padding: 0.65rem 1rem;
+    color: #64748b;
+    font-weight: 600;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.modern-data-cache-tabs.ui-tabs .ui-tabs-nav li:hover a.ui-tabs-anchor {
+    color: #0f766e;
+    background: rgba(15, 118, 110, 0.05);
+}
+
+.modern-data-cache-tabs.ui-tabs .ui-tabs-nav li.ui-tabs-active a.ui-tabs-anchor {
+    color: #0f766e;
+    background: #ffffff;
+    border-color: #e2e8f0 #e2e8f0 #ffffff #e2e8f0;
+}
+
+.modern-data-cache-tabs.ui-tabs .ui-tabs-panel {
+    padding: 0.5rem 0 0;
+    background: transparent;
+    border: none;
+}
+
+/* ----- Consent form file inputs feel native ----- */
+.modern-data-cache-consent-form input[type="file"] {
+    background: #ffffff;
 }
