@@ -1,66 +1,119 @@
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Bio Connect Activities'}}
-@stop
-@section('styles')
-    @parent
+@extends('layouts.modern')
+
+@section('page-title', 'Bio Connect Activities')
+
+@php
+    $activeNav = 'connect';
+    $useAppShell = true;
+@endphp
+
+@push('head')
     <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect.css') }}" rel="stylesheet">
-@stop
+@endpush
+
 @section('content')
-    @include('partials.header', ['title' => 'Bio Connect', 'image_url' => '/images/iconimages/share24.png', 'menu' => 'bioconnect'])
-    <div class="row main-body" ng-controller="BioConnectActivitiesCtrl as ctrl" ng-cloak="">
-        <div class="col-md-3 offset-md-1 text-center">
-            @if(Auth::user()->isAdmin())
-                <div style="border: 1px solid #808080; padding: 8px; margin-bottom: 20px; border-radius: 5px;">
-                    <select placeholder="Category" ng-model="ctrl.activity.category" style="margin-bottom: 8px; width: 100%;">
-                        <option ng-repeat="category in ctrl.activity_categories | orderBy: 'name' track by category.id" value="<% category.name %>"><% category.name %></option>
-                    </select>
-                    <input type="text" placeholder="Title" ng-model="ctrl.activity.title" style="margin-bottom: 8px; width: 100%;"></input>
-                    <input type="date" placeholder="Date Published" id="activity_date_published" ng-model="ctrl.activity.date_published" style="margin-bottom: 8px; width: 100%;"></input>
-                    <textarea placeholder="Content" rows="3" ng-model="ctrl.activity.content" style="margin-bottom: 8px; width: 100%; resize: vertical;"></textarea>
-                    <button class="btn btn-primary" style="width: 100%;" ng-click="ctrl.createActivity(ctrl.activity)" ng-disabled="!(ctrl.activity.category | valPresent) || !(ctrl.activity.title | valPresent) || !(ctrl.activity.content | valPresent) || !(ctrl.activity.date_published | valPresent)"><% ctrl.activity.id == null ? 'Create' : 'Edit' %> Activity</button>
-                    <button class="btn btn-danger" style="width: 100%; margin-top: 10px" ng-click="ctrl.cancelActionActivity(ctrl.activity)" ng-if="ctrl.activity.id | valPresent">Cancel</button>
-                </div>
-            @endif
-            <nav class="navbar navbar-default" role="navigation" id="navbarContainer" ng-if="ctrl.activities | valPresent">
-                <div id="sidebarWrapper" class="sidebar-toggle">
-                    <ul class="row sidebar-nav activitiy">
-                        <li class="col-md-12" ng-repeat="activity in ctrl.activities | orderBy: 'category' | unique: 'category' track by activity.id">
-                            <a href="" ng-click="ctrl.toggleCategory(activity.category)"><% activity.category %></a>
+    <main class="modern-main-content">
+        <header class="modern-page-header">
+            <div>
+                <h1 class="modern-page-title">Activities</h1>
+                <p class="modern-page-subtitle">Stay up to date with announcements and updates</p>
+            </div>
+            <div class="modern-page-header__actions">
+                <a href="{{ url('/bioconnect/friends') }}" class="modern-btn modern-btn--outline">
+                    <span aria-hidden="true">&larr;</span> Back to Bio Connect
+                </a>
+            </div>
+        </header>
+
+        <div class="row g-4 modern-bioconnect-layout"
+             ng-controller="BioConnectActivitiesCtrl as ctrl" ng-cloak>
+            <div class="col-12 col-lg-4">
+                @if (Auth::user()->isAdmin())
+                    <section class="modern-info-card modern-bioconnect-activity-form">
+                        <h2 class="modern-bioconnect-activity-form__title">
+                            <% ctrl.activity.id == null ? 'Create Activity' : 'Edit Activity' %>
+                        </h2>
+                        <select ng-model="ctrl.activity.category"
+                                class="modern-data-cache-select w-100 mb-2">
+                            <option value="" disabled selected>Category</option>
+                            <option ng-repeat="category in ctrl.activity_categories | orderBy: 'name' track by category.id"
+                                    value="<% category.name %>"><% category.name %></option>
+                        </select>
+                        <input type="text" placeholder="Title"
+                               class="modern-data-cache-input w-100 mb-2"
+                               ng-model="ctrl.activity.title">
+                        <input type="date" placeholder="Date Published" id="activity_date_published"
+                               class="modern-data-cache-input w-100 mb-2"
+                               ng-model="ctrl.activity.date_published">
+                        <textarea placeholder="Content" rows="4"
+                                  class="modern-data-cache-input w-100 mb-3"
+                                  style="resize: vertical;"
+                                  ng-model="ctrl.activity.content"></textarea>
+                        <button class="modern-btn modern-btn--primary w-100"
+                                ng-click="ctrl.createActivity(ctrl.activity)"
+                                ng-disabled="!(ctrl.activity.category | valPresent) || !(ctrl.activity.title | valPresent) || !(ctrl.activity.content | valPresent) || !(ctrl.activity.date_published | valPresent)">
+                            <% ctrl.activity.id == null ? 'Create' : 'Save' %> Activity
+                        </button>
+                        <button class="modern-btn modern-btn--danger w-100 mt-2"
+                                ng-click="ctrl.cancelActionActivity(ctrl.activity)"
+                                ng-if="ctrl.activity.id | valPresent">Cancel</button>
+                    </section>
+                @endif
+
+                <nav class="modern-bioconnect-menu" id="navbarContainer"
+                     ng-if="ctrl.activities | valPresent">
+                    <div class="modern-bioconnect-menu__header">Categories</div>
+                    <ul class="modern-bioconnect-menu__list" id="sidebarWrapper">
+                        <li ng-repeat="activity in ctrl.activities | orderBy: 'category' | unique: 'category' track by activity.id">
+                            <a href="" class="modern-bioconnect-menu__link"
+                               ng-class="{ 'active': ctrl.selectedCategory == activity.category }"
+                               ng-click="ctrl.toggleCategory(activity.category)"><% activity.category %></a>
                         </li>
                     </ul>
-                </div>
-            </nav>
-        </div>
-        <div class="col-md-7 activity-content-section" ng-if="ctrl.selectedCategory != ''">
-            <h3 style="margin-bottom: 20px;"><% ctrl.selectedCategory %></h3>
-            <div id="accordion" ng-if="ctrl.selectedCategory | valPresent">
-                <div class="card activity-card" ng-repeat="activity in ctrl.activities | orderBy: ['date_published', 'title'] | where: { category: ctrl.selectedCategory } track by activity.id">
-                    <div class="card-header" id="heading-<% $index %>">
-                        <h5 class="mb-0">
-                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-<% $index %>"
-                                    aria-expanded="false" aria-controls="collapse-<% $index %>" style="font-size: 17px;">
-                                <% activity.title %>
-                            </button>
-                        </h5>
-                    </div>
-                    <div id="collapse-<% $index %>" class="collapse" aria-labelledby="heading-<% $index %>" data-parent="#accordion">
-                        <div class="card-body">
-                            <b>Date: <% activity.date_published | date: 'MMM d, yyyy' %></b>
-                            <br>
-                            <br>
-                            <span style="text-align: justify;"><% activity.content %></span>
-                            <br>
-                            <button class="btn btn-danger pull-right" ng-click="ctrl.deleteActivity(activity)" style="margin: 20px 5px;" ng-disabled="ctrl.activity.id == activity.id" ng-if="activity.deletable">Delete</button>
-                            <button class="btn btn-primary pull-right" ng-click="ctrl.editActivity(activity)" style="margin: 20px 5px;" ng-disabled="ctrl.activity.id == activity.id" ng-if="activity.editable">Edit</button>
+                </nav>
+            </div>
+
+            <div class="col-12 col-lg-8 activity-content-section"
+                 ng-if="ctrl.selectedCategory != ''">
+                <section class="modern-info-card">
+                    <h2 class="modern-bioconnect-section-title"><% ctrl.selectedCategory %></h2>
+                    <div id="accordion" ng-if="ctrl.selectedCategory | valPresent">
+                        <div class="card activity-card modern-bioconnect-activity-card"
+                             ng-repeat="activity in ctrl.activities | orderBy: ['date_published', 'title'] | where: { category: ctrl.selectedCategory } track by activity.id">
+                            <div class="card-header" id="heading-<% $index %>">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link collapsed modern-bioconnect-activity-toggle"
+                                            data-toggle="collapse" data-target="#collapse-<% $index %>"
+                                            aria-expanded="false" aria-controls="collapse-<% $index %>">
+                                        <% activity.title %>
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapse-<% $index %>" class="collapse"
+                                 aria-labelledby="heading-<% $index %>" data-parent="#accordion">
+                                <div class="card-body">
+                                    <strong>Date: <% activity.date_published | date: 'MMM d, yyyy' %></strong>
+                                    <p class="mt-3 mb-0" style="text-align: justify;"><% activity.content %></p>
+                                    <div class="modern-bioconnect-activity-actions">
+                                        <button class="modern-btn modern-btn--small modern-btn--outline"
+                                                ng-click="ctrl.editActivity(activity)"
+                                                ng-disabled="ctrl.activity.id == activity.id"
+                                                ng-if="activity.editable">Edit</button>
+                                        <button class="modern-btn modern-btn--small modern-btn--danger"
+                                                ng-click="ctrl.deleteActivity(activity)"
+                                                ng-disabled="ctrl.activity.id == activity.id"
+                                                ng-if="activity.deletable">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
-    </div>
+    </main>
 @endsection
-@section('javascripts')
-    @parent
+
+@push('scripts')
     @include('partials.bioconnect.firebase_config')
-@stop
+@endpush

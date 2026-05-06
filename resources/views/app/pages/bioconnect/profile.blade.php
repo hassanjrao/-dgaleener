@@ -1,35 +1,57 @@
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Bio Connect Profile'}}
-@stop
-@section('styles')
-    @parent
+@extends('layouts.modern')
+
+@section('page-title', 'Bio Connect Profile')
+
+@php
+    $activeNav = 'connect';
+    $useAppShell = true;
+@endphp
+
+@push('head')
     <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect.css') }}" rel="stylesheet">
     <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect/profile.css') }}" rel="stylesheet">
-@stop
+@endpush
+
 @section('content')
-    @include('partials.header', ['title' => 'Bio Connect', 'image_url' => '/images/iconimages/share24.png', 'menu' => 'bioconnect'])
-    <div class="row main-body">
-        <div class="col-md-12 text-center">
-            <a href=""><img src="{{ $pro_info->profilePictureUrl() }}" class="profile-image" alt="{{ env('APP_TITLE') }}"> </a>
-        </div>
-    </div>
-    <div class="row" id="personal-info">
-        <div class="col-md-12">
-            <form id="form-post" method="post" action="{{ URL::route('saveprofile') }}" enctype="multipart/form-data" >
-			@csrf						
-			<input hidden id="user_id" name="user_id" type="text" value="{{ Auth::user()->id }}"  />
-			    <div class="form-group row">
-                    <label for="upload" class="col-sm-2 offset-md-1 col-form-label">Profile Picture:</label>
-                    <div class="col-sm-8">
-                        <input id="upload" name="upload" type="file" />
+    <main class="modern-main-content">
+        <header class="modern-page-header">
+            <div>
+                <h1 class="modern-page-title">Bio Connect Profile</h1>
+                <p class="modern-page-subtitle">Manage your shared profile and privacy</p>
+            </div>
+            <div class="modern-page-header__actions">
+                <a href="{{ url('/bioconnect/friends') }}" class="modern-btn modern-btn--outline">
+                    <span aria-hidden="true">&larr;</span> Back to Bio Connect
+                </a>
+            </div>
+        </header>
+
+        <section class="modern-info-card modern-bioconnect-profile">
+            <div class="text-center mb-4">
+                <a href="">
+                    <img src="{{ $pro_info->profilePictureUrl() }}"
+                         class="profile-image modern-bioconnect-profile__avatar"
+                         alt="{{ env('APP_TITLE') }}">
+                </a>
+            </div>
+
+            <form id="form-post" method="post" action="{{ URL::route('saveprofile') }}"
+                  enctype="multipart/form-data" class="modern-bioconnect-profile__form">
+                @csrf
+                <input hidden id="user_id" name="user_id" type="text" value="{{ Auth::user()->id }}" />
+
+                <div class="form-group row">
+                    <label for="upload" class="col-sm-3 col-form-label">Profile Picture</label>
+                    <div class="col-sm-9">
+                        <input id="upload" name="upload" type="file" class="form-control-file">
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="togBtn" class="col-sm-2 offset-md-1 col-form-label">Privacy:</label>
-                    <div class="col-sm-8">
-                        <label class="switch">
-							<input type="checkbox" id="togBtn" name="togBtn" {{ Auth::user()->privacy ? 'checked' : ''}}>
+
+                <div class="form-group row align-items-center">
+                    <label for="togBtn" class="col-sm-3 col-form-label">Privacy</label>
+                    <div class="col-sm-9">
+                        <label class="switch mb-0">
+                            <input type="checkbox" id="togBtn" name="togBtn" {{ Auth::user()->privacy ? 'checked' : '' }}>
                             <div class="slider round"></div>
                             @error('privacy')
                                 <strong class="invalid">{{ $errors->first('privacy') }}</strong>
@@ -37,92 +59,106 @@
                         </label>
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label for="name" class="col-sm-2 offset-md-1 col-form-label">Name:</label>		
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="your name here" value="{{ Auth::user()->name}}" required>
+                    <label for="name" class="col-sm-3 col-form-label">Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="name" name="name"
+                               placeholder="your name here" value="{{ Auth::user()->name }}" required>
                         @error('name')
                             <strong class="invalid">{{ $errors->first('name') }}</strong>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label for="email" class="col-sm-2 offset-md-1 col-form-label">Email ID:</label>		
-                    <div class="col-sm-8">
-                        <input type="email" class="form-control" id="email" name="email" placeholder="your email here" value="{{ Auth::user()->email}}" required>
+                    <label for="email" class="col-sm-3 col-form-label">Email ID</label>
+                    <div class="col-sm-9">
+                        <input type="email" class="form-control" id="email" name="email"
+                               placeholder="your email here" value="{{ Auth::user()->email }}" required>
                         @error('email')
                             <strong class="invalid">{{ $errors->first('email') }}</strong>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label for="business" class="col-sm-2 offset-md-1 col-form-label">Business:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="business" name="business" placeholder="your business name here" value="{{ Auth::user()->business}}">
+                    <label for="business" class="col-sm-3 col-form-label">Business</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="business" name="business"
+                               placeholder="your business name here" value="{{ Auth::user()->business }}">
                         @error('business')
                             <strong class="invalid">{{ $errors->first('business') }}</strong>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label for="age" class="col-sm-2 offset-md-1 col-form-label">Age:</label>
-                    <div class="col-sm-8">
-                        <input type="number" class="form-control" id="age" name="age" placeholder="age" value="{{ Auth::user()->age}}" min="0">
+                    <label for="age" class="col-sm-3 col-form-label">Age</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="age" name="age"
+                               placeholder="age" value="{{ Auth::user()->age }}" min="0">
                         @error('age')
                             <strong class="invalid">{{ $errors->first('age') }}</strong>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label for="location" class="col-sm-2 offset-md-1 col-form-label">Location:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="location" value="{{ Auth::user()->location}}"  name="location" placeholder="your location here">
+                    <label for="location" class="col-sm-3 col-form-label">Location</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="location" name="location"
+                               placeholder="your location here" value="{{ Auth::user()->location }}">
                         @error('location')
                             <strong class="invalid">{{ $errors->first('location') }}</strong>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label for="address" class="col-sm-2 offset-md-1 col-form-label">Address:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="address" name="address" placeholder="your address here" value="{{ Auth::user()->address }}">
+                    <label for="address" class="col-sm-3 col-form-label">Address</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="address" name="address"
+                               placeholder="your address here" value="{{ Auth::user()->address }}">
                         @error('address')
                             <strong class="invalid">{{ $errors->first('address') }}</strong>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label for="country" class="col-sm-2 offset-md-1 col-form-label">Country:</label>
-                    <div class="col-sm-8">
-                        <input type="text" class="form-control" id="country" name="country" placeholder="country" value="{{ Auth::user()->country}}">
+                    <label for="country" class="col-sm-3 col-form-label">Country</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" id="country" name="country"
+                               placeholder="country" value="{{ Auth::user()->country }}">
                         @error('country')
                             <strong class="invalid">{{ $errors->first('country') }}</strong>
                         @enderror
                     </div>
                 </div>
+
                 <div class="form-group row">
-                    <label for="zip" class="col-sm-2 offset-md-1 col-form-label">Zip:</label>
-                    <div class="col-sm-8">
-                        <input type="number" class="form-control" id="zip" name="zip" placeholder="zip" value="{{ Auth::user()->zip}}">
+                    <label for="zip" class="col-sm-3 col-form-label">Zip</label>
+                    <div class="col-sm-9">
+                        <input type="number" class="form-control" id="zip" name="zip"
+                               placeholder="zip" value="{{ Auth::user()->zip }}">
                         @error('zip')
                             <strong class="invalid">{{ $errors->first('zip') }}</strong>
                         @enderror
                     </div>
                 </div>
-                <div class="form-group row">
-                    <div class="offset-7 offset-xs-5 offset-sm-5 col-3">
-                        <button type="submit" id="submit" class="form-control text-center create-button">
-                            {{ __('Save') }}
-                        </button>
-                    </div>
+
+                <div class="modern-bioconnect-profile__actions">
+                    <button type="submit" id="submit" class="modern-btn modern-btn--primary">
+                        {{ __('Save') }}
+                    </button>
                 </div>
             </form>
-        </div>
-        <div class="col-md-6"></div>
-    </div>
+        </section>
+    </main>
 @endsection
-@section('javascripts')
-    @parent
+
+@push('scripts')
     @include('partials.bioconnect.firebase_config')
 
     <script type="text/javascript">
@@ -151,9 +187,7 @@
                 var fbinitcommentsupdate = firebase.database().ref().child('post');
                 var fbinituserfriendupdate = firebase.database().ref().child('friends');
 
-                //update in friends
                 fbinituserfriendupdate.on("value", function (snap3) {
-                        //alert(snap3.key);
                     snap3.forEach(function (childsnap3) {
                         var userParentId = childsnap3.key;
                         var userChildValue = childsnap3.val();
@@ -184,11 +218,8 @@
                     });
                 });
 
-                //update in post
                 fbinitupdataeuser.on("value", function (snap) {
-                        //alert(snap.key);
                     snap.forEach(function (childsnap) {
-                        //alert(childsnap.key);
                         firebase.database().ref().child('post/'+ childsnap.key ).update({
                             post_byName: uname
                         });
@@ -200,16 +231,13 @@
                     });
                 });
 
-                //update in comment
                 fbinitcommentsupdate.on("value", function (snap) {
-                        //alert(snap.key);
                     snap.forEach(function (childsnap) {
                         var parentkey = childsnap.key;
                         var fbinitcommentkey = firebase.database().ref().child('post/'+ parentkey +'/comments');
 
                         fbinitcommentkey.on("value", function (snap2) {
                             var getchild = snap2.val();
-                            //alert(JSON.stringify(dor));
                             if(getchild != ''){
                                 snap2.forEach(function (childsnap2) {
                                     var gettargetinfo = childsnap2.val();
@@ -228,87 +256,12 @@
                                 });
                             }
                         });
-                        /* firebase.database().ref().child('post/'+ childsnap.key ).update({
-                            post_byName: uname
-                        });
-                        if( ulogo != ''){
-                            firebase.database().ref().child('post/'+ childsnap.key ).update({
-                                user_Logo: logo_name
-                            });
-                        } */
                     });
                 });
 
                 alert("success");
-                /*
-
-
-                var uname = $('#name').val(); */
-
-
             });
 
         });
-
     </script>
-		
-	<!--script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSgmtix970nRBeQmqCVWOqhh-TT6moojU&libraries=places&callback=initAutocomplete"
-        async defer></script>
-    <script>
-      var placeSearch, autocomplete;
-      var componentForm = {
-        country: 'long_name',
-        zip: 'short_name'
-      };
-
-      function initAutocomplete() {
-        // Create the autocomplete object, restricting the search to geographical
-        // location types.
-        autocomplete = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */(document.getElementById('location')),
-            {types: ['geocode']});
-
-        // When the user selects an address from the dropdown, populate the address
-        // fields in the form.
-        autocomplete.addListener('place_changed', fillInAddress);
-      }
-
-      function fillInAddress() {
-        // Get the place details from the autocomplete object.
-        var place = autocomplete.getPlace();
-
-        for (var component in componentForm) {
-          document.getElementById(component).value = '';
-          document.getElementById(component).disabled = false;
-        }
-
-        // Get each component of the address from the place details
-        // and fill the corresponding field on the form.
-        for (var i = 0; i < place.address_components.length; i++) {
-          var addressType = place.address_components[i].types[0];
-          if (componentForm[addressType]) {
-            var val = place.address_components[i][componentForm[addressType]];
-            document.getElementById(addressType).value = val;
-          }
-        }
-      }
-
-      // Bias the autocomplete object to the user's geographical location,
-      // as supplied by the browser's 'navigator.geolocation' object.
-      function geolocate() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var geolocation = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            var circle = new google.maps.Circle({
-              center: geolocation,
-              radius: position.coords.accuracy
-            });
-            autocomplete.setBounds(circle.getBounds());
-          });
-        }
-      }
-    </script-->
-@stop
+@endpush

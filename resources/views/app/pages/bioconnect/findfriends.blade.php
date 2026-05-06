@@ -1,113 +1,92 @@
-@extends('layouts.application')
+@extends('layouts.modern')
 
-@section('page-title')
-    {{ 'Anew Avenue Biomagnestim | Bio Connect Friends' }}
-@stop
+@section('page-title', 'Find Friends')
 
-@section('styles')
-    @parent
+@php
+    $activeNav = 'connect';
+    $useAppShell = true;
+@endphp
+
+@push('head')
     <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect.css') }}" rel="stylesheet">
     <link href="{{ \App\Support\VersionedAsset::url('css/app/bioconnect-card.css') }}" rel="stylesheet">
-@stop
+@endpush
 
 @section('content')
+    <main class="modern-main-content">
+        <header class="modern-page-header">
+            <div>
+                <h1 class="modern-page-title">Find Friends</h1>
+                <p class="modern-page-subtitle">Discover and invite new connections</p>
+            </div>
+            <div class="modern-page-header__actions">
+                <a href="{{ url('/bioconnect/friends') }}" class="modern-btn modern-btn--outline">
+                    <span aria-hidden="true">&larr;</span> All Friends
+                </a>
+            </div>
+        </header>
 
-    @include('partials.header', [
-        'title' => 'Bio Connect',
-        'image_url' => '/images/iconimages/share24.png',
-        'menu' => 'bioconnect',
-    ])
+        <div class="row g-4 modern-bioconnect-layout"
+             ng-controller="BioConnectFindFriendsCtrl as ctrl" ng-cloak>
 
-    <div class="row main-body" ng-controller="BioConnectFindFriendsCtrl as ctrl" ng-cloak>
-
-        <!-- Sidebar (UNCHANGED) -->
-        <div class="col-md-2 offset-md-1 text-center">
-            @include('partials.bioconnect.friends_menu')
-        </div>
-
-        <!-- Main Content -->
-        <div class="col-md-8 padd-off">
-
-            <div class="friends-container">
-
-                <!-- Search -->
-                <div class="search-container">
-					<div class="search-inline">
-						<i class="fa fa-search"></i>
-						<input type="text"
-							placeholder="Search friends..."
-							ng-model="ctrl.searchText">
-					</div>
-				</div>
-
-                <!-- Loader -->
-                <div class="loader" ng-if="!ctrl.usersLoaded"></div>
-
-                <!-- Empty -->
-                <h6 class="text-center mt-4"
-                    ng-if="!(ctrl.users | valPresent) && ctrl.usersLoaded">
-                    No results found.
-                </h6>
-
-                <!-- Grid -->
-                <div class="friends-grid" ng-if="(ctrl.users | valPresent) && ctrl.usersLoaded">
-
-                    <div class="friend-item"
-                        ng-repeat="user in ctrl.users track by user.id">
-
-                        <div class="friend-card">
-
-                            <!-- Avatar -->
-                            <div class="text-center">
-                                <img ng-src="<% user.profilePictureUrl %>" class="friend-avatar">
-                            </div>
-
-                            <!-- Info -->
-                            <div class="friend-info text-center">
-                                <h6 class="friend-name"><% user.name %></h6>
-
-                                <p class="text-muted mb-1">
-                                    <% user.location || 'No location' %>
-                                </p>
-
-                                <p class="text-muted mb-1">
-                                    Age: <% user.age || '-' %>
-                                </p>
-
-                                <p class="text-muted">
-                                    <% user.address || 'No address' %>
-                                </p>
-                            </div>
-
-                            <!-- Action -->
-                            <div class="friend-actions">
-
-                                <button class="btn btn-primary btn-sm w-100" ng-click="ctrl.addFriend(user)">
-                                    Invite
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="friends-scroll-status" ng-if="ctrl.usersLoaded && ctrl.usersLoadingMore">
-                    <div class="loader loader-inline"></div>
-                </div>
-
+            <div class="col-12 col-lg-3">
+                @include('partials.bioconnect.friends_menu')
             </div>
 
-        </div>
+            <div class="col-12 col-lg-9">
+                <section class="modern-info-card friends-container modern-bioconnect-friends">
+                    <div class="search-container">
+                        <div class="search-inline">
+                            <i class="fa fa-search"></i>
+                            <input type="text"
+                                   placeholder="Search friends..."
+                                   ng-model="ctrl.searchText">
+                        </div>
+                    </div>
 
-    </div>
+                    <div class="loader" ng-if="!ctrl.usersLoaded"></div>
+
+                    <h6 class="text-center mt-4"
+                        ng-if="!(ctrl.users | valPresent) && ctrl.usersLoaded">
+                        No results found.
+                    </h6>
+
+                    <div class="friends-grid" ng-if="(ctrl.users | valPresent) && ctrl.usersLoaded">
+                        <div class="friend-item"
+                             ng-repeat="user in ctrl.users track by user.id">
+                            <div class="friend-card">
+                                <div class="text-center">
+                                    <img ng-src="<% user.profilePictureUrl %>" class="friend-avatar">
+                                </div>
+                                <div class="friend-info text-center">
+                                    <h6 class="friend-name"><% user.name %></h6>
+                                    <p class="text-muted mb-1">
+                                        <% user.location || 'No location' %>
+                                    </p>
+                                    <p class="text-muted mb-1">
+                                        Age: <% user.age || '-' %>
+                                    </p>
+                                    <p class="text-muted">
+                                        <% user.address || 'No address' %>
+                                    </p>
+                                </div>
+                                <div class="friend-actions">
+                                    <button class="btn btn-primary btn-sm w-100" ng-click="ctrl.addFriend(user)">
+                                        Invite
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="friends-scroll-status"
+                         ng-if="ctrl.usersLoaded && ctrl.usersLoadingMore">
+                        <div class="loader loader-inline"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
 
     @include('partials.bioconnect.chat_box')
-
 @endsection
-
-@section('javascripts')
-    @parent
-@stop
