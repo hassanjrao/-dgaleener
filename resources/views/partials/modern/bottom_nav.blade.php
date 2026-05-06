@@ -32,14 +32,27 @@
         ['key' => 'data', 'label' => 'Data', 'route' => route('app.data_cache')],
         ['key' => 'connect', 'label' => 'Connect', 'route' => route('app.bioconnect')],
     ];
+
+    $currentRouteUriForNav = optional(Route::getCurrentRoute())->uri() ?? '';
+    $authUserForNav = Auth::user();
+    $showPlayerInNav = $authUserForNav
+        && method_exists($authUserForNav, 'hasVerifiedEmail') && $authUserForNav->hasVerifiedEmail()
+        && method_exists($authUserForNav, 'hasValidSubscription') && $authUserForNav->hasValidSubscription()
+        && !in_array($currentRouteUriForNav, ['home', 'media', 'playlist'], true)
+        && (!isset($hidePlayer) || !$hidePlayer);
 @endphp
 
 <nav class="glass-nav fixed-bottom">
-    <div class="container-fluid px-3 px-md-5">
-        <div class="row g-0 justify-content-between">
-            @foreach ($navItems as $item)
-                @php($isActive = $currentNav === $item['key'])
-                <div class="col nav-col">
+    <div class="container-fluid px-3 px-md-4 modern-nav-container">
+        <div class="modern-nav-row">
+            @if ($showPlayerInNav)
+                <div class="modern-nav-player">
+                    @include('partials.modern.player')
+                </div>
+            @endif
+            <div class="modern-nav-items">
+                @foreach ($navItems as $item)
+                    @php($isActive = $currentNav === $item['key'])
                     <a href="{{ $item['route'] }}" class="modern-nav-item {{ $isActive ? 'active' : '' }}">
                         @if ($item['key'] === 'home')
                             <svg class="modern-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -65,8 +78,8 @@
                         <span class="modern-nav-label">{{ $item['label'] }}</span>
                         <span class="active-indicator"></span>
                     </a>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
     </div>
 </nav>

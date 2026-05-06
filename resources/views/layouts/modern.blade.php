@@ -31,16 +31,12 @@
 
     @stack('head')
 </head>
-<body class="@yield('body-class', 'modern-theme'){{ $showPlayer ? ' has-player-bar' : '' }}">
+<body class="@yield('body-class', 'modern-theme')">
     @if (!isset($hideBrandBar) || !$hideBrandBar)
         @include('partials.modern.brand_bar')
     @endif
 
     @yield('content')
-
-    @if ($showPlayer)
-        @include('partials.modern.player')
-    @endif
 
     @if (!isset($hideBottomNav) || !$hideBottomNav)
         @include('partials.modern.bottom_nav')
@@ -89,12 +85,10 @@
                         $('#jp_container_all').show();
                         $('body').addClass('player-active');
                     } else {
-                        $('#jp_container_all').hide();
-                        $('body').removeClass('has-player-bar player-active');
+                        $('.modern-nav-player').hide();
                     }
                 }).fail(function(xhr) {
-                    $('#jp_container_all').hide();
-                    $('body').removeClass('has-player-bar player-active');
+                    $('.modern-nav-player').hide();
                     console.error('Unable to load media playlist.', xhr);
                 });
             });
