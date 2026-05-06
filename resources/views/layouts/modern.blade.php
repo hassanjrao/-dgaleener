@@ -12,6 +12,17 @@
     @php
         $siteTitle = config('app.title');
         $pageTitle = trim((string) $__env->yieldContent('page-title'));
+
+        $currentRouteUri = optional(Route::getCurrentRoute())->uri() ?? '';
+        $authUser = Auth::user();
+        $showPlayer = $authUser
+            && method_exists($authUser, 'hasVerifiedEmail') && $authUser->hasVerifiedEmail()
+            && method_exists($authUser, 'hasValidSubscription') && $authUser->hasValidSubscription()
+            && !in_array($currentRouteUri, ['home', 'media', 'playlist'], true)
+            && (!isset($hideBottomNav) || !$hideBottomNav)
+            && (!isset($hidePlayer) || !$hidePlayer);
+
+        $loadFoot = !empty($useAppShell) || $showPlayer;
     @endphp
     <title>{{ $pageTitle !== '' ? $pageTitle . ' - ' . $siteTitle : $siteTitle }}</title>
 
@@ -20,22 +31,72 @@
 
     @stack('head')
 </head>
-<body class="@yield('body-class', 'modern-theme')">
+<body class="@yield('body-class', 'modern-theme'){{ $showPlayer ? ' has-player-bar' : '' }}">
     @if (!isset($hideBrandBar) || !$hideBrandBar)
         @include('partials.modern.brand_bar')
     @endif
 
     @yield('content')
 
+    @if ($showPlayer)
+        @include('partials.modern.player')
+    @endif
+
     @if (!isset($hideBottomNav) || !$hideBottomNav)
         @include('partials.modern.bottom_nav')
     @endif
 
-    @if (!empty($useAppShell))
+    @if ($loadFoot)
         @include('partials.shared.foot')
         <script type="text/javascript">
             $(document).ready(function() {
                 $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+    @endif
+
+    @if ($showPlayer)
+        <script src="{{ \App\Support\VersionedAsset::url('js/jquery.jplayer.js') }}" type="text/javascript"></script>
+        <script src="{{ \App\Support\VersionedAsset::url('js/jplayer.playlist.js') }}" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                var jPlayerConfig = {
+                    swfPath: "../../dist/jplayer",
+                    supplied: "mp3",
+                    wmode: "window",
+                    useStateClassSkin: true,
+                    autoBlur: true,
+                    smoothPlayBar: true,
+                    keyEnabled: false,
+                    playlistOptions: {
+                        autoPlay: false,
+                        enableRemoveControls: false
+                    },
+                    loop: true
+                };
+
+                var allMediaUrl = '{{ url('/media/all') }}';
+                $.ajax({
+                    url: allMediaUrl,
+                    dataType: 'json',
+                    cache: false
+                }).done(function(data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        new jPlayerPlaylist({
+                            jPlayer: "#jquery_jplayer_all",
+                            cssSelectorAncestor: "#jp_container_all"
+                        }, data, jPlayerConfig);
+                        $('#jp_container_all').show();
+                        $('body').addClass('player-active');
+                    } else {
+                        $('#jp_container_all').hide();
+                        $('body').removeClass('has-player-bar player-active');
+                    }
+                }).fail(function(xhr) {
+                    $('#jp_container_all').hide();
+                    $('body').removeClass('has-player-bar player-active');
+                    console.error('Unable to load media playlist.', xhr);
+                });
             });
         </script>
     @endif

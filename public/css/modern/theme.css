@@ -1120,3 +1120,444 @@ body.modern-theme {
 .modal-content .modal-footer {
     border-top: 1px solid #e2e8f0;
 }
+
+/* ============================================================
+   Modern Music Player Bar
+   - Floats above the bottom nav for authenticated users.
+   - Reuses legacy jPlayer Blue Monday markup verbatim and just
+     re-skins the chrome to match the modern theme.
+   ============================================================ */
+
+body.modern-theme.has-player-bar {
+    padding-bottom: 11.5rem;
+}
+
+@media (min-width: 768px) {
+    body.modern-theme.has-player-bar {
+        padding-bottom: 10.5rem;
+    }
+}
+
+.modern-player-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 5rem;
+    z-index: 49;
+    padding: 0.5rem 0.75rem 0.25rem;
+    pointer-events: none;
+}
+
+@media (min-width: 768px) {
+    .modern-player-bar {
+        padding: 0.5rem 1.25rem 0.25rem;
+    }
+}
+
+.modern-player-bar__inner {
+    pointer-events: auto;
+    max-width: 64rem;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(15, 118, 110, 0.18);
+    border-radius: 1rem;
+    box-shadow: 0 12px 30px -12px rgba(15, 23, 42, 0.18),
+                0 2px 6px rgba(15, 23, 42, 0.06);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    padding: 0.6rem 0.85rem;
+}
+
+.modern-player-bar .modern-jplayer {
+    width: 100%;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    color: #0f172a;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modern-player-bar .modern-jplayer .jp-type-playlist {
+    width: 100%;
+}
+
+.modern-player-bar .jp-interface {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "title title title"
+        "controls progress meta";
+    align-items: center;
+    column-gap: 0.85rem;
+    row-gap: 0.4rem;
+    background: transparent;
+    height: auto;
+    width: 100%;
+    border: none;
+    box-shadow: none;
+}
+
+.modern-player-bar .jp-title {
+    grid-area: title;
+    height: auto;
+    min-height: 1.1rem;
+    margin: 0;
+    padding: 0 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #0f766e;
+    line-height: 1.2;
+    text-align: left;
+    background: transparent;
+    border: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.modern-player-bar .jp-title ul,
+.modern-player-bar .jp-title li {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+}
+
+.modern-player-bar .jp-controls {
+    grid-area: controls;
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0;
+    margin: 0;
+    height: auto;
+    width: auto;
+    background: transparent;
+}
+
+.modern-player-bar .jp-controls button {
+    position: static;
+    float: none;
+    width: 2.1rem;
+    height: 2.1rem;
+    margin: 0;
+    padding: 0;
+    border-radius: 9999px;
+    background: #fff;
+    border: 1px solid #cfe9e7;
+    color: #0f766e;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0;
+    line-height: 0;
+    text-indent: 0;
+    overflow: hidden;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.05s ease;
+}
+
+.modern-player-bar .jp-controls button:hover,
+.modern-player-bar .jp-controls button:focus {
+    background: #ecfdf5;
+    color: #115e59;
+    outline: none;
+}
+
+.modern-player-bar .jp-controls button:active {
+    transform: scale(0.96);
+}
+
+.modern-player-bar .jp-controls button::before {
+    content: "";
+    width: 0.95rem;
+    height: 0.95rem;
+    background-color: currentColor;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    text-indent: 0;
+}
+
+.modern-player-bar .jp-play::before {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M8 5v14l11-7z'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M8 5v14l11-7z'/></svg>");
+}
+
+.modern-player-bar .jp-state-playing .jp-play::before {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M6 5h4v14H6zM14 5h4v14h-4z'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M6 5h4v14H6zM14 5h4v14h-4z'/></svg>");
+}
+
+.modern-player-bar .jp-previous::before {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M6 6h2v12H6zM9.5 12l8.5 6V6z'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M6 6h2v12H6zM9.5 12l8.5 6V6z'/></svg>");
+}
+
+.modern-player-bar .jp-next::before {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M16 6h2v12h-2zM6 6v12l8.5-6z'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M16 6h2v12h-2zM6 6v12l8.5-6z'/></svg>");
+}
+
+.modern-player-bar .jp-stop::before {
+    -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M6 6h12v12H6z'/></svg>");
+    mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M6 6h12v12H6z'/></svg>");
+}
+
+/* Hide the secondary play action element jPlayer sometimes injects. */
+.modern-player-bar .jp-controls > .jp-play + .jp-play,
+.modern-player-bar .jp-pause {
+    display: none !important;
+}
+
+.modern-player-bar .jp-progress {
+    grid-area: progress;
+    position: static;
+    width: 100%;
+    height: 0.5rem;
+    background: transparent;
+    overflow: visible;
+    margin: 0;
+}
+
+.modern-player-bar .jp-seek-bar {
+    width: 100%;
+    height: 0.4rem;
+    background: #e2e8f0;
+    border-radius: 9999px;
+    cursor: pointer;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.modern-player-bar .jp-play-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #14b8a6 0%, #0d9488 100%);
+    border-radius: 9999px;
+    margin: 0;
+    padding: 0;
+}
+
+.modern-player-bar .jp-time-holder {
+    grid-area: meta;
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    width: auto;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: #475569;
+    font-family: inherit;
+    letter-spacing: 0;
+}
+
+.modern-player-bar .jp-current-time,
+.modern-player-bar .jp-duration {
+    position: static;
+    width: auto;
+    height: auto;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    text-align: left;
+    background: transparent;
+}
+
+.modern-player-bar .jp-duration::before {
+    content: "/";
+    margin: 0 0.2rem 0 0.1rem;
+    color: #94a3b8;
+}
+
+.modern-player-bar .jp-volume-controls,
+.modern-player-bar .jp-toggles {
+    display: none;
+}
+
+@media (min-width: 992px) {
+    .modern-player-bar .jp-interface {
+        grid-template-columns: auto auto 1fr auto auto;
+        grid-template-rows: auto auto;
+        grid-template-areas:
+            "title title title title title"
+            "controls meta progress volume toggles";
+        column-gap: 0.85rem;
+    }
+
+    .modern-player-bar .jp-volume-controls {
+        grid-area: volume;
+        position: static;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        height: auto;
+        width: auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modern-player-bar .jp-volume-controls button {
+        position: static;
+        float: none;
+        width: 1.85rem;
+        height: 1.85rem;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+        color: #475569;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0;
+        line-height: 0;
+        text-indent: 0;
+        overflow: hidden;
+        border-radius: 9999px;
+        transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .modern-player-bar .jp-volume-controls button:hover {
+        background: #ecfdf5;
+        color: #0f766e;
+    }
+
+    .modern-player-bar .jp-volume-controls button::before {
+        content: "";
+        width: 1rem;
+        height: 1rem;
+        background-color: currentColor;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+    }
+
+    .modern-player-bar .jp-mute::before {
+        -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12z'/></svg>");
+        mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M3 10v4h4l5 5V5L7 10H3zm13.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 16.5 12z'/></svg>");
+    }
+
+    .modern-player-bar .jp-state-muted .jp-mute::before {
+        -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M16.5 12a4.5 4.5 0 0 0-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zM3 10v4h4l5 5v-5.18l-3.91-3.91L7 10H3zm12-7L4.27 13.73 5.69 15.15 12 8.83v3.34l4.31 4.31c.43-.69.69-1.46.69-2.27V12c0-1.91-.86-3.61-2.21-4.74L18.21 10.5l1.41-1.41L4.41 1.59 3 3z'/></svg>");
+        mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M16.5 12a4.5 4.5 0 0 0-2.5-4.03v2.21l2.45 2.45c.03-.21.05-.42.05-.63zM3 10v4h4l5 5v-5.18l-3.91-3.91L7 10H3zm12-7L4.27 13.73 5.69 15.15 12 8.83v3.34l4.31 4.31c.43-.69.69-1.46.69-2.27V12c0-1.91-.86-3.61-2.21-4.74L18.21 10.5l1.41-1.41L4.41 1.59 3 3z'/></svg>");
+    }
+
+    .modern-player-bar .jp-volume-max::before {
+        -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M3 10v4h4l5 5V5L7 10H3zm10.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 13.5 12zM14 3.23v2.06A6.99 6.99 0 0 1 19 12a6.99 6.99 0 0 1-5 6.71v2.06A8.99 8.99 0 0 0 21 12 8.99 8.99 0 0 0 14 3.23z'/></svg>");
+        mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M3 10v4h4l5 5V5L7 10H3zm10.5 2a4.5 4.5 0 0 0-2.5-4.03v8.05A4.5 4.5 0 0 0 13.5 12zM14 3.23v2.06A6.99 6.99 0 0 1 19 12a6.99 6.99 0 0 1-5 6.71v2.06A8.99 8.99 0 0 0 21 12 8.99 8.99 0 0 0 14 3.23z'/></svg>");
+    }
+
+    .modern-player-bar .jp-volume-bar {
+        position: static;
+        width: 5rem;
+        height: 0.35rem;
+        margin: 0;
+        padding: 0;
+        background: #e2e8f0;
+        border-radius: 9999px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .modern-player-bar .jp-volume-bar-value {
+        height: 100%;
+        background: linear-gradient(90deg, #14b8a6 0%, #0d9488 100%);
+        border-radius: 9999px;
+    }
+
+    .modern-player-bar .jp-toggles {
+        grid-area: toggles;
+        position: static;
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+        height: auto;
+        width: auto;
+        margin: 0;
+        padding: 0;
+    }
+
+    .modern-player-bar .jp-toggles button {
+        position: static;
+        float: none;
+        width: 1.85rem;
+        height: 1.85rem;
+        margin: 0;
+        padding: 0;
+        background: transparent;
+        border: none;
+        color: #94a3b8;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0;
+        line-height: 0;
+        text-indent: 0;
+        overflow: hidden;
+        border-radius: 9999px;
+        transition: background 0.15s ease, color 0.15s ease;
+    }
+
+    .modern-player-bar .jp-toggles button:hover {
+        background: #ecfdf5;
+        color: #0f766e;
+    }
+
+    .modern-player-bar .jp-toggles button.jp-state-repeat,
+    .modern-player-bar .jp-toggles button.jp-state-shuffle-on,
+    .modern-player-bar .jp-state-repeat .jp-repeat,
+    .modern-player-bar .jp-state-shuffle-on .jp-shuffle {
+        color: #0d9488;
+        background: #ccfbf1;
+    }
+
+    .modern-player-bar .jp-toggles button::before {
+        content: "";
+        width: 1rem;
+        height: 1rem;
+        background-color: currentColor;
+        -webkit-mask-position: center;
+        mask-position: center;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-size: contain;
+        mask-size: contain;
+    }
+
+    .modern-player-bar .jp-repeat::before {
+        -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z'/></svg>");
+        mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z'/></svg>");
+    }
+
+    .modern-player-bar .jp-shuffle::before {
+        -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z'/></svg>");
+        mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'><path d='M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z'/></svg>");
+    }
+}
+
+/* Hide the legacy playlist popup and "no solution" warning unless needed. */
+.modern-player-bar .jp-playlist,
+.modern-player-bar .jp-no-solution {
+    display: none !important;
+}
+
