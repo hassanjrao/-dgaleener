@@ -2940,3 +2940,28 @@ body.user-menu-open .user-side-menu {
 .modern-pricing-card__footer {
     margin-top: auto;
 }
+
+/* ── Free / highlighted module card ── */
+.module-card--free {
+    position: relative;
+    border: 2px solid #14b8a6;
+    background: linear-gradient(135deg, #f0fdfa 0%, #ffffff 60%);
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.08);
+}
+
+.module-card--free:hover {
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.15), 0 8px 24px rgba(15, 23, 42, 0.1);
+}
+
+.module-card__free-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #14b8a6;
+    color: #ffffff;
+    font-size: 0.65rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: 0.2rem 0.55rem;
+    border-radius: 2rem;
+}

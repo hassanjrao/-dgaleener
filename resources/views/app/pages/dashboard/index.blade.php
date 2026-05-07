@@ -79,14 +79,15 @@
                     </a>
                 </div>
                 <div class="col-12 col-md-6">
-                    <a href="{{ route('app.dr_goiz_pairs') }}" class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none">
-                        <div class="icon-tile icon-tile-data-cache">
+                    <a href="{{ route('app.dr_goiz_pairs') }}" class="module-card module-card--free p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none">
+                        <div class="module-card__free-badge">FREE</div>
+                        <div class="icon-tile icon-tile-bio-connect">
                             <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                             </svg>
                         </div>
                         <div>
-                            <span class="pill pill-data-cache mb-3"><span class="pill-dot"></span>Free Protocol</span>
+                            <span class="pill pill-bio-connect mb-3"><span class="pill-dot"></span>Free Protocol</span>
                             <h5 class="fw-bold text-dark mb-2">Free Protocol Pairs</h5>
                             <p class="text-secondary mb-0">Browse biomagnetism pair protocols for therapeutic reference.</p>
                         </div>
