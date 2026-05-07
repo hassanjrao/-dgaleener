@@ -1671,6 +1671,12 @@ body.modern-theme {
     object-fit: contain;
 }
 
+.modern-data-cache-tile__icon .modern-nav-icon {
+    width: 56px;
+    height: 56px;
+    color: #14b8a6;
+}
+
 .modern-data-cache-tile__label {
     display: flex;
     flex-direction: column;

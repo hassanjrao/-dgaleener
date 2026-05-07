@@ -18,23 +18,23 @@ table:not(.table-datatable) tr th {
 }
 
 table:not(.table-datatable) tbody tr:nth-child(odd) td {
-  background-color: #dcad67;
+  background-color: #f0f4f8;
 }
 
 table:not(.table-datatable) tbody tr:nth-child(even) td {
-  background-color: #f4f3ee;
+  background-color: #ffffff;
 }
 
 table:not(.table-datatable) tbody tr td {
-  background-color: #f4f3ee;
+  background-color: #ffffff;
 }
 
 table:not(.table-datatable) tbody tr.plain td {
-  background-color: #f4f3ee !important;
+  background-color: #ffffff !important;
 }
 
 td.header-radical {
-  background-color: #dcad67;
+  background-color: #2d6a87;
   color: #fff;
   font-weight: 300;
   padding: 5px;
@@ -43,7 +43,7 @@ td.header-radical {
 }
 
 td.header-radical-0 {
-  background-color: #dcad67;
+  background-color: #2d6a87;
 }
 
 td.header-radical-1 {
