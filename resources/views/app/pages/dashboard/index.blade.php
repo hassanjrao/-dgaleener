@@ -15,8 +15,7 @@
             </h2>
             <div class="mb-4" style="width:3rem;height:2px;background:#006a63;"></div>
             <p class="mb-0 text-secondary" style="max-width:32rem;">
-                Channeling cellular activity with magnetic fields to align electron fields, eradicating toxins, radicals,
-                and pH imbalance.
+                Open Major Chakra Vortexesto Release the Emotional Stress Behind Physical Imbalance, or Optimize Your Bio-Terrian by Balancing pH Radical Through Biomagnetism.
             </p>
         </section>
 
