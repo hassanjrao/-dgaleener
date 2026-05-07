@@ -35,7 +35,7 @@
         <div class="col-md-12 text-center full-page">
             <div style="height: 31%;">&nbsp;</div>
             <div style="height: 38%;" class="text-center">
-            <img src="{{ asset('images/preloader/logo.png') }}" alt="{{ env('APP_TITLE') }}">
+            <img src="{{ asset('images/iconimages/load.png') }}" alt="{{ env('APP_TITLE') }}">
             </div>
             <div style="height: 31%;">&nbsp;</div>
         </div>

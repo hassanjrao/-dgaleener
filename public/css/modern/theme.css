@@ -41,6 +41,13 @@ body.modern-theme {
     color: #0f172a;
 }
 
+.brand-logo-img {
+    height: 44px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+}
+
 .brand-mark {
     width: 2rem;
     height: 2rem;
@@ -63,6 +70,7 @@ body.modern-theme {
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.01em;
+    color: #0f766e;
 }
 
 .brand-subtitle {

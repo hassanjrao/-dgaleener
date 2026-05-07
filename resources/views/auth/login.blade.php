@@ -11,7 +11,7 @@
         <div class="modern-auth-wrap">
             <section class="modern-auth-card">
                 <div class="text-center mb-4">
-                    <img src="/images/iconimages/logo.png" alt="{{ env('APP_TITLE') }}" class="modern-auth-logo">
+                    <img src="/images/iconimages/load.png" alt="{{ env('APP_TITLE') }}" class="modern-auth-logo">
                     <h1 class="hero-heading modern-auth-title">Welcome <span class="italic-wellness">Back</span></h1>
                 </div>
 
