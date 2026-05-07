@@ -2838,10 +2838,14 @@ body.user-menu-open .user-side-menu {
    ============================================================ */
 .modern-pricing-wrap {
     padding: 1.5rem 0 0.5rem;
+    display: flex;
+    justify-content: center;
 }
 
 .modern-pricing-grid {
     max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .modern-pricing-card {

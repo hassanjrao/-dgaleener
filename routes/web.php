@@ -26,7 +26,7 @@ Route::get('/bioconnect/info', 'BioConnectController@info')->name('app.bioconnec
 Route::get('/chakrascan/info', 'ChakraScanController@info')->name('app.chakrascan.info');
 Route::get('/data_cache/info', 'DataCacheController@info')->name('app.data_cache.info');
 
-Route::get('/dr-goiz-pairs', 'DrGoizPairController@index')->name('app.dr_goiz_pairs');
+Route::get('/free-protocol-pairs', 'DrGoizPairController@index')->name('app.dr_goiz_pairs');
 
 Route::get('/products', 'ProductController@index')->name('app.products.index');
 Route::get('/products/bio', 'ProductController@bio')->name('app.products.bio');
