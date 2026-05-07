@@ -221,7 +221,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     public function logoUrl()
     {
         $partial_url = "users/uid-".$this->id."/logos/".$this->logo;
-        if (!empty($this->logo) && \Storage::disk('s3')->exists($partial_url)) {
+        if (!empty($this->logo) && !empty(config('filesystems.disks.s3.region')) && \Storage::disk('s3')->exists($partial_url)) {
             return $this->awsAssetsUrl('/'.$partial_url);
         } else {
             return asset('/images/iconimages/file_not_found.png');
@@ -231,7 +231,7 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     public function profilePictureUrl()
     {
         $partial_url = "users/uid-".$this->id."/profile_pictures/".$this->profile_picture;
-        if (!empty($this->profile_picture) && \Storage::disk('s3')->exists($partial_url)) {
+        if (!empty($this->profile_picture) && !empty(config('filesystems.disks.s3.region')) && \Storage::disk('s3')->exists($partial_url)) {
             if (\Storage::disk('s3')->exists($partial_url)) {
                 return $this->awsAssetsUrl('/'.$partial_url);
             } else {

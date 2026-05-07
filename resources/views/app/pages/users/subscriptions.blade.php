@@ -1,37 +1,44 @@
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Magnets'}}
-@stop
-@section('styles')
-    @parent
+@extends('layouts.modern')
 
-    <link href="{{ asset('css/app/products.css') }}" rel="stylesheet">
-@stop
+@section('page-title', 'My Subscriptions')
+
+@php
+    $activeNav = 'home';
+    $useAppShell = true;
+@endphp
+
 @section('content')
-    @include('partials.header', ['title' => ''])
+    <main class="modern-main-content modern-main-content--fluid">
+        <div class="modern-data-cache-wrap">
+            <header class="modern-page-header">
+                <div>
+                    <h1 class="modern-page-title">{{ __('My Subscriptions') }}</h1>
+                    <p class="modern-page-subtitle">Mis suscripciones</p>
+                </div>
+            </header>
 
-    <div id="content-container" style="margin: 50px;">
-        <div class="row col-md-12">
-            <div class="col-md-8">
-                <h2>{{ __('My Subscriptions') }}</h2>
-            </div>
-        </div><br/>
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered" id="subscriptions">
-                <thead>
-                    <tr>
-                        <th class="align-center">{{ __('Plan') }}</th>
-                        <th class="align-center">{{ __('Starts At') }}</th>
-                        <th class="align-center">{{ __('Ends At') }}</th>
-                    </tr>
-                </thead>
-            </table>
+            <section class="data-cache-client-page">
+                <div class="modern-info-card data-cache-client-panel">
+                    <div class="modern-data-cache-table-shell data-cache-client-table-shell">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-datatable" id="subscriptions">
+                                <thead>
+                                    <tr>
+                                        <th class="align-center">{{ __('Plan') }}</th>
+                                        <th class="align-center">{{ __('Starts At') }}</th>
+                                        <th class="align-center">{{ __('Ends At') }}</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
 @endsection
-@section('javascripts')
-    @parent
 
+@push('scripts')
     <script>
         $(document).ready(function() {
             $('#subscriptions').DataTable({
@@ -41,21 +48,17 @@
                 columns: [
                     { data: 'plan', orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {
-                            return data.name + " ($" + parseFloat(Math.round(data.price * 100) / 100).toFixed(2)  + ")"
+                            return data.name + " ($" + parseFloat(Math.round(data.price * 100) / 100).toFixed(2) + ")";
                         }
                     },
-                    { data: 'starts_at', 
-                        render: function ( data, type, row, meta ) {
-                            return new Date(data).toLocaleString();
-                        }
+                    { data: 'starts_at',
+                        render: function ( data, type, row, meta ) { return new Date(data).toLocaleString(); }
                     },
-                    { data: 'ends_at', 
-                        render: function ( data, type, row, meta ) {
-                            return new Date(data).toLocaleString();
-                        }
+                    { data: 'ends_at',
+                        render: function ( data, type, row, meta ) { return new Date(data).toLocaleString(); }
                     }
                 ]
             });
         });
     </script>
-@stop
+@endpush

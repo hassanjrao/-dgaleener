@@ -1,70 +1,64 @@
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Magnets'}}
-@stop
-@section('styles')
-    @parent
+@extends('layouts.modern')
 
+@section('page-title', 'Chakra Magnets')
+
+@php
+    $activeNav = 'home';
+    $useAppShell = true;
+@endphp
+
+@push('head')
     <link href="{{ asset('css/app/products.css') }}" rel="stylesheet">
-@stop
+@endpush
+
 @section('content')
-    @include('partials.header', ['title' => ''])
-    <div class="row products-body">
-        <div class="col-md-12 col-lg-4 product-text" style="padding: 0;">
-            <div class="text-center " style="vertical-align: center; height: auto; margin: 20px; position: relative; padding: 20px;">
-                <div>
-                    <span>Anew Avenue Biomagnestim Magnets</span><br />
-                    <span>Made with pure italian leather</span><br />
-                    <span>Neodymium magnets</span><br />
-                    <span>Multi layered colored</span><br />
-                    <span>Chakra Color Spectrums Positive</span><br />
-                    <span>back side are</span><br />
-                    <span>Sand color, representing the Negative</span>
+    <main class="modern-main-content modern-main-content--fluid">
+        <div class="row products-body" style="margin: 0;">
+            <div class="col-md-12 col-lg-4 product-text" style="padding: 0;">
+                <div style="padding: 24px 20px 12px;">
+                    <p style="font-size: 0.9rem; line-height: 1.7; color: #374151;">
+                        Anew Avenue Biomagnestim Magnets<br>
+                        Made with pure italian leather<br>
+                        Neodymium magnets<br>
+                        Multi layered colored<br>
+                        Chakra Color Spectrums Positive<br>
+                        back side are<br>
+                        Sand color, representing the Negative
+                    </p>
                 </div>
-            </div>
-            <div class="text-center " style="height: auto; padding: 20px;">
-                <div class="" style="height: 100%;">
-                    <span style="font-size: 28px;">Magnets and Price</span><br />
-                    <div class="product-detail">
-                        <form name="checkout" action="{{ route('app.products.checkoutWithShipping') }}" method="POST">
-                            @foreach(\App\Models\Product::orderBy('unit_price', 'desc')->where('category', '=', 'chakra')->get() as $index=>$product)
-                                @csrf
-                                <table>
-                                    <tr>
-                                        <td>
-                                            @if ($index == 0)
-                                                <input style="width: 40px;" type="radio" name="product_id" value="{{$product->id}}" checked="true" ng-disabled="{{ empty(Auth::user()) ? 'true' : 'false' }}">
-                                            @else
-                                                <input style="width: 40px;" type="radio" name="product_id" value="{{$product->id}}" ng-disabled="{{ empty(Auth::user()) ? 'true' : 'false' }}">
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <span>{{$product->size}} - {{$product->name}} - ${{$product->unit_price}}</span>
-                                        </td>
-                                    </tr>
-                                </table>
+                <div style="padding: 0 20px 24px;">
+                    <p class="modern-form-label" style="font-size: 1rem; margin-bottom: 1rem;">Magnets and Price</p>
+                    <form name="checkout" action="{{ route('app.products.checkoutWithShipping') }}" method="POST">
+                        @csrf
+                        <div style="margin-bottom: 1rem;">
+                            @foreach(\App\Models\Product::orderBy('unit_price', 'desc')->where('category', '=', 'chakra')->get() as $index => $product)
+                                <label style="display: flex; align-items: center; gap: 0.6rem; padding: 0.45rem 0; cursor: pointer; font-size: 0.9rem; color: #0f172a;">
+                                    <input type="radio" name="product_id" value="{{ $product->id }}" {{ $index == 0 ? 'checked' : '' }}>
+                                    {{ $product->size }} — {{ $product->name }} — <strong>${{ $product->unit_price }}</strong>
+                                </label>
                             @endforeach
-                            <br />
-                            <span>Quantity</span>
-                            <input type="number" name="quantity" min="1" max="" value="1" ng-disabled="{{ empty(Auth::user()) ? 'true' : 'false' }}" style="width: 50px; margin: 0 8px;">
-                            <p style="margin: 20px;">
-                                Note: "This price excludes shipping. For shipping charges, we will send you an email."
-                            </p>
-                            @if (empty(Auth::user()))
-                                <h4>You need to login first, <br> click <a href="/login">here</a> to login</h4>
-                            @else
-                                <button type="submit"></button>
-                            @endif
-                        </form>
-                    </div> 
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                            <label class="modern-form-label mb-0">Quantity</label>
+                            <input type="number" name="quantity" min="1" value="1" class="modern-data-cache-input" style="width: 70px;">
+                        </div>
+                        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 1.25rem;">
+                            This price excludes shipping. For shipping charges, we will send you an email.
+                        </p>
+                        @if (empty(Auth::user()))
+                            <p style="font-size: 0.9rem;">You need to login first — <a href="/login" style="color: #14b8a6; font-weight: 600;">click here to login</a></p>
+                        @else
+                            <button type="submit" class="modern-btn modern-btn--primary">
+                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                                {{ __('Checkout') }}
+                            </button>
+                        @endif
+                    </form>
                 </div>
             </div>
+            <div class="col-md-12 col-lg-8 products-bg">
+                <img src="{{ asset('images/products/magnets.png') }}" alt="{{ env('APP_TITLE') }}" style="width: 100%; transform: translateY(25%);">
+            </div>
         </div>
-        <div class="col-md-12 col-lg-8 products-bg" >
-            <img src="{{ asset('images/products/magnets.png') }}" alt="{{ env('APP_TITLE') }}" style="width: 100%; transform: translateY(25%);">
-        </div>
-    </div>
+    </main>
 @endsection
-@section('javascripts')
-    @parent
-@stop

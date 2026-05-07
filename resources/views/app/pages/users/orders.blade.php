@@ -1,42 +1,48 @@
+@extends('layouts.modern')
 
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Magnets'}}
-@stop
-@section('styles')
-    @parent
+@section('page-title', 'My Orders')
 
-    <link href="{{ asset('css/app/products.css') }}" rel="stylesheet">
-@stop
+@php
+    $activeNav = 'home';
+    $useAppShell = true;
+@endphp
+
 @section('content')
-    @include('partials.header', ['title' => ''])
+    <main class="modern-main-content modern-main-content--fluid">
+        <div class="modern-data-cache-wrap">
+            <header class="modern-page-header">
+                <div>
+                    <h1 class="modern-page-title">{{ __('My Orders') }}</h1>
+                    <p class="modern-page-subtitle">Mis pedidos</p>
+                </div>
+            </header>
 
-    <div id="content-container" style="margin: 50px;">
-        <div class="row col-md-12">
-            <div class="col-md-8">
-                <h2>{{ __('My Orders') }}</h2>
-            </div>
-        </div><br/>
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered" id="orders">
-                <thead>
-                    <tr>
-                        <th class="align-center">{{ __('Product Name') }}</th>
-                        <th class="align-center">{{ __('Description') }}</th>
-                        <th class="align-center">{{ __('Unit Price') }}</th>
-                        <th class="align-center">{{ __('Quantity') }}</th>
-                        <th class="align-center">{{ __('Cost') }}</th>
-                        <th class="align-center">{{ __('Paid') }}</th>
-                        <th class="align-center">{{ __('Actions') }}</th>
-                    </tr>
-                </thead>
-            </table>
+            <section class="data-cache-client-page">
+                <div class="modern-info-card data-cache-client-panel">
+                    <div class="modern-data-cache-table-shell data-cache-client-table-shell">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered table-datatable" id="orders">
+                                <thead>
+                                    <tr>
+                                        <th class="align-center">{{ __('Product Name') }}</th>
+                                        <th class="align-center">{{ __('Description') }}</th>
+                                        <th class="align-center">{{ __('Unit Price') }}</th>
+                                        <th class="align-center">{{ __('Quantity') }}</th>
+                                        <th class="align-center">{{ __('Cost') }}</th>
+                                        <th class="align-center">{{ __('Paid') }}</th>
+                                        <th class="align-center">{{ __('Actions') }}</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
-    </div>
+    </main>
 @endsection
-@section('javascripts')
-    @parent
 
+@push('scripts')
     <script>
         $(document).ready(function() {
             $('#orders').DataTable({
@@ -44,48 +50,30 @@
                 serverSide: true,
                 ajax: { url : '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/users/me/orders/datatables' },
                 columns: [
-                    {   data: 'product', name: 'product', orderable: false, searchable: false,
-                        render: function ( data, type, row, meta ) {
-                            return data.name;
-                        } 
+                    { data: 'product', name: 'product', orderable: false, searchable: false,
+                        render: function ( data, type, row, meta ) { return data.name; }
                     },
                     { data: 'description', name: 'description' },
-                    {   data: 'product', name: 'product', orderable: false, searchable: false,
-                        render: function ( data, type, row, meta ) {
-                            return '$' + data.unit_price;
-                        } 
+                    { data: 'product', name: 'product', orderable: false, searchable: false,
+                        render: function ( data, type, row, meta ) { return '$' + data.unit_price; }
                     },
                     { data: 'quantity', name: 'quantity' },
                     { data: 'cost', name: 'cost', orderable: false, searchable: false,
-                        render: function ( data, type, row, meta ) {
-                            return '$' + data;
-                        }
+                        render: function ( data, type, row, meta ) { return '$' + data; }
                     },
                     { data: 'paid', name: 'paid', orderable: false, searchable: false,
-                        render: function ( data, type, row, meta ) {
-                            if (data == true) {
-                                return 'Yes';
-                            } else {
-                                return 'No';
-                            }
-                        }
+                        render: function ( data, type, row, meta ) { return data == true ? 'Yes' : 'No'; }
                     },
                     { data: 'id', orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {
-                            content = ''
-
+                            content = '';
                             $.ajax({
                                 url: "{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/orders/"+data,
-                                type: 'GET',
-                                dataType: 'JSON',
-                                async: false,
+                                type: 'GET', dataType: 'JSON', async: false,
                                 success: function (order) {
-                                    if (!order.paid) {
-                                        content = '<a href="/orders/'+order.id+'/payment">Pay</a>';
-                                    }
+                                    if (!order.paid) { content = '<a href="/orders/'+order.id+'/payment">Pay</a>'; }
                                 }
                             });
-
                             return content;
                         }
                     }
@@ -93,4 +81,4 @@
             });
         });
     </script>
-@stop
+@endpush

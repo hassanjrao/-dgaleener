@@ -82,6 +82,11 @@
             </div>
         </section>
 
+        <section class="mb-5">
+            <h4 class="section-eyebrow mb-4">Plans &amp; Pricing</h4>
+            @include('partials.modern.pricing')
+        </section>
+
         <section class="mb-4">
             <h4 class="section-eyebrow mb-3">Quick Access</h4>
             <div class="d-flex flex-wrap modern-gap-2">

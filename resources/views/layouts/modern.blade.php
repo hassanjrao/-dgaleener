@@ -36,6 +36,7 @@
 <body class="@yield('body-class', 'modern-theme')">
     @if (!isset($hideBrandBar) || !$hideBrandBar)
         @include('partials.modern.brand_bar')
+        @include('partials.modern.user_menu')
     @endif
 
     @if (!empty($isBioconnectRoute))

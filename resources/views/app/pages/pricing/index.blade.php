@@ -1,18 +1,25 @@
-@extends('layouts.application')
-@section('page-title')
-    {{'Anew Avenue Biomagnestim | Pricing'}}
-@stop
-@section('styles')
-    @parent
+@extends('layouts.modern')
 
-    <link rel="stylesheet" href="css/app/pricing.css">
-@stop
+@section('page-title', 'Plans & Pricing')
+
+@php
+    $activeNav = 'home';
+    $useAppShell = true;
+@endphp
+
 @section('content')
-    @include('partials.header', ['title' => ''])
-    <div class="container">
-        @include('partials.pricing')
-    </div>
+    <main class="modern-main-content modern-main-content--fluid">
+        <div class="modern-data-cache-wrap">
+            <header class="modern-page-header">
+                <div>
+                    <h1 class="modern-page-title">{{ __('Plans & Pricing') }}</h1>
+                    <p class="modern-page-subtitle">Planes y precios</p>
+                </div>
+            </header>
+
+            <section style="padding: 0 1.5rem;">
+                @include('partials.modern.pricing')
+            </section>
+        </div>
+    </main>
 @endsection
-@section('javascripts')
-    @parent
-@stop

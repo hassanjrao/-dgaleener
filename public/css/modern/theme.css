@@ -2329,3 +2329,602 @@ body.modern-theme {
         flex: 1 1 32%;
     }
 }
+
+/* ── DataTable action icon buttons — same style as modern-btn ── */
+.dt-action-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.dt-action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    background: #ffffff;
+    border: 1px solid #cbd5d1;
+    border-radius: 0.65rem;
+    color: #0f172a;
+    cursor: pointer;
+    padding: 0.3rem 0.65rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.2;
+    float: none;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+    text-decoration: none;
+    -webkit-appearance: none;
+    appearance: none;
+    white-space: nowrap;
+}
+
+.dt-action-btn:hover,
+.dt-action-btn:focus {
+    color: #0f172a;
+    border-color: #94a3b8;
+    background: #f8fafc;
+    text-decoration: none;
+    outline: none;
+}
+
+.dt-action-btn:active {
+    transform: translateY(1px);
+}
+
+/* teal/primary variant — matches modern-btn--primary */
+.dt-action-btn--teal {
+    background: #009b7d;
+    border-color: #009b7d;
+    color: #ffffff;
+}
+.dt-action-btn--teal:hover,
+.dt-action-btn--teal:focus {
+    background: #00876d;
+    border-color: #00876d;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* slate/outline variant — matches modern-btn--outline */
+.dt-action-btn--slate {
+    background: #ffffff;
+    border-color: #009b7d;
+    color: #009b7d;
+}
+.dt-action-btn--slate:hover,
+.dt-action-btn--slate:focus {
+    background: #009b7d;
+    border-color: #009b7d;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* red/danger variant — matches modern-btn--danger */
+.dt-action-btn--red {
+    background: #ffffff;
+    border-color: #dc2626;
+    color: #dc2626;
+}
+.dt-action-btn--red:hover,
+.dt-action-btn--red:focus {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* ── DataTable controls spacing inside the modern table shell ── */
+.modern-data-cache-table-shell .dataTables_wrapper {
+    padding: 18px 18px 14px;
+}
+
+.modern-data-cache-table-shell .dataTables_wrapper .dataTables_length,
+.modern-data-cache-table-shell .dataTables_wrapper .dataTables_filter {
+    margin-bottom: 16px;
+}
+
+/* ── Form label shared style ── */
+.modern-form-label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.01em;
+}
+
+/* ── modern-data-cache-input full-width override (when paired with Bootstrap .form-control) ── */
+.form-control.modern-data-cache-input,
+.form-control.modern-data-cache-select {
+    display: block;
+    width: 100%;
+    min-width: 0;
+}
+
+/* ============================================================
+   User Side Menu — slide-in drawer
+   ============================================================ */
+
+/* Hamburger trigger button */
+.user-side-menu__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    background: transparent;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 0.65rem;
+    color: #334155;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.user-side-menu__trigger:hover,
+.user-side-menu__trigger:focus-visible {
+    background: #f0fdfa;
+    border-color: #0d9488;
+    color: #0d9488;
+    outline: none;
+}
+
+/* Backdrop */
+.user-menu-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    z-index: 1049;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+body.user-menu-open .user-menu-backdrop {
+    display: block;
+    opacity: 1;
+}
+
+/* Drawer shell */
+.user-side-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 17rem;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    box-shadow: -4px 0 24px rgba(15, 23, 42, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+body.user-menu-open .user-side-menu {
+    transform: translateX(0);
+}
+
+/* Drawer header */
+.user-side-menu__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1.1rem 1.25rem;
+    background: #f0fdfa;
+    border-bottom: 1px solid #d1fae5;
+    flex-shrink: 0;
+}
+
+.user-side-menu__avatar {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(13, 148, 136, 0.25);
+    flex-shrink: 0;
+    background: #e2e8f0;
+}
+
+.user-side-menu__name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.user-side-menu__email {
+    font-size: 0.72rem;
+    color: #64748b;
+    line-height: 1.3;
+    word-break: break-all;
+}
+
+.user-side-menu__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    background: transparent;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 50%;
+    color: #64748b;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.user-side-menu__close:hover,
+.user-side-menu__close:focus-visible {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #dc2626;
+    outline: none;
+}
+
+/* Nav body */
+.user-side-menu__body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 0.75rem 0.75rem 0;
+}
+
+.user-side-menu__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.user-side-menu__list li {
+    margin-bottom: 0.15rem;
+}
+
+.user-side-menu__link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.65rem;
+    color: #334155;
+    font-weight: 500;
+    font-size: 0.92rem;
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.user-side-menu__link:hover,
+.user-side-menu__link:focus-visible {
+    background: rgba(13, 148, 136, 0.07);
+    color: #0f766e;
+    text-decoration: none;
+    outline: none;
+}
+
+.user-side-menu__link.active {
+    background: rgba(13, 148, 136, 0.12);
+    color: #0f766e;
+    font-weight: 700;
+}
+
+.user-side-menu__link--admin {
+    color: #92400e;
+}
+
+.user-side-menu__link--admin:hover,
+.user-side-menu__link--admin:focus-visible {
+    background: rgba(245, 158, 11, 0.08);
+    color: #78350f;
+}
+
+.user-side-menu__icon {
+    width: 1.15rem;
+    height: 1.15rem;
+    flex-shrink: 0;
+    stroke: currentColor;
+}
+
+.user-side-menu__divider {
+    border: none;
+    border-top: 1px solid #e2e8f0;
+    margin: 0.4rem 0.5rem;
+}
+
+/* Footer — logout */
+.user-side-menu__footer {
+    flex-shrink: 0;
+    padding: 0.75rem;
+    border-top: 1px solid #e2e8f0;
+}
+
+.user-side-menu__logout {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.65rem;
+    background: transparent;
+    border: 1.5px solid #fca5a5;
+    color: #dc2626;
+    font-weight: 600;
+    font-size: 0.92rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.user-side-menu__logout:hover,
+.user-side-menu__logout:focus-visible {
+    background: #fef2f2;
+    border-color: #f87171;
+    color: #b91c1c;
+    outline: none;
+}
+
+/* ============================================================
+   DataTables — global modern overrides (matches data_cache client_info style)
+   ============================================================ */
+
+.dataTables_wrapper {
+    font-size: 0.875rem;
+    color: #0f172a;
+}
+
+/* Length + filter labels */
+.dataTables_wrapper .dataTables_length label,
+.dataTables_wrapper .dataTables_filter label {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.82rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Length select */
+.dataTables_wrapper .dataTables_length select {
+    height: 2rem;
+    padding: 0.2rem 1.5rem 0.2rem 0.55rem;
+    border: 1px solid #d1d9e3;
+    border-radius: 6px;
+    background-color: #ffffff;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path fill='%2364748b' d='M6 8L2 4h8z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.45rem center;
+    appearance: none;
+    -webkit-appearance: none;
+    font-size: 0.82rem;
+    color: #0f172a;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dataTables_wrapper .dataTables_length select:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+/* Search input */
+.dataTables_wrapper .dataTables_filter input {
+    height: 2rem;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid #d1d9e3;
+    border-radius: 6px;
+    background: #ffffff;
+    font-size: 0.82rem;
+    color: #0f172a;
+    min-width: 180px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+    outline: none;
+    border-color: #93c5fd;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+/* Table headers */
+.table-datatable thead th {
+    background: #f1f5f9;
+    color: #16324f;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.65rem 0.85rem;
+    border-color: #e2e8f0;
+    vertical-align: middle;
+}
+
+/* Table body */
+.table-datatable tbody td {
+    padding: 0.6rem 0.85rem;
+    border-color: #e2e8f0;
+    vertical-align: middle;
+    font-size: 0.875rem;
+    color: #1e293b;
+    word-break: break-word;
+}
+
+.table-datatable tbody tr:nth-child(even) td {
+    background: #fbfdff;
+}
+
+.table-datatable tbody tr:hover td {
+    background: #f4f8ff;
+}
+
+/* Last column (actions) centered */
+.table-datatable thead th:last-child,
+.table-datatable tbody td:last-child {
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Info text */
+.dataTables_wrapper .dataTables_info {
+    font-size: 0.8rem;
+    color: #64748b;
+    padding-top: 0.6em;
+}
+
+/* Pagination */
+.dataTables_wrapper .dataTables_paginate {
+    padding-top: 0.6em;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    border: 1px solid #d1d9e3;
+    border-radius: 6px;
+    margin-left: 6px;
+    min-width: 38px;
+    padding: 0.45em 0.8em;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    color: #1d4ed8 !important;
+    font-weight: 600;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    color: #ffffff !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover {
+    background: transparent;
+    border-color: transparent;
+    color: #94a3b8 !important;
+    cursor: not-allowed;
+}
+
+/* Processing indicator */
+.dataTables_wrapper .dataTables_processing {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    color: #1d4ed8;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+/* ============================================================
+   Modern Pricing Cards
+   ============================================================ */
+.modern-pricing-wrap {
+    padding: 1.5rem 0 0.5rem;
+}
+
+.modern-pricing-grid {
+    max-width: 720px;
+}
+
+.modern-pricing-card {
+    position: relative;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 1rem;
+    padding: 2rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    height: 100%;
+    transition: box-shadow 0.2s ease;
+}
+
+.modern-pricing-card:hover {
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+}
+
+.modern-pricing-card--featured {
+    border-color: #14b8a6;
+    box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.12);
+}
+
+.modern-pricing-card--featured:hover {
+    box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.12), 0 4px 24px rgba(15, 23, 42, 0.08);
+}
+
+.modern-pricing-card__badge {
+    display: inline-flex;
+    align-items: center;
+    background: #ccfbf1;
+    color: #0f766e;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.22rem 0.6rem;
+    border-radius: 2rem;
+    width: fit-content;
+}
+
+.modern-pricing-card__header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.modern-pricing-card__name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.modern-pricing-card__price {
+    display: flex;
+    align-items: baseline;
+    gap: 0.1rem;
+    margin-top: 0.5rem;
+}
+
+.modern-pricing-card__currency {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #64748b;
+    line-height: 1;
+}
+
+.modern-pricing-card__amount {
+    font-size: 3rem;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.modern-pricing-card__period {
+    font-size: 0.8rem;
+    color: #64748b;
+    margin: 0;
+    text-transform: capitalize;
+}
+
+.modern-pricing-card__desc {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+    line-height: 1.65;
+}
+
+.modern-pricing-card__footer {
+    margin-top: auto;
+}
