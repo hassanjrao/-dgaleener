@@ -89,6 +89,11 @@
 @endsection
 
 @push('scripts')
+    @guest
+        <script src="{{ \App\Support\VersionedAsset::url('js/manifest.js') }}"></script>
+        <script src="{{ \App\Support\VersionedAsset::url('js/vendor.js') }}"></script>
+        <script src="{{ \App\Support\VersionedAsset::url('js/app.js') }}"></script>
+    @endguest
     <script type="text/javascript">
         $(document).ready(function() {
             $('#drGoizPairsTable').DataTable({
