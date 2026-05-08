@@ -1,149 +1,142 @@
 @extends('layouts.admin')
-@section('page-title')
-    {{ __('Anew Avenue Biomagnestim | Administrator - Model Labels') }}
-@stop
+@section('page-title')Chakra Scan Model Labels@stop
 @section('styles')
     @parent
 @stop
 @section('content')
     @csrf
     <div id="content-container">
-        <h2>
-            {{ __('Model Labels for Chakra Scan') }}
-            <button class="editor-new fa fa-plus" data-toggle="modal" data-target="#modelLabelModal" data-title="New Model Label"></button>
-        </h2><br/>
-        <div class="table-responsive">
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">{{ __('Model Labels — Chakra Scan') }}</h2>
+            <div class="admin-page-header__actions">
+                <button type="button" class="admin-btn admin-btn--primary" data-toggle="modal" data-target="#modelLabelModal" data-title="New Model Label">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    {{ __('New Model Label') }}
+                </button>
+            </div>
+        </div>
+        <div class="admin-dt-wrap table-responsive">
             <table class="table table-hover table-bordered" id="model_labels">
                 <thead>
                     <tr>
-                        <th class="align-center">{{ __('ID') }}</th>
-                        <th class="align-left">{{ __('Target') }}</th>
-                        <th class="align-center">{{ __('Point') }}</th>
-                        <th class="align-left">{{ __('Point X') }}</th>
-                        <th class="align-left">{{ __('Point Y') }}</th>
-                        <th class="align-left">{{ __('Point Z') }}</th>
-                        <th class="align-left">{{ __('Label') }}</th>
-                        <th class="align-left">{{ __('Label X') }}</th>
-                        <th class="align-left">{{ __('Label Y') }}</th>
-                        <th class="align-left">{{ __('Label Z') }}</th>
-                        <th class="align-left">{{ __('Actions') }}</th>
+                        <th>{{ __('ID') }}</th>
+                        <th>{{ __('Target') }}</th>
+                        <th>{{ __('Point') }}</th>
+                        <th>{{ __('Point X') }}</th>
+                        <th>{{ __('Point Y') }}</th>
+                        <th>{{ __('Point Z') }}</th>
+                        <th>{{ __('Label') }}</th>
+                        <th>{{ __('Label X') }}</th>
+                        <th>{{ __('Label Y') }}</th>
+                        <th>{{ __('Label Z') }}</th>
+                        <th class="text-center">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
             </table>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modelLabelModal" tabindex="-1" role="dialog" aria-labelledby="modelLabelModal" aria-hidden="true">
+    <!-- Model Label Modal -->
+    <div class="modal fade" id="modelLabelModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modelLabelModalTitle"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form>
-            <div class="modal-body">
-                <input type="hidden" id="model_label_id" name="model_label_id">
-                <div class="form-group">
-                    <label for="target">Scan Type</label>
-                    <select class="form-control" id="scan_type" name="scan_type" required disabled>
-                        <option value="body_scan">Body Scan</option>
-                        <option value="chakra_scan" selected>Chakra Scan</option>
-                    </select>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modelLabelModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="form-group">
-                    <label for="target">Target</label>
-                    <select class="form-control" id="target" name="target" required>
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="label">Point</label>
-                    <select class="form-control" id="pair_id" name="pair_id" required>
-                        @foreach(\App\Models\Pair::orderBy('name', 'asc')->where('scan_type', '=', 'chakra_scan')->get() as $pair)
-                            <option value="{{$pair->id}}">{{$pair->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <label>Point Coordinates</label>
-                <div class="form-group row">
-                    <div class="col">
-                        <label>X</label>
-                        <input type="number" class="form-control" id="point_x" name="point_x" required>
+                <form>
+                    <div class="modal-body">
+                        <input type="hidden" id="model_label_id" name="model_label_id">
+                        <div class="form-group">
+                            <label>{{ __('Scan Type') }}</label>
+                            <select class="form-control" id="scan_type" name="scan_type" required disabled>
+                                <option value="body_scan">Body Scan</option>
+                                <option value="chakra_scan" selected>Chakra Scan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ __('Target') }}</label>
+                            <select class="form-control" id="target" name="target" required>
+                                <option value="female">Female</option>
+                                <option value="male">Male</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ __('Point') }}</label>
+                            <select class="form-control" id="pair_id" name="pair_id" required>
+                                @foreach(\App\Models\Pair::orderBy('name', 'asc')->where('scan_type', '=', 'chakra_scan')->get() as $pair)
+                                    <option value="{{$pair->id}}">{{$pair->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <label>{{ __('Point Coordinates') }}</label>
+                        <div class="form-group row">
+                            <div class="col">
+                                <label>X</label>
+                                <input type="number" class="form-control" id="point_x" name="point_x" required>
+                            </div>
+                            <div class="col">
+                                <label>Y</label>
+                                <input type="number" class="form-control" id="point_y" name="point_y" required>
+                            </div>
+                            <div class="col">
+                                <label>Z</label>
+                                <input type="number" class="form-control" id="point_z" name="point_z" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ __('Label') }}</label>
+                            <input type="text" class="form-control" id="label" name="label" required>
+                        </div>
+                        <label>{{ __('Label Coordinates') }}</label>
+                        <div class="form-group row">
+                            <div class="col">
+                                <label>X</label>
+                                <input type="number" class="form-control" id="label_x" name="label_x" required>
+                            </div>
+                            <div class="col">
+                                <label>Y</label>
+                                <input type="number" class="form-control" id="label_y" name="label_y" required>
+                            </div>
+                            <div class="col">
+                                <label>Z</label>
+                                <input type="number" class="form-control" id="label_z" name="label_z" required>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col">
-                        <label>Y</label>
-                        <input type="number" class="form-control" id="point_y" name="point_y" required>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button type="button" class="admin-btn admin-btn--primary save-btn">{{ __('Save') }}</button>
                     </div>
-                    <div class="col">
-                        <label>Z</label>
-                        <input type="number" class="form-control" id="point_z" name="point_z" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="label">Label</label>
-                    <input type="text" class="form-control" id="label" name="label" required>
-                </div>
-                <label>Label Coordinates</label>
-                <div class="form-group row">
-                    <div class="col">
-                        <label>X</label>
-                        <input type="number" class="form-control" id="label_x" name="label_x" required>
-                    </div>
-                    <div class="col">
-                        <label>Y</label>
-                        <input type="number" class="form-control" id="label_y" name="label_y" required>
-                    </div>
-                    <div class="col">
-                        <label>Z</label>
-                        <input type="number" class="form-control" id="label_z" name="label_z" required>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary save-btn">Save</button>
-            </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>
 @endsection
 @section('javascripts')
     @parent
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
-            // New record
-            $('#model_labels').on('click', 'button.editor-new', function (e) {
-                e.preventDefault();
-            } );
-
-            // Edit record
-            $('#modelLabelModal').on('show.bs.modal', function (e) {
-                var trigger = $(e.relatedTarget)
+            $('#modelLabelModal').on('show.bs.modal', function(e) {
+                var trigger = $(e.relatedTarget);
                 $('#modelLabelModalTitle').text(trigger.data('title'));
-
-                // Retrieve model_label 
-                $model_label_id = trigger.data('id')
-                if ($model_label_id != null) {
+                var id = trigger.data('id');
+                if (id) {
                     $.ajax({
-                        url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/model_labels/'+$model_label_id,
+                        url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION") }}/model_labels/' + id,
                         type: 'GET',
-                        success: function(result) {
-                            $('#model_label_id').val(result.id);
-                            $('#scan_type').val(result.scan_type);
-                            $('#target').val(result.target);
-                            $('#pair_id').val(result.pair_id);
-                            $('#point_x').val(result.point_x);
-                            $('#point_y').val(result.point_y);
-                            $('#point_z').val(result.point_z);
-                            $('#label').val(result.label);
-                            $('#label_x').val(result.label_x);
-                            $('#label_y').val(result.label_y);
-                            $('#label_z').val(result.label_z);
+                        success: function(r) {
+                            $('#model_label_id').val(r.id);
+                            $('#scan_type').val(r.scan_type);
+                            $('#target').val(r.target);
+                            $('#pair_id').val(r.pair_id);
+                            $('#point_x').val(r.point_x);
+                            $('#point_y').val(r.point_y);
+                            $('#point_z').val(r.point_z);
+                            $('#label').val(r.label);
+                            $('#label_x').val(r.label_x);
+                            $('#label_y').val(r.label_y);
+                            $('#label_z').val(r.label_z);
                         }
                     });
                 } else {
@@ -151,104 +144,44 @@
                     $('#target').val('female');
                     $('#scan_type').val('chakra_scan');
                     $('#pair_id').val(null);
-                    $('#point_x').val(0);
-                    $('#point_y').val(0);
-                    $('#point_z').val(0);
+                    $('#point_x, #point_y, #point_z, #label_x, #label_y, #label_z').val(0);
                     $('#label').val('');
-                    $('#label_x').val(0);
-                    $('#label_y').val(0);
-                    $('#label_z').val(0);
-                }
-            })
-
-            // Save a record
-            $(".save-btn").click(function(e){
-                e.preventDefault();
-
-                var $model_label_id = $('#model_label_id').val()
-
-                var data = {
-                    target: $("#target").val(),
-                    scan_type: $("#scan_type").val(),
-                    pair_id: $("#pair_id").val(),
-                    point_x: $("#point_x").val(),
-                    point_y: $("#point_y").val(),
-                    point_z: $("#point_z").val(),
-                    label: $("#label").val(),
-                    label_x: $('#label_x').val(),
-                    label_y: $('#label_y').val(),
-                    label_z: $('#label_z').val()
-                };
-
-                if ($("#target").val() == '' || $("#target").val() == null) {
-                    alert('Target must be filled out.')
-                    $("#target").focus()
-                } else if ($("#scan_type").val() == '' || $("#scan_type").val() == null) {
-                    alert('Scan type must be filled out.')
-                    $("#scan_type").focus()
-                } else if ($("#pair_id").val() == '' || $("#pair_id").val() == null) {
-                    alert('Point must be filled out.')
-                    $("#pair_id").focus()
-                } else if ($("#point_x").val() == '' || $("#point_x").val() == null) {
-                    alert('Point X must be filled out.')
-                    $("#point_x").focus()
-                } else if ($("#point_y").val() == '' || $("#point_y").val() == null) {
-                    alert('Point Y must be filled out.')
-                    $("#point_y").focus()
-                } else if ($("#point_z").val() == '' || $("#point_z").val() == null) {
-                    alert('Point Z must be filled out.')
-                    $("#point_z").focus()
-                } else {
-                    if ($model_label_id != undefined && $model_label_id != '') {
-                        $.ajax({
-                            url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/model_labels/'+$model_label_id,
-                            type: 'PUT',
-                            data: data,
-                            dataType: 'JSON',
-                            success: function (data) { 
-                                location.reload();
-                            }
-                        }); 
-                    } else {
-                        $.ajax({
-                            url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/model_labels',
-                            type: 'POST',
-                            data: data,
-                            dataType: 'JSON',
-                            success: function (data) { 
-                                location.reload();
-                            }
-                        }); 
-                    }
                 }
             });
-        
-            // Delete a record
-            $('#model_labels').on('click', 'button.editor-remove', function (e) {
+
+            $('.save-btn').click(function(e) {
                 e.preventDefault();
+                var id = $('#model_label_id').val();
+                var data = {
+                    target: $('#target').val(), scan_type: $('#scan_type').val(), pair_id: $('#pair_id').val(),
+                    point_x: $('#point_x').val(), point_y: $('#point_y').val(), point_z: $('#point_z').val(),
+                    label: $('#label').val(), label_x: $('#label_x').val(), label_y: $('#label_y').val(), label_z: $('#label_z').val()
+                };
+                if (!data.target) { alert('Target must be filled out.'); $('#target').focus(); return; }
+                if (!data.pair_id) { alert('Point must be filled out.'); $('#pair_id').focus(); return; }
+                var url = '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION") }}/model_labels' + (id ? '/' + id : '');
+                $.ajax({ url: url, type: id ? 'PUT' : 'POST', data: data, dataType: 'JSON', success: function() { location.reload(); } });
+            });
 
-                $model_label_id = $(this).attr('data-id')
-
-                var confirmDialog = confirm("Are you sure you wish to delete this model label?");
-                if (confirmDialog == true) {
-                    $.ajax({
-                        url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/model_labels/'+$model_label_id,
-                        type: 'DELETE',
-                        success: function(result) {
-                            location.reload();
-                        }
-                    });
+            $('#model_labels').on('click', 'button.editor-remove', function(e) {
+                e.preventDefault();
+                var id = $(this).attr('data-id');
+                if (confirm('Are you sure you wish to delete this model label?')) {
+                    $.ajax({ url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION") }}/model_labels/' + id, type: 'DELETE', success: function() { location.reload(); } });
                 }
-            } );
+            });
+
+            var icEdit  = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>';
+            var icTrash = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>';
 
             $('#model_labels').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: { url : '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/model_labels/datatables?scan_type=chakra_scan' },
+                ajax: { url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION") }}/model_labels/datatables?scan_type=chakra_scan' },
                 columns: [
-                    { data: 'id', name: 'id', className: 'dt-body-center', orderable: true },
+                    { data: 'id', name: 'id' },
                     { data: 'target', name: 'target' },
-                    { data: 'point.name', name: 'point_name', searchable: false, "orderable": false },
+                    { data: 'point.name', name: 'point_name', searchable: false, orderable: false },
                     { data: 'point_x', name: 'point_x' },
                     { data: 'point_y', name: 'point_y' },
                     { data: 'point_z', name: 'point_z' },
@@ -257,11 +190,12 @@
                     { data: 'label_y', name: 'label_y' },
                     { data: 'label_z', name: 'label_z' },
                     {
-                        data: 'id',
-                        className: "dt-body-center",
-                        "orderable": false,
-                        render: function ( data, type, row, meta ) {
-                            return '<button class="editor-remove fa fa-trash-o fa-2x" style="color: red;" data-id="'+data+'"></button><button class="editor-edit fa fa-edit fa-2x" data-toggle="modal" data-target="#modelLabelModal" data-title="Edit Model Label" data-id="'+data+'"></button>';
+                        data: 'id', orderable: false, searchable: false,
+                        render: function(data) {
+                            return '<div class="admin-action-group">'
+                                + '<button class="admin-action-btn admin-action-btn--delete editor-remove" data-id="' + data + '">' + icTrash + '</button>'
+                                + '<button class="admin-action-btn admin-action-btn--edit editor-edit" data-toggle="modal" data-target="#modelLabelModal" data-title="Edit Model Label" data-id="' + data + '">' + icEdit + '</button>'
+                                + '</div>';
                         }
                     }
                 ]

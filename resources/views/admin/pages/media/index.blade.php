@@ -1,66 +1,66 @@
 @extends('layouts.admin')
-@section('page-title')
-    {{ __('Anew Avenue Biomagnestim | Administrator - Media Files') }}
-@stop
+@section('page-title')Media Files@stop
 @section('styles')
     @parent
 @stop
 @section('content')
     <div id="content-container">
-        <div class="row col-md-12">
-            <div class="col-md-8">
-                <h5>{{ __('Available Media Files') }}</h5>
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">{{ __('Media Files') }}</h2>
+            <div class="admin-page-header__actions">
+                <button type="button" class="admin-btn admin-btn--outline" data-toggle="modal" data-target="#playlistModal">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    {{ __('New Playlist') }}
+                </button>
+                <button type="button" class="admin-btn admin-btn--primary" data-toggle="modal" data-target="#mediaModal">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    {{ __('Upload Media') }}
+                </button>
             </div>
-            <div class="col-md-4">
-                <button class="btn btn-lg btn-primary fa fa-plus" data-toggle="modal" data-target="#mediaModal" data-title="New Media File">&nbsp;&nbsp;{{ __('Upload New Media') }}</button>
-                <button class="btn btn-lg btn-primary fa fa-plus" data-toggle="modal" data-target="#playlistModal" data-title="New Playlist">&nbsp;&nbsp;{{ __('Create New Playlist') }}</button>
-            </div>
-        </div><br/>
-        <div class="table-responsive">
+        </div>
+        <div class="admin-dt-wrap table-responsive">
             <table class="table table-hover table-bordered" id="media">
                 <thead>
                     <tr>
-                        <th class="align-center" style="width:30%">{{ __('File Name') }}</th>
-                        <th class="align-center" style="width:50%">{{ __('Description') }}</th>
-                        <th class="align-center" style="width:20%">{{ __('Actions') }}</th>
+                        <th>{{ __('File Name') }}</th>
+                        <th>{{ __('Description') }}</th>
+                        <th class="text-center">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
             </table>
         </div>
     </div>
-  
-    <!-- New Media File Modal -->
-    <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-labelledby="mediaModal" aria-hidden="true">
+
+    <!-- Upload Modal -->
+    <div class="modal fade" id="mediaModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="mediaModalTitle"> {{ __('New Media File') }} </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title">{{ __('Upload Media File') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div id="loader-part" style="display:none;">
-                    <div class="modal-body">
-                        <br/><br/><div class="loader" style="margin-left:150px;"></div><br/>
-                        <p style="text-align:center">{{ __('Please wait... file upload is still being processed...') }}</p><br/>
+                    <div class="modal-body text-center py-4">
+                        <div class="loader mx-auto mb-3"></div>
+                        <p class="text-muted">{{ __('Uploading, please wait…') }}</p>
                     </div>
                 </div>
                 <div id="form-part">
-                    <form method="POST" enctype="multipart/form-data" id="newMediaForm" action='{{ url("/admin/media") }}'>
+                    <form method="POST" enctype="multipart/form-data" id="newMediaForm" action="{{ url('/admin/media') }}">
                         @csrf
                         <div class="modal-body">
                             <div class="form-group">
-                                <label for="name">{{ __('File') }}</label>
+                                <label>{{ __('Audio File') }}</label>
                                 <input type="file" name="media_file" id="fileToUpload" class="form-control" accept=".mp3,audio/*">
                             </div>
                             <div class="form-group">
-                                <label for="description">{{ __('Description') }}</label>
-                                <textarea class="form-control" name="description"></textarea>
+                                <label>{{ __('Description') }}</label>
+                                <textarea class="form-control" name="description" rows="3"></textarea>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-                            <button id="mediaSave" type="submit" class="btn btn-primary save-btn">{{ __('Save') }}</button>
+                            <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                            <button id="mediaSave" type="submit" class="admin-btn admin-btn--primary">{{ __('Upload') }}</button>
                         </div>
                     </form>
                 </div>
@@ -68,143 +68,132 @@
         </div>
     </div>
 
-    <!-- Edit Media File Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalTitle"> {{ __('Update Media Details') }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" id="updateMediaForm">
-                @csrf
-                <input type="hidden" id="media_id" name="id" value="" />
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">{{ __('File Name') }}</label>
-                        <input type="text" class="form-control" id="media_file_name" name="file_name" value="" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">{{ __('Description') }}</label>
-                        <textarea class="form-control" id="media_description" name="description"></textarea>
-                    </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('Edit Media') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-                    <button id="updateMediaSave" type="button" class="btn btn-primary save-btn">{{ __('Save') }}</button>
-                </div>
-            </form>
+                <form method="POST" id="updateMediaForm">
+                    @csrf
+                    <input type="hidden" id="media_id" name="id">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>{{ __('File Name') }}</label>
+                            <input type="text" class="form-control" id="media_file_name" name="file_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ __('Description') }}</label>
+                            <textarea class="form-control" id="media_description" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button id="updateMediaSave" type="button" class="admin-btn admin-btn--primary">{{ __('Save') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Delete Media File Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalTitle"> {{ __('Remove Media File') }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="GET" id="deleteMediaForm">
-                @csrf
-                <input type="hidden" id="deleteUrl" value="">
-                <div class="modal-body">
-                    <h5>Are you sure you want to continue to remove this media file and all its contents? </h5>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('Remove Media File') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
-                    <button id="deleteMediaSave" type="button" class="btn btn-danger save-btn">{{ __('Remove') }}</button>
-                </div>
-            </form>
+                <form method="GET" id="deleteMediaForm">
+                    @csrf
+                    <input type="hidden" id="deleteUrl" value="">
+                    <div class="modal-body">
+                        <p>Are you sure you want to remove this media file?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button id="deleteMediaSave" type="button" class="admin-btn admin-btn--danger">{{ __('Remove') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Add media to playlist -->
-    <div class="modal fade" id="comsModal" tabindex="-1" role="dialog" aria-labelledby="comsModal" aria-hidden="true">
+    <!-- Add to Playlist Modal -->
+    <div class="modal fade" id="comsModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="comsModalTitle"> {{ __('Add Media to Playlist') }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" id="comsForm" action="{{ url('/admin/mediaplaylist') }}">
-                @csrf
-                <div class="modal-body">
-                    <input type="hidden" id="redirect_url" name="redirect_url" value="" />
-                    <div class="form-group">
-                        <label for="name">{{ __('Media File') }}</label>
-                        <input type="hidden" id="media_file_id" name="media_id" value="" />
-                        <input type="text" class="form-control" id="media_file" value="" disabled>
-                    </div>
-                    <div class="form-group">
-                        <label for="name">{{ __('Playlist') }}</label>
-                        <select name="playlist_id" class="form-control">
-                            <option value="0">Select</option>
-                            @foreach($playlists as $playlist)
-                                <option value="{{ $playlist['id'] }}">{{ $playlist['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('Add to Playlist') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-                    <button id="addMediaPlaylistSave" type="submit" class="btn btn-primary save-btn">{{ __('Save') }}</button>
-                </div>
-            </form>
+                <form method="POST" id="comsForm" action="{{ url('/admin/mediaplaylist') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <input type="hidden" id="redirect_url" name="redirect_url" value="">
+                        <div class="form-group">
+                            <label>{{ __('Media File') }}</label>
+                            <input type="hidden" id="media_file_id" name="media_id">
+                            <input type="text" class="form-control" id="media_file" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ __('Playlist') }}</label>
+                            <select name="playlist_id" class="form-control">
+                                <option value="0">Select playlist</option>
+                                @foreach($playlists as $playlist)
+                                    <option value="{{ $playlist['id'] }}">{{ $playlist['name'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button id="addMediaPlaylistSave" type="submit" class="admin-btn admin-btn--primary">{{ __('Add') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <!-- New Playlist Modal -->
-    <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="playlistModal" aria-hidden="true">
+    <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="playlistModalTitle"> {{ __('New Playlist') }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" id="newPlaylistForm" action="{{ url('/admin/playlist') }}">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">{{ __('Playlist Name') }}</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">{{ __('Description') }}</label>
-                        <textarea class="form-control" name="description"></textarea>
-                    </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('New Playlist') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-                    <button id="playlistSave" type="submit" class="btn btn-primary save-btn">{{ __('Save') }}</button>
-                </div>
-            </form>
+                <form method="POST" id="newPlaylistForm" action="{{ url('/admin/playlist') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>{{ __('Playlist Name') }}</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ __('Description') }}</label>
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button id="playlistSave" type="submit" class="admin-btn admin-btn--primary">{{ __('Save') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Player Modal-->
-    <div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-labelledby="playerModal" aria-hidden="true">
+    <!-- Player Modal -->
+    <div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="playerModalTitle"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="playerModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                </div>
                 <div class="modal-body">
                     <div id="jquery_jplayer_2" class="jp-jplayer"></div>
                     <div id="jp_container_2" class="jp-audio" role="application" aria-label="media player">
@@ -216,36 +205,22 @@
                                     <button class="jp-next" role="button" tabindex="0">next</button>
                                     <button class="jp-stop" role="button" tabindex="0">stop</button>
                                 </div>
-                                <div class="jp-progress">
-                                    <div class="jp-seek-bar">
-                                        <div class="jp-play-bar"></div>
-                                    </div>
-                                </div>
+                                <div class="jp-progress"><div class="jp-seek-bar"><div class="jp-play-bar"></div></div></div>
                                 <div class="jp-volume-controls">
                                     <button class="jp-mute" role="button" tabindex="0">mute</button>
                                     <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
-                                    <div class="jp-volume-bar">
-                                        <div class="jp-volume-bar-value"></div>
-                                    </div>
+                                    <div class="jp-volume-bar"><div class="jp-volume-bar-value"></div></div>
                                 </div>
                                 <div class="jp-time-holder">
-                                    <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
-                                    <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                                    <div class="jp-current-time" role="timer">&nbsp;</div>
+                                    <div class="jp-duration" role="timer">&nbsp;</div>
                                 </div>
                                 <div class="jp-toggles">
                                     <button class="jp-repeat" role="button" tabindex="0">repeat</button>
                                     <button class="jp-shuffle" role="button" tabindex="0">shuffle</button>
                                 </div>
                             </div>
-                            <div class="jp-playlist">
-                                <ul>
-                                    <li>&nbsp;</li>
-                                </ul>
-                            </div>
-                            <div class="jp-no-solution">
-                                <span>Update Required</span>
-                                To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-                            </div>
+                            <div class="jp-playlist"><ul><li>&nbsp;</li></ul></div>
                         </div>
                     </div>
                 </div>
@@ -256,109 +231,60 @@
 
 @section('javascripts')
     @parent
-    <script src="{{ asset('js/jquery.jplayer.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('js/jplayer.playlist.js') }}" type="text/javascript"></script>
-    <script type="text/javascript">
-        function playFile(filename, s3file){
-            if (!s3file) {
-                alert('This audio file is missing from storage. Please re-upload it.');
-                return;
-            }
-
+    <script src="{{ asset('js/jquery.jplayer.js') }}"></script>
+    <script src="{{ asset('js/jplayer.playlist.js') }}"></script>
+    <script>
+        function playFile(filename, s3file) {
+            if (!s3file) { alert('Audio file missing from storage.'); return; }
             $("#playerModalTitle").html(filename);
-            var myPlaylist = new jPlayerPlaylist({
-                    jPlayer: "#jquery_jplayer_2",
-                    cssSelectorAncestor: "#jp_container_2"
-                }, [
-                {
-                    title: filename,
-                    mp3: s3file
-                }
-                ], {
-                playlistOptions: {
-                    enableRemoveControls: false
-                },
-                swfPath: "../../dist/jplayer",
-                supplied: "mp3",
-                wmode: "window",
-                useStateClassSkin: true,
-                autoBlur: true,
-                smoothPlayBar: true,
-                keyEnabled: true
+            new jPlayerPlaylist({ jPlayer: "#jquery_jplayer_2", cssSelectorAncestor: "#jp_container_2" },
+                [{ title: filename, mp3: s3file }],
+                { swfPath: "../../dist/jplayer", supplied: "mp3", wmode: "window", useStateClassSkin: true, autoBlur: true, smoothPlayBar: true, keyEnabled: true }
+            );
+        }
+        function playMedia(id, filename) {
+            $.ajax({ url: '/media/' + id, type: 'GET',
+                success: function(r) { playFile(r.file_name || filename, r.file_url); },
+                error: function() { alert('Unable to load audio file.'); }
             });
         }
-
-        function playMedia(id, filename){
-            $.ajax({
-                url: '/media/' + id,
-                type: 'GET',
-                success: function(result) {
-                    playFile(result.file_name || filename, result.file_url);
-                },
-                error: function() {
-                    alert('Unable to load this audio file right now.');
+        function editMedia(id) {
+            $.ajax({ url: '/media/' + id, type: 'GET',
+                success: function(r) {
+                    $('#media_id').val(r.id);
+                    $('#media_file_name').val(r.file_name);
+                    $('#media_description').val(r.description || '');
                 }
             });
         }
-
-        function editMedia(id){
-            $.ajax({
-                url: '/media/'+id,
-                type: 'GET',
-                success: function(result) {
-                    $('#media_id').val(result.id);
-                    $('#media_file_name').val(result.file_name);
-                    $('#media_description').val(result.description != null ? String(result.description) : '');
-                }
-            });
-        }
-
-        function deleteMedia(id){
-            var durl = '{{ url("/admin/media/delete")}}'+'/'+id;
-            $("#deleteUrl").val(durl);
-        }
-        function addToPlaylist(id, filename, redirect){
+        function deleteMedia(id) { $("#deleteUrl").val('{{ url("/admin/media/delete") }}/' + id); }
+        function addToPlaylist(id, filename, redirect) {
             $("#media_file_id").val(id);
             $("#media_file").val(filename);
             $("#redirect_url").val(redirect);
         }
 
         $(document).ready(function() {
-            //submit new media
-            $("#mediaSave").click(function(e) {
-                $('#form-part').hide();
-                $('#loader-part').show();
+            $("#mediaSave").click(function() { $('#form-part').hide(); $('#loader-part').show(); });
+            $("#updateMediaSave").click(function() {
+                var id = $("#media_id").val();
+                $("#updateMediaForm").attr("action", '{{ url("/admin/media/update") }}/' + id).submit();
             });
-
-            //update media details
-            $("#updateMediaSave").click(function(e) {
-                var formData = $("#updateMediaForm").serialize();
-                
-                var id       = $("#media_id").val();
-                var url      = '{{ url("/admin/media/update")}}'+'/'+id;
-                $("#updateMediaForm").attr("action",url);
-                $("#updateMediaForm").submit();
-            });
-
-            //delete media details
-            $("#deleteMediaSave").click(function(e) {
-                var url = $("#deleteUrl").val();
-                $("#deleteMediaForm").attr("action",url);
-                $("#deleteMediaForm").submit();
+            $("#deleteMediaSave").click(function() {
+                $("#deleteMediaForm").attr("action", $("#deleteUrl").val()).submit();
             });
 
             $('#media').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: { url : '{{ url("/admin/media/datatables") }}' },
+                processing: true, serverSide: true,
+                ajax: { url: '{{ url("/admin/media/datatables") }}' },
                 columns: [
                     { data: 'file_name', name: 'file_name' },
                     { data: 'description', name: 'description' },
-                    { data: 'action', name: 'action', orderable:false, searchable: false}
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
             });
 
-            $("#playerModal").on('hidden.bs.modal', function(e){
+            $("#playerModal").on('hidden.bs.modal', function() {
                 $(this).removeData('bs.modal');
                 $("#jquery_jplayer_2").jPlayer("destroy");
             });

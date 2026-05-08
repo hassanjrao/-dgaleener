@@ -1,18 +1,17 @@
 @extends('layouts.admin')
-@section('page-title')
-    {{ __('Anew Avenue Biomagnestim | Administrator - Playlists') }}
-@stop
+@section('page-title')Playlist Media@stop
 @section('styles')
     @parent
 @stop
 @section('content')
-    <br/><br/>
     <div id="content-container">
-        <h5>Assign media files to playlists</h5><br/><br/>
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">{{ __('Assign Media to Playlist') }}</h2>
+        </div>
         <form method="POST" id="mediaPlaylistForm" action="{{ url('/admin/mediaplaylist') }}">
             @csrf
             <input type="hidden" id="playlist_id" name="playlist_id" value="{{$playlist_id}}" />
-            <input type="hidden"  name="redirect_url" value="admin/playlist" />
+            <input type="hidden" name="redirect_url" value="admin/playlist" />
             <div class="row form-group col-md-12">
                 <div class="col-md-5">
                     <label>{{ __('All media files in the system:') }}</label>
@@ -23,8 +22,13 @@
                     </select>
                 </div>
                 <div class="col-md-2 text-center" style="margin-top:130px;">
-                    <button type="button" id="btnRight" class="btn btn-primary fa fa-arrow-circle-right"></button><br/><br/>
-                    <button type="button" id="btnLeft" class="btn btn-primary fa fa-arrow-circle-left" ></button>
+                    <button type="button" id="btnRight" class="admin-btn admin-btn--outline" style="width:42px;height:42px;padding:0;justify-content:center;">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </button>
+                    <br/><br/>
+                    <button type="button" id="btnLeft" class="admin-btn admin-btn--outline" style="width:42px;height:42px;padding:0;justify-content:center;">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                    </button>
                 </div>
                 <div class="col-md-5">
                     <label>{{ __('All media assigned to playlist:') }}</label>
@@ -36,7 +40,9 @@
                 </div>
             </div>
             <div class="clearfix"></div>
-            <center><button id="mediaPlaylistSave" type="button" onClick="saveToPlaylist()" class="btn-lg btn-primary save-btn">{{ __('Save to Playlist') }}</button></center>
+            <div class="text-center mt-3">
+                <button id="mediaPlaylistSave" type="button" onClick="saveToPlaylist()" class="admin-btn admin-btn--primary">{{ __('Save to Playlist') }}</button>
+            </div>
         </form>
     </div>
 @endsection
@@ -45,7 +51,6 @@
     @parent
     <script src="{{ asset('js/jquery.selectlistactions.js') }}" type="text/javascript"></script>
     <script type="text/javascript">
-
         function saveToPlaylist(){
             $('#listBox2 option').prop('selected', true);
             $("#mediaPlaylistForm").submit();

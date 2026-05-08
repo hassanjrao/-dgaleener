@@ -1,275 +1,171 @@
 @extends('layouts.admin')
-@section('page-title')
-    {{ __('Anew Avenue Biomagnestim | Administrator - Pairs - Chakra') }}
-@stop
+@section('page-title')Chakra Pairs@stop
 @section('styles')
     @parent
-
-    <style>
-        .modal-body .form-group {
-            padding-left: 0;
-        }
-
-        .pd-l-0 {
-            padding-left: 0;
-        }
-
-        .pd-r-0 {
-            padding-right: 0;
-        }
-    </style>
 @stop
 @section('content')
     @csrf
     <div id="content-container">
-        <h2>
-            {{ __('Chakra Pairs') }} 
-            <button class="editor-new fa fa-plus" data-toggle="modal" data-target="#pairModal" data-title="New Pair"></button>
-            <button class="editor-new fa fa-upload" onclick="window.location.href='/admin/pairs/import?scan_type=chakra_scan'"></button>
-        </h2><br/>
-        <div class="table-responsive">
-            <table class="table table-hover table-bordered" id="pairs" >
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">{{ __('Chakra Pairs') }}</h2>
+            <div class="admin-page-header__actions">
+                <button type="button" class="admin-btn admin-btn--outline" onclick="window.location.href='/admin/pairs/import?scan_type=chakra_scan'">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+                    {{ __('Import') }}
+                </button>
+                <button type="button" class="admin-btn admin-btn--primary" data-toggle="modal" data-target="#pairModal" data-title="New Chakra Pair">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    {{ __('New Pair') }}
+                </button>
+            </div>
+        </div>
+        <div class="admin-dt-wrap table-responsive">
+            <table class="table table-hover table-bordered" id="pairs">
                 <thead>
                     <tr>
-                        <th class="align-center">{{ __('Ref No.') }}</th>
-                        <th class="align-center">{{ __('Guided Ref No.') }}</th>
-                        <th class="align-left">{{ __('Scan Type') }}</th>
-                        <th class="align-left">{{ __('Points / Name') }}</th>
-                        <th class="align-left">{{ __('Radical') }}</th>
-                        <th class="align-left">{{ __('Start / Origin') }}</th>
-                        <th class="align-left">{{ __('Leads / Symptoms') }}</th>
-                        <th class="align-left">{{ __('Path / Route / Cause and Effect') }}</th>
-                        <th class="align-left">{{ __('Alternative Routes') }}</th>
-                        <th class="align-left">{{ __('Actions') }}</th>
+                        <th>{{ __('Ref No.') }}</th>
+                        <th>{{ __('Guided Ref No.') }}</th>
+                        <th>{{ __('Scan Type') }}</th>
+                        <th>{{ __('Points / Name') }}</th>
+                        <th>{{ __('Radical') }}</th>
+                        <th>{{ __('Start / Origin') }}</th>
+                        <th>{{ __('Leads / Symptoms') }}</th>
+                        <th>{{ __('Path / Route / Cause and Effect') }}</th>
+                        <th>{{ __('Alternative Routes') }}</th>
+                        <th class="text-center">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
             </table>
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="pairModal" tabindex="-1" role="dialog" aria-labelledby="pairModal" aria-hidden="true">
+    <!-- Pair Modal -->
+    <div class="modal fade" id="pairModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="pairModalTitle"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form>
-            <div class="modal-body">
-                <input type="hidden" id="pair_id" name="pair_id">
-                <div class="form-group">
-                    <label for="target">Scan Type</label>
-                    <select class="form-control" id="scan_type" name="scan_type" required>
-                        <option value="chakra_scan">Chakra</option>
-                        <option value="chakra_scan">Chakra</option>
-                    </select>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pairModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="row" style="margin: 0;">
-                    <div class="col-md-6 form-group pd-l-0">
-                        <label for="name">Ref No.</label>
-                        <input type="text" class="form-control" id="ref_no" name="ref_no" required>
+                <form>
+                    <div class="modal-body">
+                        <input type="hidden" id="pair_id" name="pair_id">
+                        <div class="form-group">
+                            <label>{{ __('Scan Type') }}</label>
+                            <select class="form-control" id="scan_type" name="scan_type" required>
+                                <option value="body_scan">Bio</option>
+                                <option value="chakra_scan">Chakra</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>{{ __('Ref No.') }}</label>
+                                <input type="text" class="form-control" id="ref_no" name="ref_no" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>{{ __('Guided Ref No.') }}</label>
+                                <input type="text" class="form-control" id="guided_ref_no" name="guided_ref_no">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>{{ __('Name') }}</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>{{ __('Radical') }}</label>
+                                <input type="text" class="form-control" id="radical" name="radical">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>{{ __('Start / Origin') }}</label>
+                                <textarea class="form-control" id="origins" name="origins"></textarea>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>{{ __('Leads / Symptoms') }}</label>
+                                <textarea class="form-control" id="symptoms" name="symptoms"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <label>{{ __('Path / Route / Cause and Effect') }}</label>
+                                <textarea class="form-control" id="paths" name="paths"></textarea>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <label>{{ __('Alternative Routes') }}</label>
+                                <textarea class="form-control" id="alternative_routes" name="alternative_routes"></textarea>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 form-group pd-r-0">
-                        <label for="name">Guided Ref No.</label>
-                        <input type="text" class="form-control" id="guided_ref_no" name="guided_ref_no" required>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button type="button" class="admin-btn admin-btn--primary save-btn">{{ __('Save') }}</button>
                     </div>
-                </div>
-                <div class="row" style="margin: 0;">
-                    <div class="col-md-6 form-group pd-l-0">
-                        <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="col-md-6 form-group pd-r-0">
-                        <label for="radical">Radical</label>
-                        <input type="text" class="form-control" id="radical" name="radical">
-                    </div>
-                </div>
-                <div class="row" style="margin: 0;">
-                    <div class="col-md-6 form-group pd-l-0">
-                        <label for="origins">Start / Origin</label>
-                        <textarea class="form-control" id="origins" name="origins"></textarea>
-                    </div>
-                    <div class="col-md-6 form-group pd-r-0">
-                        <label for="symptoms">Leads / Symptoms</label>
-                        <textarea class="form-control" id="symptoms" name="symptoms"></textarea>
-                    </div>
-                </div>
-
-                <div class="row" style="margin: 0;">
-                    <div class="col-md-6 form-group pd-l-0">
-                        <label for="paths">Path / Route / Cause and Effect</label>
-                        <textarea class="form-control" id="paths" name="paths"></textarea>
-                    </div>
-                    <div class="col-md-6 form-group pd-r-0">
-                        <label for="alternative_routes">Alternative Routes</label>
-                        <textarea class="form-control" id="alternative_routes" name="alternative_routes"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary save-btn">Save</button>
-            </div>
-            </form>
+                </form>
             </div>
         </div>
     </div>
 @endsection
 @section('javascripts')
     @parent
-    <script type="text/javascript">
+    <script>
         $(document).ready(function() {
-            // New record
-            $('#pairs').on('click', 'button.editor-new', function (e) {
-                e.preventDefault();
-            } );
-
-            // Edit record
-            $('#pairModal').on('show.bs.modal', function (e) {
-                var trigger = $(e.relatedTarget)
+            $('#pairModal').on('show.bs.modal', function(e) {
+                var trigger = $(e.relatedTarget);
                 $('#pairModalTitle').text(trigger.data('title'));
-
-                // Retrieve pair 
-                $pair_id = trigger.data('id')
-                $.ajax({
-                    url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/pairs/'+$pair_id,
-                    type: 'GET',
-                    success: function(result) {
-                        $('#pair_id').val(result.id);
-                        $('#scan_type').val(result.scan_type);
-                        $("#scan_type").prop("disabled", false);
-                        if (result.id == undefined) { 
-                            $('#scan_type').val('chakra_scan'); 
-                            $("#scan_type").prop("disabled", true);
-                        }
-                        $('#ref_no').val(result.ref_no);
-                        $('#guided_ref_no').val(result.guided_ref_no);
-                        $('#name').val(result.name);
-                        $('#radical').val(result.radical);
-                        $('#origins').val(result.origins != null ? String(result.origins) : '');
-                        $('#symptoms').val(result.symptoms != null ? String(result.symptoms) : '');
-                        $('#paths').val(result.paths != null ? String(result.paths) : '');
-                        $('#alternative_routes').val(result.alternative_routes != null ? String(result.alternative_routes) : '');
-                    }
-                });
-
-                
-            })
-
-            // Save a record
-            $(".save-btn").click(function(e){
-                e.preventDefault();
-
-                var $pair_id = $('#pair_id').val()
-
-                var privacy;
-                if ($('#privacy').is(":checked")){
-                    privacy = 1
-                } else {
-                    privacy = 0
-                }
-
-                var data = {
-                    scan_type: $("#scan_type").val(),
-                    ref_no: $("#ref_no").val(),
-                    guided_ref_no: $("#guided_ref_no").val(),
-                    name: $("#name").val(),
-                    radical: $("#radical").val(),
-                    origins: $("#origins").val(),
-                    symptoms: $("#symptoms").val(),
-                    paths: $("#paths").val(),
-                    alternative_routes: $("#alternative_routes").val()
-                };
-
-
-                if ($("#scan_type").val() == '' || $("#scan_type").val() == null) {
-                    alert('Scan Type must be filled out.')
-                    $("#scan_type").focus()
-                } else {
-                    if ($pair_id != undefined && $pair_id != '') {
-                        $.ajax({
-                            url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/pairs/'+$pair_id,
-                            type: 'PUT',
-                            data: data,
-                            dataType: 'JSON',
-                            success: function (data) { 
-                                location.reload();
-                            }
-                        });
-                    } else {
-                        $.ajax({
-                            url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/pairs',
-                            type: 'POST',
-                            data: data,
-                            dataType: 'JSON',
-                            success: function (data) { 
-                                location.reload();
-                            }
-                        });
-                    }
-                }
-            });
-        
-            // Delete a record
-            $('#pairs').on('click', 'button.editor-remove', function (e) {
-                e.preventDefault();
-
-                $pair_id = $(this).attr('data-id')
-
-                var confirmDialog = confirm("Are you sure you wish to delete this pair?");
-                if (confirmDialog == true) {
+                var id = trigger.data('id');
+                if (id) {
                     $.ajax({
-                        url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/pairs/'+$pair_id,
-                        type: 'DELETE',
-                        success: function(result) {
-                            location.reload();
+                        url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION") }}/pairs/' + id,
+                        type: 'GET',
+                        success: function(r) {
+                            $('#pair_id').val(r.id);
+                            $('#scan_type').val(r.scan_type).prop('disabled', false);
+                            $('#ref_no').val(r.ref_no);
+                            $('#guided_ref_no').val(r.guided_ref_no);
+                            $('#name').val(r.name);
+                            $('#radical').val(r.radical);
+                            $('#origins').val(r.origins != null ? String(r.origins) : '');
+                            $('#symptoms').val(r.symptoms != null ? String(r.symptoms) : '');
+                            $('#paths').val(r.paths != null ? String(r.paths) : '');
+                            $('#alternative_routes').val(r.alternative_routes != null ? String(r.alternative_routes) : '');
                         }
                     });
+                } else {
+                    $('#pair_id, #ref_no, #guided_ref_no, #name, #radical, #origins, #symptoms, #paths, #alternative_routes').val('');
+                    $('#scan_type').val('chakra_scan').prop('disabled', true);
                 }
-            } );
+            });
+
+            $('.save-btn').click(function(e) {
+                e.preventDefault();
+                var id = $('#pair_id').val();
+                if (!$('#scan_type').val()) { alert('Scan Type must be filled out.'); $('#scan_type').focus(); return; }
+                var data = { scan_type: $('#scan_type').val(), ref_no: $('#ref_no').val(), guided_ref_no: $('#guided_ref_no').val(), name: $('#name').val(), radical: $('#radical').val(), origins: $('#origins').val(), symptoms: $('#symptoms').val(), paths: $('#paths').val(), alternative_routes: $('#alternative_routes').val() };
+                var url = '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION") }}/pairs' + (id ? '/' + id : '');
+                $.ajax({ url: url, type: id ? 'PUT' : 'POST', data: data, dataType: 'JSON', success: function() { location.reload(); } });
+            });
+
+            $('#pairs').on('click', 'button.editor-remove', function(e) {
+                e.preventDefault();
+                var id = $(this).attr('data-id');
+                if (confirm('Are you sure you wish to delete this pair?')) {
+                    $.ajax({ url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION") }}/pairs/' + id, type: 'DELETE', success: function() { location.reload(); } });
+                }
+            });
+
+            var icEdit  = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>';
+            var icTrash = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>';
 
             $('#pairs').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: { url : '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/pairs/datatables?scan_type=chakra_scan' },
+                ajax: { url: '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION") }}/pairs/datatables?scan_type=chakra_scan' },
                 columns: [
-                    {
-                        data: 'ref_no', 
-                        className: 'dt-body-center',
-                        render: function ( data, type, row, meta ) {
-                            if (data != '' && data != null) {
-                                return data;
-                            } else {
-                                return '-';
-                            }
-                        }
-                    },
-                    {
-                        data: 'guided_ref_no', 
-                        className: 'dt-body-center',
-                        render: function ( data, type, row, meta ) {
-                            if (data != '' && data != null) {
-                                return data;
-                            } else {
-                                return '-';
-                            }
-                        }
-                    },
-                    {
-                        data: 'scan_type',
-                        render: function ( data, type, row, meta ) {
-                            if (data == 'chakra_scan') {
-                                return 'Bio'
-                            } else if (data == 'chakra_scan') {
-                                return 'Chakra'
-                            } else {
-                                return data
-                            }
-                        }
-                    },
+                    { data: 'ref_no', render: function(d) { return d || '-'; } },
+                    { data: 'guided_ref_no', render: function(d) { return d || '-'; } },
+                    { data: 'scan_type', render: function(d) { return d === 'body_scan' ? 'Bio' : d === 'chakra_scan' ? 'Chakra' : d; } },
                     { data: 'name', name: 'name' },
                     { data: 'radical', name: 'radical' },
                     { data: 'origins', name: 'origins' },
@@ -277,11 +173,12 @@
                     { data: 'paths', name: 'paths' },
                     { data: 'alternative_routes', name: 'alternative_routes' },
                     {
-                        data: 'id',
-                        className: "dt-body-center",
-                        "orderable": false,
-                        render: function ( data, type, row, meta ) {
-                            return '<button class="editor-edit fa fa-edit fa-2x" data-toggle="modal" data-target="#pairModal" data-title="Edit Pair" data-id="'+data+'"></button><button class="editor-remove fa fa-trash-o fa-2x"data-id="'+data+'"></button>';
+                        data: 'id', orderable: false, searchable: false,
+                        render: function(data) {
+                            return '<div class="admin-action-group">'
+                                + '<button class="admin-action-btn admin-action-btn--delete editor-remove" data-id="' + data + '">' + icTrash + '</button>'
+                                + '<button class="admin-action-btn admin-action-btn--edit editor-edit" data-toggle="modal" data-target="#pairModal" data-title="Edit Chakra Pair" data-id="' + data + '">' + icEdit + '</button>'
+                                + '</div>';
                         }
                     }
                 ]

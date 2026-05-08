@@ -1,130 +1,119 @@
 @extends('layouts.admin')
-@section('page-title')
-    {{ __('Anew Avenue Biomagnestim | Administrator - Playlists') }}
-@stop
+@section('page-title')Playlists@stop
 @section('styles')
     @parent
 @stop
 @section('content')
-    <div id="content-container" style="margin-top:30px;">
-        <div class="row col-md-12">
-            <div class="col-md-10">
-                <h5>{{ __('Available Playlists') }}</h5>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-lg btn-primary fa fa-plus" data-toggle="modal" data-target="#playlistModal" data-title="New Playlist">&nbsp;&nbsp;{{ __('Create New Playlist') }}</button>
-            </div>
-        </div><br/>
-        <div class="table-responsive">
+    <div id="content-container">
+        <div class="admin-page-header">
+            <h2 class="admin-page-title">{{ __('Playlists') }}</h2>
+            <button type="button" class="admin-btn admin-btn--primary" data-toggle="modal" data-target="#playlistModal">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                {{ __('New Playlist') }}
+            </button>
+        </div>
+        <div class="admin-dt-wrap table-responsive">
             <table class="table table-hover table-bordered" id="playlists">
                 <thead>
                     <tr>
-                        <th class="align-center">{{ __('Name') }}</th>
-                        <th class="align-center">{{ __('Description') }}</th>
-                        <th class="align-center">{{ __('Actions') }}</th>
+                        <th>{{ __('Name') }}</th>
+                        <th>{{ __('Description') }}</th>
+                        <th class="text-center">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
             </table>
         </div>
     </div>
 
-    <!-- Edit Playlist Modal -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editModalTitle"> {{ __('Update Playlist') }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" id="updatePlaylistForm">
-                @csrf
-                <input type="hidden" id="playlist_id" name="id" value="" />
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">{{ __('Name') }}</label>
-                        <input type="text" class="form-control" id="play_name" name="name" value="" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">{{ __('Description') }}</label>
-                        <textarea class="form-control" id="play_description" name="description"></textarea>
-                    </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('Edit Playlist') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-                    <button id="updatePlaylistSave" type="button" class="btn btn-primary save-btn">{{ __('Save') }}</button>
-                </div>
-            </form>
+                <form method="POST" id="updatePlaylistForm">
+                    @csrf
+                    <input type="hidden" id="playlist_id" name="id">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>{{ __('Name') }}</label>
+                            <input type="text" class="form-control" id="play_name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ __('Description') }}</label>
+                            <textarea class="form-control" id="play_description" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button id="updatePlaylistSave" type="button" class="admin-btn admin-btn--primary">{{ __('Save') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Delete Playlist Modal -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+    <!-- Delete Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalTitle"> {{ __('Remove Playlist') }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="GET" id="deletePlaylistForm">
-                @csrf
-                <input type="hidden" id="deleteUrl" value="">
-                <div class="modal-body">
-                    <h5>Are you sure you want to continue to remove this playlist and all its contents? </h5>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('Remove Playlist') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Cancel') }}</button>
-                    <button id="deletePlaylistSave" type="button" class="btn btn-danger save-btn">{{ __('Remove') }}</button>
-                </div>
-            </form>
+                <form method="GET" id="deletePlaylistForm">
+                    @csrf
+                    <input type="hidden" id="deleteUrl" value="">
+                    <div class="modal-body">
+                        <p>Are you sure you want to remove this playlist and all its contents?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button id="deletePlaylistSave" type="button" class="admin-btn admin-btn--danger">{{ __('Remove') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
     <!-- New Playlist Modal -->
-    <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-labelledby="playlistModal" aria-hidden="true">
+    <div class="modal fade" id="playlistModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="playlistModalTitle"> {{ __('New Playlist') }} </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form method="POST" id="newPlaylistForm" action="{{ url('/admin/playlist') }}">
-                @csrf
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="name">{{ __('Playlist Name') }}</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="description">{{ __('Description') }}</label>
-                        <textarea class="form-control" name="description"></textarea>
-                    </div>
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ __('New Playlist') }}</h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
-                    <button id="playlistSave" type="submit" class="btn btn-primary save-btn">{{ __('Save') }}</button>
-                </div>
-            </form>
+                <form method="POST" id="newPlaylistForm" action="{{ url('/admin/playlist') }}">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>{{ __('Name') }}</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ __('Description') }}</label>
+                            <textarea class="form-control" name="description" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="admin-btn admin-btn--outline" data-dismiss="modal">{{ __('Cancel') }}</button>
+                        <button id="playlistSave" type="submit" class="admin-btn admin-btn--primary">{{ __('Save') }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- List to Playlist Modal -->
-    <div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-labelledby="playerModal" aria-hidden="true">
+    <!-- Player Modal -->
+    <div class="modal fade" id="playerModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="playerModalTitle"> </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="playerModalTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div id="jquery_jplayer_2" class="jp-jplayer"></div>
@@ -137,36 +126,22 @@
                                     <button class="jp-next" role="button" tabindex="0">next</button>
                                     <button class="jp-stop" role="button" tabindex="0">stop</button>
                                 </div>
-                                <div class="jp-progress">
-                                    <div class="jp-seek-bar">
-                                        <div class="jp-play-bar"></div>
-                                    </div>
-                                </div>
+                                <div class="jp-progress"><div class="jp-seek-bar"><div class="jp-play-bar"></div></div></div>
                                 <div class="jp-volume-controls">
                                     <button class="jp-mute" role="button" tabindex="0">mute</button>
                                     <button class="jp-volume-max" role="button" tabindex="0">max volume</button>
-                                    <div class="jp-volume-bar">
-                                        <div class="jp-volume-bar-value"></div>
-                                    </div>
+                                    <div class="jp-volume-bar"><div class="jp-volume-bar-value"></div></div>
                                 </div>
                                 <div class="jp-time-holder">
-                                    <div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
-                                    <div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+                                    <div class="jp-current-time" role="timer">&nbsp;</div>
+                                    <div class="jp-duration" role="timer">&nbsp;</div>
                                 </div>
                                 <div class="jp-toggles">
                                     <button class="jp-repeat" role="button" tabindex="0">repeat</button>
                                     <button class="jp-shuffle" role="button" tabindex="0">shuffle</button>
                                 </div>
                             </div>
-                            <div class="jp-playlist">
-                                <ul>
-                                    <li>&nbsp;</li>
-                                </ul>
-                            </div>
-                            <div class="jp-no-solution">
-                                <span>Update Required</span>
-                                To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-                            </div>
+                            <div class="jp-playlist"><ul><li>&nbsp;</li></ul></div>
                         </div>
                     </div>
                 </div>
@@ -177,85 +152,52 @@
 
 @section('javascripts')
     @parent
-    <script src="{{ asset('/js/jquery.jplayer.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('/js/jplayer.playlist.js') }}" type="text/javascript"></script>
-    <script type="text/javascript">
-        function editPlaylist(id){
-            $.ajax({
-                url: '/playlist/'+id,
-                type: 'GET',
-                success: function(result) {
-                    $('#playlist_id').val(result.id);
-                    $('#play_name').val(result.name);
-                    $('#play_description').val(result.description != null ? String(result.description) : '');
+    <script src="{{ asset('/js/jquery.jplayer.js') }}"></script>
+    <script src="{{ asset('/js/jplayer.playlist.js') }}"></script>
+    <script>
+        function editPlaylist(id) {
+            $.ajax({ url: '/playlist/' + id, type: 'GET',
+                success: function(r) {
+                    $('#playlist_id').val(r.id);
+                    $('#play_name').val(r.name);
+                    $('#play_description').val(r.description || '');
                 }
             });
         }
-        function deletePlaylist(id){
-            var durl = '{{ url("/admin/playlist/delete")}}'+'/'+id;
-            $("#deleteUrl").val(durl);
-        }
-        function listenPlaylist(id, name){
+        function deletePlaylist(id) { $("#deleteUrl").val('{{ url("/admin/playlist/delete") }}/' + id); }
+        function listenPlaylist(id, name) {
             $("#playerModalTitle").html(name);
-            var get_mediaurl= '{{ url("/admin/playlist/media/")}}'+'/'+id;
-            $.ajax({
-                url: get_mediaurl,
-                dataType: 'json'
-            }).done(function(data){
-                if (Array.isArray(data) && data.length > 0) {
-                    new jPlayerPlaylist({
-                        jPlayer: "#jquery_jplayer_2",
-                        cssSelectorAncestor: "#jp_container_2"
-                    },
-                    data, 
-                    {
-                        swfPath: "../../dist/jplayer",
-                        supplied: "mp3",
-                        wmode: "window",
-                        useStateClassSkin: true,
-                        autoBlur: true,
-                        smoothPlayBar: true,
-                        keyEnabled: true
-                    });
-                    $('#playerModal').modal('show');
-                } else {
-                    alert('No playable media files were found for this playlist.');
-                }
-            }).fail(function(xhr){
-                console.error('Unable to load playlist media.', xhr);
-                alert('Unable to load playlist media right now.');
-            });
+            $.ajax({ url: '{{ url("/admin/playlist/media/") }}/' + id, dataType: 'json' })
+                .done(function(data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        new jPlayerPlaylist({ jPlayer: "#jquery_jplayer_2", cssSelectorAncestor: "#jp_container_2" },
+                            data, { swfPath: "../../dist/jplayer", supplied: "mp3", wmode: "window", useStateClassSkin: true, autoBlur: true, smoothPlayBar: true, keyEnabled: true });
+                        $('#playerModal').modal('show');
+                    } else { alert('No playable media found for this playlist.'); }
+                })
+                .fail(function() { alert('Unable to load playlist media.'); });
         }
 
         $(document).ready(function() {
-            //update media details
-            $("#updatePlaylistSave").click(function(e) {
-                var formData = $("#updatePlaylistForm").serialize();
-                var id       = $("#playlist_id").val();
-                var url      = '{{ url("/admin/playlist/update")}}'+'/'+id;
-                $("#updatePlaylistForm").attr("action",url);
-                $("#updatePlaylistForm").submit();
+            $("#updatePlaylistSave").click(function() {
+                var id = $("#playlist_id").val();
+                $("#updatePlaylistForm").attr("action", '{{ url("/admin/playlist/update") }}/' + id).submit();
             });
-
-            //delete media details
-            $("#deletePlaylistSave").click(function(e) {
-                var url = $("#deleteUrl").val();
-                $("#deletePlaylistForm").attr("action",url);
-                $("#deletePlaylistForm").submit();
+            $("#deletePlaylistSave").click(function() {
+                $("#deletePlaylistForm").attr("action", $("#deleteUrl").val()).submit();
             });
 
             $('#playlists').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: { url : '{{ url("/admin/playlist/datatables") }}' },
+                processing: true, serverSide: true,
+                ajax: { url: '{{ url("/admin/playlist/datatables") }}' },
                 columns: [
                     { data: 'name', name: 'name' },
                     { data: 'description', name: 'description' },
-                    { data: 'action', name: 'action', orderable:false, searchable: false}
+                    { data: 'action', name: 'action', orderable: false, searchable: false }
                 ]
             });
 
-            $("#playerModal").on('hidden.bs.modal', function(e){
+            $("#playerModal").on('hidden.bs.modal', function() {
                 $(this).removeData('bs.modal');
                 $("#jquery_jplayer_2").jPlayer("destroy");
             });
