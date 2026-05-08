@@ -121,6 +121,57 @@ body.modern-theme {
     text-decoration: none;
 }
 
+/* Mobile nav toggle button */
+.brand-nav-toggle {
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid #14b8a6;
+    border-radius: 0.45rem;
+    background: transparent;
+    color: #0f766e;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    padding: 0;
+}
+
+.brand-nav-toggle:hover {
+    background: #14b8a6;
+    color: #fff;
+}
+
+/* Mobile nav dropdown */
+.brand-nav-mobile {
+    display: none;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.6rem 0 0.35rem;
+    border-top: 1px solid #e2e8f0;
+    margin-top: 0.5rem;
+}
+
+.brand-nav-mobile--open {
+    display: flex;
+}
+
+.brand-nav-mobile__link {
+    display: block;
+    padding: 0.55rem 0.75rem;
+    color: #0f766e;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 0.45rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.brand-nav-mobile__link:hover {
+    background: #f0fdfa;
+    color: #0f766e;
+    text-decoration: none;
+}
+
 .modern-auth-btn {
     background: #009b7d;
     border-color: #009b7d;
