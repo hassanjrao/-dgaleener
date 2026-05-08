@@ -34,15 +34,28 @@ body.modern-theme {
 }
 
 .modern-brand-bar {
+    position: sticky;
+    top: 0;
+    z-index: 400;
     width: 100%;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e2f0ef;
+    box-shadow: 0 1px 12px rgba(15, 118, 110, 0.07);
 }
 
 .brand-link {
     color: #0f172a;
 }
 
+.brand-link:hover {
+    color: #0f172a;
+    text-decoration: none;
+}
+
 .brand-logo-img {
-    height: 44px;
+    height: 40px;
     width: auto;
     display: block;
     object-fit: contain;
@@ -66,7 +79,7 @@ body.modern-theme {
 }
 
 .brand-title {
-    font-size: 1.125rem;
+    font-size: 1.05rem;
     font-weight: 800;
     line-height: 1;
     letter-spacing: -0.01em;
@@ -79,6 +92,33 @@ body.modern-theme {
     letter-spacing: 0.2em;
     color: #0d9488;
     font-weight: 700;
+}
+
+/* ── Brand nav links (Pricing / Contact Us) ── */
+.brand-nav {
+    gap: 0.25rem;
+}
+
+.brand-nav__pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.95rem;
+    color: #0f766e;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 9999px;
+    border: 1.5px solid #14b8a6;
+    background: transparent;
+    letter-spacing: 0.02em;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.brand-nav__pill:hover {
+    background: #14b8a6;
+    color: #fff;
+    text-decoration: none;
 }
 
 .modern-auth-btn {
@@ -2964,4 +3004,118 @@ body.user-menu-open .user-side-menu {
     letter-spacing: 0.1em;
     padding: 0.2rem 0.55rem;
     border-radius: 2rem;
+}
+
+/* ── Smooth scroll ── */
+html { scroll-behavior: smooth; }
+
+/* ── Dashboard Contact Us section ── */
+.dashboard-contact {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 4.5rem 1.5rem;
+    margin-top: 2rem;
+}
+
+.dashboard-contact__inner {
+    max-width: 860px;
+    margin: 0 auto;
+}
+
+.dashboard-contact__title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #14b8a6;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-contact__subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 2.5rem;
+    font-size: 0.95rem;
+}
+
+.dashboard-contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.dashboard-contact__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.dashboard-contact__info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #cbd5e1;
+    font-size: 0.875rem;
+}
+
+.dashboard-contact__info-item svg { flex-shrink: 0; color: #14b8a6; }
+
+.dashboard-contact__info-item a {
+    color: #14b8a6;
+    text-decoration: none;
+}
+
+.dashboard-contact__info-item a:hover { text-decoration: underline; }
+
+.dashboard-contact__blurb {
+    color: #64748b;
+    font-size: 0.85rem;
+    line-height: 1.65;
+    margin-top: 0.25rem;
+}
+
+.dashboard-contact__input,
+.dashboard-contact__textarea {
+    display: block;
+    width: 100%;
+    background: #1e293b;
+    border: 1.5px solid #334155;
+    border-radius: 0.5rem;
+    color: #f1f5f9;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    margin-bottom: 0.85rem;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+
+.dashboard-contact__input::placeholder,
+.dashboard-contact__textarea::placeholder { color: #475569; }
+
+.dashboard-contact__input:focus,
+.dashboard-contact__textarea:focus { border-color: #14b8a6; }
+
+.dashboard-contact__textarea { resize: vertical; }
+
+.dashboard-contact__submit {
+    background: #14b8a6;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.65rem 1.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.dashboard-contact__submit:hover { background: #0f766e; }
+
+@media (max-width: 767px) {
+    .dashboard-contact__grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
 }

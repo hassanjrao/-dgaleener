@@ -96,7 +96,7 @@
             </div>
         </section>
 
-        <section class="mb-5">
+        <section id="pricing" class="mb-5">
             <h4 class="section-eyebrow mb-4">Plans &amp; Pricing</h4>
             @include('partials.modern.pricing')
         </section>
@@ -119,4 +119,46 @@
             </div>
         </section>
     </main>
+
+    {{-- Contact Us Section --}}
+    <section id="contact" class="dashboard-contact">
+        <div class="dashboard-contact__inner">
+            <h2 class="dashboard-contact__title">Contact Us</h2>
+            <p class="dashboard-contact__subtitle">Have a question or need help? We'd love to hear from you.</p>
+
+            <div class="dashboard-contact__grid">
+                <div class="dashboard-contact__info">
+                    <div class="dashboard-contact__info-item">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        <a href="mailto:{{ env('MAIL_FROM_ADDRESS', 'info@anewavenue.com') }}">{{ env('MAIL_FROM_ADDRESS', 'info@anewavenue.com') }}</a>
+                    </div>
+                    <div class="dashboard-contact__info-item">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                        <span>{{ env('APP_URL') }}</span>
+                    </div>
+                    <div class="dashboard-contact__info-item">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>Mon – Fri, 9 AM – 5 PM</span>
+                    </div>
+                    <p class="dashboard-contact__blurb">
+                        Whether you're a practitioner, therapist, or just curious about biomagnetism — reach out and we'll get back to you as soon as possible.
+                    </p>
+                </div>
+
+                <form class="dashboard-contact__form" action="mailto:{{ env('MAIL_FROM_ADDRESS', 'info@anewavenue.com') }}" method="get" enctype="text/plain">
+                    <input type="text"  name="name"    placeholder="Your Name"    class="dashboard-contact__input" required>
+                    <input type="email" name="email"   placeholder="Your Email"   class="dashboard-contact__input" required>
+                    <input type="text"  name="subject" placeholder="Subject"      class="dashboard-contact__input">
+                    <textarea           name="message" placeholder="Your Message" class="dashboard-contact__textarea" rows="5" required></textarea>
+                    <button type="submit" class="dashboard-contact__submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
 @endsection

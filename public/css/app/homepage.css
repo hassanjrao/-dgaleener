@@ -1,4 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Didact+Gothic);html,
+@import url(https://fonts.googleapis.com/css?family=Didact+Gothic);html {
+  scroll-behavior: smooth;
+}
+html,
 body {
   font-family: 'Century Gothic', 'Futura', 'Didact Gothic', san-serif;
   height: 100%;
@@ -145,6 +148,188 @@ body {
   .main-menu .nav li a img {
     width: 55;
   }
+}
+
+/* ── Homepage top navbar ── */
+.hp-topnav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.55rem 2rem;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.06);
+}
+
+.hp-topnav__brand {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.hp-topnav__brand:hover { text-decoration: none; color: #0f172a; }
+
+.hp-topnav__logo { height: 32px; width: auto; object-fit: contain; }
+
+.hp-topnav__links {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.hp-topnav__link {
+    padding: 0.4rem 0.85rem;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-radius: 0.4rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.hp-topnav__link:hover {
+    background: #f0fdfa;
+    color: #0f766e;
+    text-decoration: none;
+}
+
+.hp-topnav__btn {
+    margin-left: 0.5rem;
+    padding: 0.4rem 1.1rem;
+    background: #14b8a6;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.hp-topnav__btn:hover {
+    background: #0f766e;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Push content below fixed navbar */
+body { padding-top: 54px; }
+
+/* ── Contact Us section ── */
+.hp-contact {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 4.5rem 2rem;
+}
+
+.hp-contact__inner {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.hp-contact__title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #14b8a6;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.hp-contact__subtitle {
+    text-align: center;
+    color: #94a3b8;
+    margin-bottom: 2.5rem;
+    font-size: 1rem;
+}
+
+.hp-contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 3rem;
+    align-items: start;
+}
+
+.hp-contact__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.hp-contact__info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #cbd5e1;
+    font-size: 0.9rem;
+}
+
+.hp-contact__info-item svg { flex-shrink: 0; color: #14b8a6; }
+
+.hp-contact__info-item a {
+    color: #14b8a6;
+    text-decoration: none;
+}
+
+.hp-contact__info-item a:hover { text-decoration: underline; }
+
+.hp-contact__blurb {
+    margin-top: 0.5rem;
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.hp-contact__input,
+.hp-contact__textarea {
+    display: block;
+    width: 100%;
+    background: #1e293b;
+    border: 1.5px solid #334155;
+    border-radius: 0.5rem;
+    color: #f1f5f9;
+    padding: 0.6rem 0.85rem;
+    font-size: 0.875rem;
+    margin-bottom: 0.85rem;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+
+.hp-contact__input::placeholder,
+.hp-contact__textarea::placeholder { color: #475569; }
+
+.hp-contact__input:focus,
+.hp-contact__textarea:focus { border-color: #14b8a6; }
+
+.hp-contact__textarea { resize: vertical; }
+
+.hp-contact__submit {
+    background: #14b8a6;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.65rem 1.75rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.hp-contact__submit:hover { background: #0f766e; }
+
+@media (max-width: 998px) {
+    .hp-topnav { padding: 0.5rem 1rem; }
+    .hp-topnav__brand span { display: none; }
+    .hp-contact__grid { grid-template-columns: 1fr; gap: 2rem; }
 }
 
 @media all and (max-width: 998px) {

@@ -20,7 +20,6 @@ Auth::routes(['verify' => true]);
 
 Route::get('/', 'DashboardController@index')->name('app.root');
 Route::get('/home', 'DashboardController@index')->name('app.home');
-Route::get('/dashboard', 'DashboardController@index')->name('app.dashboard');
 Route::get('/bodyscan/info', 'BodyScanController@info')->name('app.bodyscan.info');
 Route::get('/bioconnect/info', 'BioConnectController@info')->name('app.bioconnect.info');
 Route::get('/chakrascan/info', 'ChakraScanController@info')->name('app.chakrascan.info');
@@ -50,6 +49,8 @@ Route::get('/magnetictherapyblog/{slug}', 'BlogController@show')->name('app.blog
 
 
 Route::middleware('verified')->group(function () {
+
+    Route::get('/dashboard', 'DashboardController@index')->name('app.dashboard');
 
 
     Route::get('/pricing', 'HomeController@pricing')->name('app.pricing');
