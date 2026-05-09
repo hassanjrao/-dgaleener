@@ -16,12 +16,12 @@
     <main class="modern-main-content">
         <header class="modern-page-header">
             <div>
-                <h1 class="modern-page-title" id="discussionMode">My Discussions</h1>
-                <p class="modern-page-subtitle">Discussions you have started</p>
+                <h1 class="modern-page-title" id="discussionMode">My Discussions / Mis Discusiones</h1>
+                <p class="modern-page-subtitle">Discussions you have started / Discusiones que has iniciado</p>
             </div>
             <div class="modern-page-header__actions">
                 <a href="{{ url('/bioconnect/groups') }}" class="modern-btn modern-btn--outline">
-                    <span aria-hidden="true">&larr;</span> Recent Discussions
+                    <span aria-hidden="true">&larr;</span> Recent Discussions / Discusiones recientes
                 </a>
             </div>
         </header>

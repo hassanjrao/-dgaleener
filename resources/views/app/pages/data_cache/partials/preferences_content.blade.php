@@ -1,14 +1,14 @@
 <div id="tabs">
     <ul>
-        <li><a href="#tabs-user">User</a></li>
+        <li><a href="#tabs-user">User / Usuario</a></li>
         <li><a href="#tabs-logos">Logos</a></li>
     </ul>
     <div id="tabs-user">
         <div class="alert alert-success alert-preferences-success" style="display: none;">
-            <h5><i class="icon fa fa-info"></i> Save Success! You have successfully updated your preferences.</h5>
+            <h5><i class="icon fa fa-info"></i> Save Success! / ¡Guardado con éxito! Your preferences have been updated. / Tus preferencias han sido actualizadas.</h5>
         </div>
         <div class="alert alert-danger alert-preferences-error" style="display: none;">
-            <h5><i class="icon fa fa-info"></i> Save Failed! An error occurred.</h5>
+            <h5><i class="icon fa fa-info"></i> Save Failed! / ¡Error al guardar! An error occurred. / Ocurrió un error.</h5>
         </div>
         <form id="form-preferences" method="POST" action="/data_cache/preferences/update">
             @csrf
@@ -16,42 +16,42 @@
             <input id="pref_user_email" type="hidden" value="{{ Auth::user()->email }}" />
             <input id="pref_user_name" type="hidden" value="{{ Auth::user()->name }}" />
             <div class="form-group">
-                <label for="company_name">Company Name</label>
+                <label for="company_name">Company Name / Nombre de la empresa</label>
                 <input type="text" class="form-control" id="pref_company_name" name="pref_company_name" value="{{ Auth::user()->company_name }}" required>
             </div>
             <div class="form-group row">
                 <div class="col" style="padding-left: 0;">
-                    <label>First Name</label>
+                    <label>First Name / Nombre</label>
                     <input type="text" class="form-control" id="pref_first_name" name="pref_first_name" value="{{ Auth::user()->first_name }}" required>
                 </div>
                 <div class="col" style="padding-right: 0;">
-                    <label>Last Name</label>
+                    <label>Last Name / Apellido</label>
                     <input type="text" class="form-control" id="pref_last_name" name="pref_last_name" value="{{ Auth::user()->last_name }}" required>
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col" style="padding-left: 0;">
-                    <label>Phone #</label>
+                    <label>Phone # / Teléfono</label>
                     <input type="text" class="form-control" id="pref_phone_no" name="pref_phone_no" value="{{ Auth::user()->phone_no }}" required>
                 </div>
                 <div class="col" style="padding-right: 0;">
-                    <label>Fax #</label>
+                    <label>Fax # / Fax</label>
                     <input type="text" class="form-control" id="pref_fax_no" name="pref_fax_no" value="{{ Auth::user()->fax_no }}">
                 </div>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">Email / Correo electrónico</label>
                 <input type="text" class="form-control" id="pref_alternate_email" name="pref_alternate_email" value="{{ Auth::user()->alternate_email ? Auth::user()->alternate_email : Auth::user()->email }}" required>
             </div>
             <div class="form-group">
-                <label for="billing_title">Billing Title</label>
+                <label for="billing_title">Billing Title / Título de facturación</label>
                 <input type="text" class="form-control" id="pref_billing_title" name="pref_billing_title" value="{{ Auth::user()->billing_title }}" required>
             </div>
             <div class="form-group">
-                <label for="address">Address</label>
+                <label for="address">Address / Dirección</label>
                 <input type="text" class="form-control" id="pref_address" name="pref_address" value="{{ Auth::user()->address }}" required>
             </div>
-            <button type="button" id="submit_pref" class="form-control btn save-btn">Save</button>
+            <button type="button" id="submit_pref" class="form-control btn save-btn">Save / Guardar</button>
         </form>
     </div>
     <div id="tabs-logos">
@@ -59,7 +59,7 @@
             @csrf
             <div id="form-part" style="display: inline-flex;">
                 <input type="file" id="logo_file" name="logo_file" accept=".jpg,.jpeg,.png" required="">
-                <button type="submit" id="logoSubmit" class="form-control btn btn-primary">Upload</button>
+                <button type="submit" id="logoSubmit" class="form-control btn btn-primary">Upload / Subir</button>
             </div>
             <div id="loader-part" style="display: none;">
                 <br/><br/><div class="loader" style="margin:0 auto;"></div><br/>
@@ -71,7 +71,7 @@
                         <div style="display: grid; margin: 5px;">
                             <img src="{{ $logo->file_url() }}" class="logo-box {{ Auth::user()->logo == $logo->s3_name ? 'active' : '' }}" alt="{{ env('APP_TITLE') }}" data-logo="{{ $logo->s3_name }}" data-user-id="{{ Auth::user()->id }}" />
                             @if (Auth::user()->logo != $logo->s3_name)
-                                <button class="btn-danger logo-delete" style="cursor: pointer; width: 100%;" data-logo-id="{{ $logo->id }}">Delete</button>
+                                <button class="btn-danger logo-delete" style="cursor: pointer; width: 100%;" data-logo-id="{{ $logo->id }}">Delete / Eliminar</button>
                             @endif
                         </div>
                     @endforeach

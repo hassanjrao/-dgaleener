@@ -26,11 +26,11 @@
     }
 
     $navItems = [
-        ['key' => 'home', 'label' => 'Home', 'route' => route('app.dashboard')],
-        ['key' => 'body', 'label' => 'Body', 'route' => route('app.bodyscan')],
-        ['key' => 'chakra', 'label' => 'Chakra', 'route' => route('app.chakrascan')],
-        ['key' => 'data', 'label' => 'Data', 'route' => route('app.data_cache')],
-        ['key' => 'connect', 'label' => 'Connect', 'route' => route('app.bioconnect')],
+        ['key' => 'home',    'label' => 'Home',    'label_es' => 'Inicio',   'route' => route('app.dashboard')],
+        ['key' => 'body',    'label' => 'Body',    'label_es' => 'Cuerpo',   'route' => route('app.bodyscan')],
+        ['key' => 'chakra',  'label' => 'Chakra',  'label_es' => 'Chakra',   'route' => route('app.chakrascan')],
+        ['key' => 'data',    'label' => 'Data',    'label_es' => 'Datos',    'route' => route('app.data_cache')],
+        ['key' => 'connect', 'label' => 'Connect', 'label_es' => 'Conectar', 'route' => route('app.bioconnect')],
     ];
 
     $currentRouteUriForNav = optional(Route::getCurrentRoute())->uri() ?? '';
@@ -82,7 +82,7 @@
                                 <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
                             </svg>
                         @endif
-                        <span class="modern-nav-label">{{ $item['label'] }}</span>
+                        <span class="modern-nav-label" style="line-height:1.2;">{{ $item['label'] }}<br>{{ $item['label_es'] }}</span>
                         <span class="active-indicator"></span>
                     </a>
                 @endforeach

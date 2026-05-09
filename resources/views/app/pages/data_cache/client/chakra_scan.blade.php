@@ -24,15 +24,15 @@
             <header class="modern-page-header" ng-if="ctrl.loaded">
                 <div>
                     <h1 class="modern-page-title">{{ $client->name }} &mdash; Chakra</h1>
-                    <p class="modern-page-subtitle">Scan session details</p>
+                    <p class="modern-page-subtitle">Scan session details / Detalles de sesión de escaneo</p>
                 </div>
                 <div class="modern-page-header__actions">
                     <a href="/data_cache/clients/<% ctrl.client.id %>" class="modern-btn modern-btn--outline">
-                        <span aria-hidden="true">&larr;</span> Back
+                        <span aria-hidden="true">&larr;</span> Back / Volver
                     </a>
                     <a href="{{ route('app.scanSessions.payment.request', ['id' => $scan_session_id]) }}"
                        ng-if="(ctrl.scan_session | valPresent) && !ctrl.scan_session.paid">
-                        <button class="modern-btn modern-btn--primary">Request Payment</button>
+                        <button class="modern-btn modern-btn--primary">Request Payment / Solicitar pago</button>
                     </a>
                     <button class="modern-btn modern-btn--primary"
                             ng-click="ctrl.markDoneScanSession(ctrl.scan_session)"
@@ -135,11 +135,11 @@
                     <table border="1" class="modern-data-cache-table">
                         <thead>
                             <tr>
-                                <th ng-click="ctrl.toggleSortBy('name')">Point/Name</th>
-                                <th ng-click="ctrl.toggleSortBy('origins')">Start/Origin</th>
-                                <th ng-click="ctrl.toggleSortBy('symptoms')">Leads/Symptoms</th>
-                                <th ng-click="ctrl.toggleSortBy('paths')">Path/Route/Cause and Effect</th>
-                                <th ng-click="ctrl.toggleSortBy('alternative_routes')">Alternative Routes</th>
+                                <th ng-click="ctrl.toggleSortBy('name')">Point/Name / Punto/Nombre</th>
+                                <th ng-click="ctrl.toggleSortBy('origins')">Start/Origin / Inicio/Origen</th>
+                                <th ng-click="ctrl.toggleSortBy('symptoms')">Leads/Symptoms / Señales/Síntomas</th>
+                                <th ng-click="ctrl.toggleSortBy('paths')">Path/Route / Ruta/Causa y efecto</th>
+                                <th ng-click="ctrl.toggleSortBy('alternative_routes')">Alt. Routes / Rutas alternativas</th>
                                 <th></th>
                             </tr>
                         </thead>

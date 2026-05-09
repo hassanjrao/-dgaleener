@@ -16,12 +16,12 @@
     <main class="modern-main-content">
         <header class="modern-page-header">
             <div>
-                <h1 class="modern-page-title">Bio Connect Profile</h1>
-                <p class="modern-page-subtitle">Manage your shared profile and privacy</p>
+                <h1 class="modern-page-title">Bio Connect Profile / Perfil de Bio Connect</h1>
+                <p class="modern-page-subtitle">Manage your shared profile and privacy / Gestiona tu perfil y privacidad</p>
             </div>
             <div class="modern-page-header__actions">
                 <a href="{{ url('/bioconnect/friends') }}" class="modern-btn modern-btn--outline">
-                    <span aria-hidden="true">&larr;</span> Back to Bio Connect
+                    <span aria-hidden="true">&larr;</span> Back to Bio Connect / Volver
                 </a>
             </div>
         </header>
@@ -41,14 +41,14 @@
                 <input hidden id="user_id" name="user_id" type="text" value="{{ Auth::user()->id }}" />
 
                 <div class="form-group row">
-                    <label for="upload" class="col-sm-3 col-form-label">Profile Picture</label>
+                    <label for="upload" class="col-sm-3 col-form-label">Profile Picture / Foto de perfil</label>
                     <div class="col-sm-9">
                         <input id="upload" name="upload" type="file" class="form-control-file">
                     </div>
                 </div>
 
                 <div class="form-group row align-items-center">
-                    <label for="togBtn" class="col-sm-3 col-form-label">Privacy</label>
+                    <label for="togBtn" class="col-sm-3 col-form-label">Privacy / Privacidad</label>
                     <div class="col-sm-9">
                         <label class="switch mb-0">
                             <input type="checkbox" id="togBtn" name="togBtn" {{ Auth::user()->privacy ? 'checked' : '' }}>
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="name" class="col-sm-3 col-form-label">Name</label>
+                    <label for="name" class="col-sm-3 col-form-label">Name / Nombre</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="name" name="name"
                                placeholder="your name here" value="{{ Auth::user()->name }}" required>
@@ -72,7 +72,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="email" class="col-sm-3 col-form-label">Email ID</label>
+                    <label for="email" class="col-sm-3 col-form-label">Email ID / Correo</label>
                     <div class="col-sm-9">
                         <input type="email" class="form-control" id="email" name="email"
                                placeholder="your email here" value="{{ Auth::user()->email }}" required>
@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="business" class="col-sm-3 col-form-label">Business</label>
+                    <label for="business" class="col-sm-3 col-form-label">Business / Negocio</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="business" name="business"
                                placeholder="your business name here" value="{{ Auth::user()->business }}">
@@ -94,7 +94,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="age" class="col-sm-3 col-form-label">Age</label>
+                    <label for="age" class="col-sm-3 col-form-label">Age / Edad</label>
                     <div class="col-sm-9">
                         <input type="number" class="form-control" id="age" name="age"
                                placeholder="age" value="{{ Auth::user()->age }}" min="0">
@@ -105,7 +105,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="location" class="col-sm-3 col-form-label">Location</label>
+                    <label for="location" class="col-sm-3 col-form-label">Location / Ubicación</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="location" name="location"
                                placeholder="your location here" value="{{ Auth::user()->location }}">
@@ -116,7 +116,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="address" class="col-sm-3 col-form-label">Address</label>
+                    <label for="address" class="col-sm-3 col-form-label">Address / Dirección</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="address" name="address"
                                placeholder="your address here" value="{{ Auth::user()->address }}">
@@ -127,7 +127,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="country" class="col-sm-3 col-form-label">Country</label>
+                    <label for="country" class="col-sm-3 col-form-label">Country / País</label>
                     <div class="col-sm-9">
                         <input type="text" class="form-control" id="country" name="country"
                                placeholder="country" value="{{ Auth::user()->country }}">
@@ -138,7 +138,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="zip" class="col-sm-3 col-form-label">Zip</label>
+                    <label for="zip" class="col-sm-3 col-form-label">Zip / Código postal</label>
                     <div class="col-sm-9">
                         <input type="number" class="form-control" id="zip" name="zip"
                                placeholder="zip" value="{{ Auth::user()->zip }}">
@@ -150,7 +150,7 @@
 
                 <div class="modern-bioconnect-profile__actions">
                     <button type="submit" id="submit" class="modern-btn modern-btn--primary">
-                        {{ __('Save') }}
+                        {{ __('Save') }} / Guardar
                     </button>
                 </div>
             </form>

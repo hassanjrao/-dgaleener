@@ -22,11 +22,11 @@
             <header class="modern-page-header">
                 <div>
                     <h1 class="modern-page-title">{{ $client->name }}</h1>
-                    <p class="modern-page-subtitle">Client information &amp; sessions</p>
+                    <p class="modern-page-subtitle">Client information &amp; sessions / Información del cliente y sesiones</p>
                 </div>
                 <div class="modern-page-header__actions">
                     <a href="/data_cache/client_info" class="modern-btn modern-btn--outline">
-                        <span aria-hidden="true">&larr;</span> Back
+                        <span aria-hidden="true">&larr;</span> Back / Volver
                     </a>
                     <button class="modern-btn modern-btn--outline"
                             data-toggle="modal" data-target="#clientInfoModal"
@@ -88,9 +88,9 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 50px;">ID</th>
-                                        <th style="width: 171px;">Date Started</th>
-                                        <th style="width: 250px;">Scan Type</th>
-                                        <th style="width: 171px;">Date Ended</th>
+                                        <th style="width: 171px;">Date Started / Fecha de inicio</th>
+                                        <th style="width: 250px;">Scan Type / Tipo de escaneo</th>
+                                        <th style="width: 171px;">Date Ended / Fecha de fin</th>
                                         <th style="width: 320px;"></th>
                                     </tr>
                                 </thead>
@@ -172,8 +172,8 @@
                             <table border="1" class="modern-data-cache-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 171px;">Date</th>
-                                        <th>Description</th>
+                                        <th style="width: 171px;">Date / Fecha</th>
+                                        <th>Description / Descripción</th>
                                         <th style="width: 152px;"></th>
                                     </tr>
                                 </thead>
@@ -231,9 +231,9 @@
                             <table border="1" class="modern-data-cache-table">
                                 <thead>
                                     <tr>
-                                        <th style="width: 171px;">Date</th>
-                                        <th>File Name</th>
-                                        <th>Description</th>
+                                        <th style="width: 171px;">Date / Fecha</th>
+                                        <th>File Name / Nombre de archivo</th>
+                                        <th>Description / Descripción</th>
                                         <th style="width: 320px;"></th>
                                     </tr>
                                 </thead>

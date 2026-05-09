@@ -1896,7 +1896,9 @@ body.modern-theme {
 /* ----- Tables shared by all data_cache list pages ----- */
 .modern-data-cache-table-shell {
     border-radius: 0.75rem;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
     border: 1px solid #e2e8f0;
     background: #ffffff;
 }

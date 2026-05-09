@@ -17,8 +17,8 @@
         @if (!empty(Auth::user()))
             <header class="modern-page-header">
                 <div>
-                    <h1 class="modern-page-title" id="discussionMode">Recent Discussions</h1>
-                    <p class="modern-page-subtitle">Group conversations</p>
+                    <h1 class="modern-page-title" id="discussionMode">Recent Discussions / Discusiones recientes</h1>
+                    <p class="modern-page-subtitle">Group conversations / Conversaciones grupales</p>
                 </div>
             </header>
 
@@ -39,8 +39,8 @@
         @else
             <header class="modern-page-header">
                 <div>
-                    <h1 class="modern-page-title" id="discussionMode">Discussions</h1>
-                    <p class="modern-page-subtitle">Public discussions</p>
+                    <h1 class="modern-page-title" id="discussionMode">Discussions / Discusiones</h1>
+                    <p class="modern-page-subtitle">Public discussions / Discusiones públicas</p>
                 </div>
             </header>
 

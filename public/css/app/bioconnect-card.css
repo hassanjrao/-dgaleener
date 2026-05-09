@@ -40,15 +40,19 @@
 
 /* Avatar */
 .friend-avatar {
-  background: #fff;
-  width: 80px;
-  height: 80px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 255, 255, 0.95);
-  padding: 4px;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
-  margin-bottom: 8px;
+  object-position: center;
+  border: 3px solid #14b8a6;
+  padding: 0;
+  box-shadow: 0 4px 16px rgba(20, 184, 166, 0.25), 0 2px 6px rgba(0, 0, 0, 0.12);
+  margin-bottom: 10px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  image-rendering: -webkit-optimize-contrast;
 }
 
 /* Text */

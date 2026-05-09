@@ -18,12 +18,12 @@
                 <div class="modern-page-header__actions">
                     <button type="button" class="modern-btn modern-btn--primary" data-toggle="modal" data-target="#mediaModal">
                         <span aria-hidden="true">+</span>
-                        <span>{{ __('Upload Media') }}</span>
+                        <span>{{ __('Upload Media') }} / Subir medios</span>
                     </button>
                     @if(Auth::user()->isPractitioner())
                         <button type="button" class="modern-btn modern-btn--outline" data-toggle="modal" data-target="#playlistModal">
                             <span aria-hidden="true">+</span>
-                            <span>{{ __('New Playlist') }}</span>
+                            <span>{{ __('New Playlist') }} / Nueva lista</span>
                         </button>
                     @endif
                 </div>
@@ -36,9 +36,9 @@
                             <table class="table table-hover table-bordered table-datatable" id="media">
                                 <thead>
                                     <tr>
-                                        <th class="align-center" style="width:30%">{{ __('File Name') }}</th>
-                                        <th class="align-center" style="width:50%">{{ __('Description') }}</th>
-                                        <th class="align-center" style="width:20%">{{ __('Actions') }}</th>
+                                        <th class="align-center" style="width:30%">{{ __('File Name') }} / Nombre de archivo</th>
+                                        <th class="align-center" style="width:50%">{{ __('Description') }} / Descripción</th>
+                                        <th class="align-center" style="width:20%">{{ __('Actions') }} / Acciones</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -134,7 +134,7 @@
                     @csrf
                     <input type="hidden" id="deleteUrl" value="">
                     <div class="modal-body">
-                        <h5>Are you sure you want to continue to remove this media file and all its contents?</h5>
+                        <h5>Are you sure you want to remove this media file? / ¿Estás seguro de que deseas eliminar este archivo?</h5>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="modern-btn" data-dismiss="modal">{{ __('Cancel') }}</button>

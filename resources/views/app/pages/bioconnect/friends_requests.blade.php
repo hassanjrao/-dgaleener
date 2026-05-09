@@ -16,12 +16,12 @@
     <main class="modern-main-content">
         <header class="modern-page-header">
             <div>
-                <h1 class="modern-page-title">Friend Requests</h1>
-                <p class="modern-page-subtitle">Accept or decline pending connection requests</p>
+                <h1 class="modern-page-title">Friend Requests / Solicitudes de amistad</h1>
+                <p class="modern-page-subtitle">Accept or decline pending requests / Acepta o rechaza solicitudes pendientes</p>
             </div>
             <div class="modern-page-header__actions">
                 <a href="{{ url('/bioconnect/friends') }}" class="modern-btn modern-btn--outline">
-                    <span aria-hidden="true">&larr;</span> All Friends
+                    <span aria-hidden="true">&larr;</span> All Friends / Todos los amigos
                 </a>
             </div>
         </header>

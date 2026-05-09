@@ -19,13 +19,13 @@
                 <p class="modern-page-subtitle">Preferencias</p>
             </div>
             <a href="{{ route('app.data_cache') }}" class="modern-btn modern-btn--outline">
-                <span aria-hidden="true">&larr;</span> Back to Data Cache
+                <span aria-hidden="true">&larr;</span> Back to Data Cache / Volver
             </a>
         </header>
 
         <section class="modern-info-card">
             <p class="mb-2">
-                Update your practice details, billing information, and logos from this page.
+                Update your practice details, billing information, and logos from this page. / Actualiza los detalles de tu práctica, información de facturación y logos desde esta página.
             </p>
             <p class="text-muted mb-4">
                 Actualice desde esta página los datos de su consulta, la información de facturación y los logotipos.

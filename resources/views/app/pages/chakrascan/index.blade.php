@@ -14,13 +14,13 @@
         <div class="container-fluid modern-bodyscan-wrap">
             <div class="modern-page-header d-flex flex-wrap align-items-center justify-content-between gap-3">
                 <div>
-                    <span class="eyebrow">Biomagnetism</span>
-                    <h1 class="modern-page-title mb-0">Chakra Scan</h1>
-                    <p class="modern-page-subtitle mb-0">Interactive 3D model and chakra scan list</p>
+                    <span class="eyebrow">Biomagnetism / Biomagnetismo</span>
+                    <h1 class="modern-page-title mb-0">Chakra Scan / Escaneo Chakra</h1>
+                    <p class="modern-page-subtitle mb-0">Interactive 3D model and chakra scan list / Modelo 3D interactivo y lista de escaneo chakra</p>
                 </div>
                 <button type="button" class="modern-howto-btn" data-toggle="modal" data-target="#howToScanModal">
                     <img src="{{ asset('/images/iconimages/humanicon48.png') }}" alt="" class="howto-icon">
-                    <span>How to Scan</span>
+                    <span>How to Scan / Cómo Escanear</span>
                 </button>
             </div>
 

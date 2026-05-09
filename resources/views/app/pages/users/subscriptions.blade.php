@@ -25,8 +25,8 @@
                                 <thead>
                                     <tr>
                                         <th class="align-center">{{ __('Plan') }}</th>
-                                        <th class="align-center">{{ __('Starts At') }}</th>
-                                        <th class="align-center">{{ __('Ends At') }}</th>
+                                        <th class="align-center">{{ __('Starts At') }} / Fecha de inicio</th>
+                                        <th class="align-center">{{ __('Ends At') }} / Fecha de fin</th>
                                     </tr>
                                 </thead>
                             </table>

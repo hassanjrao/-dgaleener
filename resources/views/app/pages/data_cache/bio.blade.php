@@ -17,11 +17,11 @@
             <header class="modern-page-header">
                 <div>
                     <h1 class="modern-page-title">Bio</h1>
-                    <p class="modern-page-subtitle">Bio scan records across all clients</p>
+                    <p class="modern-page-subtitle">Bio scan records across all clients / Registros de escaneo Bio</p>
                 </div>
                 <div class="modern-page-header__actions">
                     <a href="/data_cache" class="modern-btn modern-btn--outline">
-                        <span aria-hidden="true">&larr;</span> Back
+                        <span aria-hidden="true">&larr;</span> Back / Volver
                     </a>
                 </div>
             </header>
@@ -66,12 +66,12 @@
                     <table border="1" class="modern-data-cache-table">
                         <thead>
                             <tr>
-                                <th ng-click="ctrl.toggleSortBy('name')">Point/Name</th>
-                                <th ng-click="ctrl.toggleSortBy('origins')">Start/Origin</th>
-                                <th ng-click="ctrl.toggleSortBy('symptoms')">Leads/Symptoms</th>
-                                <th ng-click="ctrl.toggleSortBy('paths')">Path/Route/Cause and Effect</th>
-                                <th ng-click="ctrl.toggleSortBy('alternative_routes')">Alternative Routes</th>
-                                <th style="width: 300px;">Clients</th>
+                                <th ng-click="ctrl.toggleSortBy('name')">Point/Name / Punto/Nombre</th>
+                                <th ng-click="ctrl.toggleSortBy('origins')">Start/Origin / Inicio/Origen</th>
+                                <th ng-click="ctrl.toggleSortBy('symptoms')">Leads/Symptoms / Señales/Síntomas</th>
+                                <th ng-click="ctrl.toggleSortBy('paths')">Path/Route / Ruta/Causa y efecto</th>
+                                <th ng-click="ctrl.toggleSortBy('alternative_routes')">Alt. Routes / Rutas alternativas</th>
+                                <th style="width: 300px;">Clients / Clientes</th>
                             </tr>
                         </thead>
                         <tbody ng-repeat="(radical, scan_session_pairs) in ctrl.displayed_pairs | unique: 'pair.name' | where: { scan_type: ctrl.scan_type } | filter: ctrl.searchText | orderBy: 'pair.radical' | groupBy: 'pair.radical'">

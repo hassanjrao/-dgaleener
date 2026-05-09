@@ -15,12 +15,12 @@
     <main class="modern-main-content">
         <header class="modern-page-header">
             <div>
-                <h1 class="modern-page-title">Activities</h1>
-                <p class="modern-page-subtitle">Stay up to date with announcements and updates</p>
+                <h1 class="modern-page-title">Activities / Actividades</h1>
+                <p class="modern-page-subtitle">Stay up to date with announcements and updates / Mantente al día con anuncios y actualizaciones</p>
             </div>
             <div class="modern-page-header__actions">
                 <a href="{{ url('/bioconnect/friends') }}" class="modern-btn modern-btn--outline">
-                    <span aria-hidden="true">&larr;</span> Back to Bio Connect
+                    <span aria-hidden="true">&larr;</span> Back to Bio Connect / Volver
                 </a>
             </div>
         </header>
@@ -31,38 +31,38 @@
                 @if (Auth::user()->isAdmin())
                     <section class="modern-info-card modern-bioconnect-activity-form">
                         <h2 class="modern-bioconnect-activity-form__title">
-                            <% ctrl.activity.id == null ? 'Create Activity' : 'Edit Activity' %>
+                            <% ctrl.activity.id == null ? 'Create Activity / Crear actividad' : 'Edit Activity / Editar actividad' %>
                         </h2>
                         <select ng-model="ctrl.activity.category"
                                 class="modern-data-cache-select w-100 mb-2">
-                            <option value="" disabled selected>Category</option>
+                            <option value="" disabled selected>Category / Categoría</option>
                             <option ng-repeat="category in ctrl.activity_categories | orderBy: 'name' track by category.id"
                                     value="<% category.name %>"><% category.name %></option>
                         </select>
-                        <input type="text" placeholder="Title"
+                        <input type="text" placeholder="Title / Título"
                                class="modern-data-cache-input w-100 mb-2"
                                ng-model="ctrl.activity.title">
-                        <input type="date" placeholder="Date Published" id="activity_date_published"
+                        <input type="date" placeholder="Date Published / Fecha de publicación" id="activity_date_published"
                                class="modern-data-cache-input w-100 mb-2"
                                ng-model="ctrl.activity.date_published">
-                        <textarea placeholder="Content" rows="4"
+                        <textarea placeholder="Content / Contenido" rows="4"
                                   class="modern-data-cache-input w-100 mb-3"
                                   style="resize: vertical;"
                                   ng-model="ctrl.activity.content"></textarea>
                         <button class="modern-btn modern-btn--primary w-100"
                                 ng-click="ctrl.createActivity(ctrl.activity)"
                                 ng-disabled="!(ctrl.activity.category | valPresent) || !(ctrl.activity.title | valPresent) || !(ctrl.activity.content | valPresent) || !(ctrl.activity.date_published | valPresent)">
-                            <% ctrl.activity.id == null ? 'Create' : 'Save' %> Activity
+                            <% ctrl.activity.id == null ? 'Create / Crear' : 'Save / Guardar' %> Activity / Actividad
                         </button>
                         <button class="modern-btn modern-btn--danger w-100 mt-2"
                                 ng-click="ctrl.cancelActionActivity(ctrl.activity)"
-                                ng-if="ctrl.activity.id | valPresent">Cancel</button>
+                                ng-if="ctrl.activity.id | valPresent">Cancel / Cancelar</button>
                     </section>
                 @endif
 
                 <nav class="modern-bioconnect-menu" id="navbarContainer"
                      ng-if="ctrl.activities | valPresent">
-                    <div class="modern-bioconnect-menu__header">Categories</div>
+                    <div class="modern-bioconnect-menu__header">Categories / Categorías</div>
                     <ul class="modern-bioconnect-menu__list" id="sidebarWrapper">
                         <li ng-repeat="activity in ctrl.activities | orderBy: 'category' | unique: 'category' track by activity.id">
                             <a href="" class="modern-bioconnect-menu__link"
@@ -92,17 +92,17 @@
                             <div id="collapse-<% $index %>" class="collapse"
                                  aria-labelledby="heading-<% $index %>" data-parent="#accordion">
                                 <div class="card-body">
-                                    <strong>Date: <% activity.date_published | date: 'MMM d, yyyy' %></strong>
+                                    <strong>Date / Fecha: <% activity.date_published | date: 'MMM d, yyyy' %></strong>
                                     <p class="mt-3 mb-0" style="text-align: justify;"><% activity.content %></p>
                                     <div class="modern-bioconnect-activity-actions">
                                         <button class="modern-btn modern-btn--small modern-btn--outline"
                                                 ng-click="ctrl.editActivity(activity)"
                                                 ng-disabled="ctrl.activity.id == activity.id"
-                                                ng-if="activity.editable">Edit</button>
+                                                ng-if="activity.editable">Edit / Editar</button>
                                         <button class="modern-btn modern-btn--small modern-btn--danger"
                                                 ng-click="ctrl.deleteActivity(activity)"
                                                 ng-disabled="ctrl.activity.id == activity.id"
-                                                ng-if="activity.deletable">Delete</button>
+                                                ng-if="activity.deletable">Delete / Eliminar</button>
                                     </div>
                                 </div>
                             </div>

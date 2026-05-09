@@ -17,7 +17,7 @@
             <p class="mb-0 text-secondary" style="max-width:32rem;">
                 Open Major Chakra Vortexesto Release the Emotional Stress
                 Behind Physical Imbalance, or Optimize Your Bio-Terrian by
-                Balancing pH Radical Through Biomagnetism.
+                Balancing pH Radicals Through Biomagnetism.
             </p>
         </section>
 

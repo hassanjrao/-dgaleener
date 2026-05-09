@@ -16,14 +16,13 @@
     <main class="modern-main-content">
         <header class="modern-page-header">
             <div>
-                <h1 class="modern-page-title">Bio Connect Friends</h1>
-                <p class="modern-page-subtitle">Connect with practitioners and stay in touch</p>
+                <h1 class="modern-page-title">Bio Connect Friends / Amigos de Bio Connect</h1>
             </div>
             <div class="modern-page-header__actions">
                 @if (!empty(Auth::user()))
-                    <a href="{{ url('/bioconnect/profile') }}" class="modern-btn modern-btn--outline">My Profile</a>
+                    <a href="{{ url('/bioconnect/profile') }}" class="modern-btn modern-btn--outline">My Profile / Mi Perfil</a>
                 @else
-                    <a href="{{ url('/login') }}" class="modern-btn modern-btn--primary">Sign In</a>
+                    <a href="{{ url('/login') }}" class="modern-btn modern-btn--primary">Sign In / Iniciar sesión</a>
                 @endif
             </div>
         </header>
@@ -42,7 +41,7 @@
 
                         <h6 class="text-center mt-4"
                             ng-if="!(ctrl.user_friends | valPresent) && ctrl.userFriendsLoaded">
-                            You have no friends yet.
+                            You have no friends yet. / Aún no tienes amigos.
                         </h6>
 
                         <div class="friends-grid"
@@ -58,9 +57,6 @@
                                         <p class="text-muted mb-1">
                                             <% user_friend.friend.location || 'No location' %>
                                         </p>
-                                        <p class="text-muted mb-1">
-                                            Age: <% user_friend.friend.age || '-' %>
-                                        </p>
                                         <p class="text-muted">
                                             <% user_friend.friend.address || 'No address' %>
                                         </p>
@@ -74,7 +70,7 @@
                                         </button>
                                         <button class="btn btn-outline-danger btn-sm w-100"
                                                 ng-click="ctrl.deleteFriend(user_friend)">
-                                            Unfriend
+                                            Unfriend / Eliminar amigo
                                         </button>
                                     </div>
                                 </div>
@@ -98,9 +94,6 @@
                                 <h6 class="friend-name">{{ $user->name }}</h6>
                                 <p class="text-muted mb-1">
                                     {{ $user->location ?? 'No location' }}
-                                </p>
-                                <p class="text-muted mb-1">
-                                    Age: {{ $user->age ?? '-' }}
                                 </p>
                                 <p class="text-muted">
                                     {{ $user->address ?? 'No address' }}

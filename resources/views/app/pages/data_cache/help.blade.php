@@ -16,7 +16,7 @@
                 <p class="modern-page-subtitle">Caché de datos &mdash; Ayuda</p>
             </div>
             <a href="{{ route('app.data_cache') }}" class="modern-btn modern-btn--outline">
-                <span aria-hidden="true">&larr;</span> Back to Data Cache
+                <span aria-hidden="true">&larr;</span> Back to Data Cache / Volver
             </a>
         </header>
 

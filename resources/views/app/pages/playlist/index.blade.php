@@ -30,9 +30,9 @@
                             <table class="table table-hover table-bordered table-datatable" id="playlists">
                                 <thead>
                                     <tr>
-                                        <th class="align-center">{{ __('Name') }}</th>
-                                        <th class="align-center">{{ __('Description') }}</th>
-                                        <th class="align-center">{{ __('Actions') }}</th>
+                                        <th class="align-center">{{ __('Name') }} / Nombre</th>
+                                        <th class="align-center">{{ __('Description') }} / Descripción</th>
+                                        <th class="align-center">{{ __('Actions') }} / Acciones</th>
                                     </tr>
                                 </thead>
                             </table>

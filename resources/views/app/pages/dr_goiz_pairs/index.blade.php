@@ -21,14 +21,14 @@
                 <div class="modern-info-card data-cache-client-panel">
                     <div class="row justify-content-center mb-2">
                         <div class="col-12 text-center"
-                            style="background: #f5c518; color: #333; font-weight: bold; padding: 8px 0; font-size: 14px; letter-spacing: 0.5px;">
+                            style="background: #fef3c7; color: #92400e; font-weight: 600; padding: 8px 0; font-size: 14px; letter-spacing: 0.5px; border-radius: 6px 6px 0 0;">
                             FREE Tier &nbsp;|&nbsp; Nivel Gratis
                         </div>
                     </div>
                     <div class="row justify-content-center mb-3">
                         <div class="col-12 text-center"
-                            style="background: #1a5276; color: #fff; font-weight: bold; padding: 8px 0; font-size: 14px; letter-spacing: 0.5px;">
-                            228 Classic FREE PROTOCOL PAIRS &nbsp;|&nbsp; 228 Pares Clásicos de Protocolo Gratis
+                            style="background: #ccfbf1; color: #0f766e; font-weight: 600; padding: 8px 0; font-size: 14px; letter-spacing: 0.5px; border-radius: 6px;">
+                            267 Classic FREE PROTOCOL PAIRS &nbsp;|&nbsp; 267 Pares Clásicos de Protocolo Gratis
                         </div>
                     </div>
                     <div class="modern-data-cache-table-shell data-cache-client-table-shell">

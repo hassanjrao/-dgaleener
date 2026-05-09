@@ -16,12 +16,12 @@
     <main class="modern-main-content">
         <header class="modern-page-header">
             <div>
-                <h1 class="modern-page-title">Find Friends</h1>
-                <p class="modern-page-subtitle">Discover and invite new connections</p>
+                <h1 class="modern-page-title">Find Friends / Buscar Amigos</h1>
+                <p class="modern-page-subtitle">Discover and invite new connections / Descubre e invita nuevas conexiones</p>
             </div>
             <div class="modern-page-header__actions">
                 <a href="{{ url('/bioconnect/friends') }}" class="modern-btn modern-btn--outline">
-                    <span aria-hidden="true">&larr;</span> All Friends
+                    <span aria-hidden="true">&larr;</span> All Friends / Todos los amigos
                 </a>
             </div>
         </header>
@@ -63,16 +63,13 @@
                                     <p class="text-muted mb-1">
                                         <% user.location || 'No location' %>
                                     </p>
-                                    <p class="text-muted mb-1">
-                                        Age: <% user.age || '-' %>
-                                    </p>
                                     <p class="text-muted">
                                         <% user.address || 'No address' %>
                                     </p>
                                 </div>
                                 <div class="friend-actions">
                                     <button class="btn btn-primary btn-sm w-100" ng-click="ctrl.addFriend(user)">
-                                        Invite
+                                        Invite / Invitar
                                     </button>
                                 </div>
                             </div>

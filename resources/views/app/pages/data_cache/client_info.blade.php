@@ -21,7 +21,7 @@
                 </div>
                 <div class="modern-page-header__actions">
                     <a href="{{ route('app.data_cache') }}" class="modern-btn modern-btn--outline">
-                        <span aria-hidden="true">&larr;</span> Back to Data Cache
+                        <span aria-hidden="true">&larr;</span> Back to Data Cache / Volver
                     </a>
                     <button type="button" class="modern-btn modern-btn--primary"
                             data-toggle="modal" data-target="#clientInfoModal" data-title="New Client">
@@ -39,16 +39,16 @@
                                 <thead>
                                     <tr>
                                         <th class="align-center">{{ __('ID') }}</th>
-                                        <th class="align-center">{{ __('First Name') }}</th>
-                                        <th class="align-center">{{ __('Last Name') }}</th>
-                                        <th class="align-center">{{ __('Email') }}</th>
-                                        <th class="align-center">{{ __('Address') }}</th>
-                                        <th class="align-center">{{ __('Phone No.') }}</th>
-                                        <th class="align-center">{{ __('Date of Birth') }}</th>
-                                        <th class="align-center">{{ __('Age') }}</th>
-                                        <th class="align-center">{{ __('Emergency Details') }}</th>
-                                        <th class="align-center">{{ __('Session Details') }}</th>
-                                        <th class="align-center">{{ __('Actions') }}</th>
+                                        <th class="align-center">{{ __('First Name') }} / Nombre</th>
+                                        <th class="align-center">{{ __('Last Name') }} / Apellido</th>
+                                        <th class="align-center">{{ __('Email') }} / Correo</th>
+                                        <th class="align-center">{{ __('Address') }} / Dirección</th>
+                                        <th class="align-center">{{ __('Phone No.') }} / Teléfono</th>
+                                        <th class="align-center">{{ __('Date of Birth') }} / Fecha de nacimiento</th>
+                                        <th class="align-center">{{ __('Age') }} / Edad</th>
+                                        <th class="align-center">{{ __('Emergency Details') }} / Emergencia</th>
+                                        <th class="align-center">{{ __('Session Details') }} / Sesión</th>
+                                        <th class="align-center">{{ __('Actions') }} / Acciones</th>
                                     </tr>
                                 </thead>
                             </table>

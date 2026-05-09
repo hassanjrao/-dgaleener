@@ -24,13 +24,13 @@
                             <table class="table table-hover table-bordered table-datatable" id="orders">
                                 <thead>
                                     <tr>
-                                        <th class="align-center">{{ __('Product Name') }}</th>
-                                        <th class="align-center">{{ __('Description') }}</th>
-                                        <th class="align-center">{{ __('Unit Price') }}</th>
-                                        <th class="align-center">{{ __('Quantity') }}</th>
-                                        <th class="align-center">{{ __('Cost') }}</th>
-                                        <th class="align-center">{{ __('Paid') }}</th>
-                                        <th class="align-center">{{ __('Actions') }}</th>
+                                        <th class="align-center">{{ __('Product Name') }} / Producto</th>
+                                        <th class="align-center">{{ __('Description') }} / Descripción</th>
+                                        <th class="align-center">{{ __('Unit Price') }} / Precio unitario</th>
+                                        <th class="align-center">{{ __('Quantity') }} / Cantidad</th>
+                                        <th class="align-center">{{ __('Cost') }} / Costo</th>
+                                        <th class="align-center">{{ __('Paid') }} / Pagado</th>
+                                        <th class="align-center">{{ __('Actions') }} / Acciones</th>
                                     </tr>
                                 </thead>
                             </table>

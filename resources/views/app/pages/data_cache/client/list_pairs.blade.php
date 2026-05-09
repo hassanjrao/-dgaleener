@@ -57,12 +57,12 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th style="max-width: 150px;" ng-click="ctrl.toggleSortBy('name')">Point/Name</th>
+                                <th style="max-width: 150px;" ng-click="ctrl.toggleSortBy('name')">Point/Name / Punto/Nombre</th>
                                 <th ng-click="ctrl.toggleSortBy('radical')">Radical</th>
-                                <th ng-click="ctrl.toggleSortBy('origins')">Start/Origin</th>
-                                <th ng-click="ctrl.toggleSortBy('symptoms')">Leads/Symptoms</th>
-                                <th ng-click="ctrl.toggleSortBy('paths')">Path/Route/Cause and Effect</th>
-                                <th ng-click="ctrl.toggleSortBy('alternative_routes')">Alternative Routes</th>
+                                <th ng-click="ctrl.toggleSortBy('origins')">Start/Origin / Inicio/Origen</th>
+                                <th ng-click="ctrl.toggleSortBy('symptoms')">Leads/Symptoms / Señales/Síntomas</th>
+                                <th ng-click="ctrl.toggleSortBy('paths')">Path/Route / Ruta/Causa y efecto</th>
+                                <th ng-click="ctrl.toggleSortBy('alternative_routes')">Alt. Routes / Rutas alternativas</th>
                             </tr>
                         </thead>
                         <tbody>

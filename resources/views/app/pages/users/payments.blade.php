@@ -24,9 +24,9 @@
                             <table class="table table-hover table-bordered table-datatable" id="payments">
                                 <thead>
                                     <tr>
-                                        <th class="align-center">{{ __('Date') }}</th>
-                                        <th class="align-center">{{ __('Description') }}</th>
-                                        <th class="align-center">{{ __('Amount') }}</th>
+                                        <th class="align-center">{{ __('Date') }} / Fecha</th>
+                                        <th class="align-center">{{ __('Description') }} / Descripción</th>
+                                        <th class="align-center">{{ __('Amount') }} / Monto</th>
                                     </tr>
                                 </thead>
                             </table>
