@@ -3,279 +3,96 @@
 @section('page-title', 'Dashboard')
 
 @php
-    $activeNav = 'home';
+    $activeNav   = 'home';
+    $useAppShell = true;
 @endphp
 
 @section('content')
-    <main class="modern-main-content">
-        <section class="mb-5">
-            <h3 class="eyebrow mb-4">Ion Positive &amp; Negative Alignment</h3>
-            <h2 class="hero-heading mb-4">
-                A journey to <span class="italic-wellness">wellness</span> through magnetic energy
-            </h2>
-            <div class="mb-4" style="width:3rem;height:2px;background:#006a63;"></div>
-            <p class="mb-0 text-secondary" style="max-width:32rem;">
-                Open Major Chakra Vortexesto Release the Emotional Stress
-                Behind Physical Imbalance, or Optimize Your Bio-Terrian by
-                Balancing pH Radical Through Biomagnetism.
-            </p>
-        </section>
+<div class="dash-page">
 
-        <section class="mb-5">
-            <h4 class="section-eyebrow mb-4">Core Modules</h4>
-            <div class="row modern-row-gap">
-                <div class="col-12 col-md-6">
-                    <a href="{{ route('app.bodyscan.info') }}"
-                        class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none module-card-trigger"
-                        data-drawer-title="Body Scan">
-                        <div class="icon-tile icon-tile-body-scan">
-                            <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                aria-hidden="true">
-                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="pill pill-body-scan mb-3"><span class="pill-dot"></span>Body Scan</span>
-                            <h5 class="fw-bold text-dark mb-2">Full Body Analysis</h5>
-                            <p class="text-secondary mb-0">Detect energy imbalances across all organ systems and tissue
-                                fields.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-6">
-                    <a href="{{ route('app.chakrascan.info') }}"
-                        class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none module-card-trigger"
-                        data-drawer-title="Chakra Scan">
-                        <div class="icon-tile icon-tile-chakra-scan">
-                            <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 100 100" aria-hidden="true" stroke-width="1.2">
-                                <circle cx="50" cy="50" r="32"/>
-                                <circle cx="50" cy="50" r="16"/>
-                                <circle cx="66" cy="50" r="16"/>
-                                <circle cx="58" cy="36.1" r="16"/>
-                                <circle cx="42" cy="36.1" r="16"/>
-                                <circle cx="34" cy="50" r="16"/>
-                                <circle cx="42" cy="63.9" r="16"/>
-                                <circle cx="58" cy="63.9" r="16"/>
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="pill pill-chakra-scan mb-3"><span class="pill-dot"></span>Chakra Scan</span>
-                            <h5 class="fw-bold text-dark mb-2">Energy Center Map</h5>
-                            <p class="text-secondary mb-0">Visualize and assess vibrational alignment across all energy
-                                centers.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-6">
-                    <a href="{{ route('app.data_cache.info') }}"
-                        class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none module-card-trigger"
-                        data-drawer-title="Data Cache">
-                        <div class="icon-tile icon-tile-data-cache">
-                            <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                aria-hidden="true">
-                                <path
-                                    d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="pill pill-data-cache mb-3"><span class="pill-dot"></span>Data Cache</span>
-                            <h5 class="fw-bold text-dark mb-2">Session Records</h5>
-                            <p class="text-secondary mb-0">Access treatment history, session logs, and tracked progress over
-                                time.</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12 col-md-6">
-                    <a href="{{ route('app.bioconnect.info') }}"
-                        class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none module-card-trigger"
-                        data-drawer-title="Bio Connect">
-                        <div class="icon-tile icon-tile-bio-connect">
-                            <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                                aria-hidden="true">
-                                <path
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                                    stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
-                            </svg>
-                        </div>
-                        <div>
-                            <span class="pill pill-bio-connect mb-3"><span class="pill-dot"></span>Guided Mastery</span>
-                            <h5 class="fw-bold text-dark mb-2">The Navigator</h5>
-                            <p class="text-secondary mb-0">Navigate your sessions with step-by-step guided scanning,
-                                integrated
-                                'How-to' instructions, and global language support.
-                            </p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-12">
-                    <a href="{{ route('app.dr_goiz_pairs') }}" class="free-protocol-banner text-decoration-none">
-                        <div class="free-protocol-banner__glow"></div>
-                        <div class="free-protocol-banner__badge">FREE</div>
-                        <div class="free-protocol-banner__body">
-                            <div class="free-protocol-banner__icon" aria-hidden="true">
-                                <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75"/>
-                                </svg>
-                            </div>
-                            <h4 class="free-protocol-banner__title">Free Protocol Pairs</h4>
-                            <p class="free-protocol-banner__desc text-white">Browse Dr. Goiz biomagnetism pair protocols for therapeutic reference — no subscription required.</p>
-                            <span class="free-protocol-banner__cta">
-                                Explore Free Protocols
-                                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                                </svg>
-                            </span>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
+    <h1 class="dash-greeting">
+        Welcome back, <span class="dash-greeting__name">{{ Auth::user()->name }}</span>.
+        <span class="dash-greeting__es">Bienvenido de nuevo.</span>
+    </h1>
 
-        <section id="pricing" class="mb-5">
-            <h4 class="section-eyebrow mb-4">Plans &amp; Pricing</h4>
-            @include('partials.modern.pricing')
-        </section>
+    <div class="dash-grid">
 
-    </main>
-
-    {{-- Info Drawer --}}
-    <div class="info-drawer-backdrop" id="infoDrawerBackdrop" aria-hidden="true"></div>
-    <aside class="info-drawer" id="infoDrawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="infoDrawerTitle">
-        <div class="info-drawer__header">
-            <h2 class="info-drawer__title" id="infoDrawerTitle"></h2>
-            <button class="info-drawer__close" id="infoDrawerClose" type="button" aria-label="Close">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+        {{-- Body Scan --}}
+        <a href="{{ route('app.bodyscan') }}" class="dash-card" style="--card-color:#10b981;--card-bg:#d1fae5;">
+            <div class="dash-card__row">
+                <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
+                    <path d="M0,12 L10,12 L14,4 L18,20 L22,8 L26,16 L30,12 L60,12"/>
                 </svg>
-            </button>
-        </div>
-        <div class="info-drawer__body" id="infoDrawerBody">
-            <div class="info-drawer__loading" id="infoDrawerLoading" aria-live="polite">
-                <div class="info-drawer__spinner"></div>
-                <span>Loading…</span>
-            </div>
-            <div class="info-drawer__content" id="infoDrawerContent"></div>
-        </div>
-    </aside>
-
-    {{-- Contact Us Section --}}
-    <section id="contact" class="dashboard-contact">
-        <div class="dashboard-contact__inner">
-            <h2 class="dashboard-contact__title">Contact Us</h2>
-            <p class="dashboard-contact__subtitle">Have a question or need help? We'd love to hear from you.</p>
-
-            <div class="dashboard-contact__grid">
-                <div class="dashboard-contact__info">
-                    <div class="dashboard-contact__info-item">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                        <a
-                            href="mailto:{{ env('MAIL_FROM_ADDRESS', 'info@anewavenue.com') }}">{{ env('MAIL_FROM_ADDRESS', 'info@anewavenue.com') }}</a>
-                    </div>
-                    <div class="dashboard-contact__info-item">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
-                        </svg>
-                        <span>{{ env('APP_URL') }}</span>
-                    </div>
-                    <div class="dashboard-contact__info-item">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            aria-hidden="true">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span>Mon – Fri, 9 AM – 5 PM</span>
-                    </div>
-                    <p class="dashboard-contact__blurb">
-                        Whether you're a practitioner, therapist, or just curious about biomagnetism — reach out and we'll
-                        get back to you as soon as possible.
-                    </p>
+                <div class="dash-card__icon-wrap">
+                    <svg width="28" height="28" fill="none" stroke="var(--card-color)" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    </svg>
                 </div>
-
-                <form class="dashboard-contact__form"
-                    action="mailto:{{ env('MAIL_FROM_ADDRESS', 'info@anewavenue.com') }}" method="get"
-                    enctype="text/plain">
-                    <input type="text" name="name" placeholder="Your Name" class="dashboard-contact__input"
-                        required>
-                    <input type="email" name="email" placeholder="Your Email" class="dashboard-contact__input"
-                        required>
-                    <input type="text" name="subject" placeholder="Subject" class="dashboard-contact__input">
-                    <textarea name="message" placeholder="Your Message" class="dashboard-contact__textarea" rows="5" required></textarea>
-                    <button type="submit" class="dashboard-contact__submit">Send Message</button>
-                </form>
+                <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
+                    <path d="M0,12 L30,12 L34,4 L38,20 L42,8 L46,16 L50,12 L60,12"/>
+                </svg>
             </div>
-        </div>
-    </section>
+            <div class="dash-card__title">Body Scan</div>
+            <div class="dash-card__subtitle">Escaneo Corporal</div>
+        </a>
+
+        {{-- Chakra Map --}}
+        <a href="{{ route('app.chakrascan') }}" class="dash-card" style="--card-color:#b45309;--card-bg:#fef3c7;">
+            <div class="dash-card__row">
+                <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
+                    <path d="M0,12 L10,12 L14,4 L18,20 L22,8 L26,16 L30,12 L60,12"/>
+                </svg>
+                <div class="dash-card__icon-wrap">
+                    <svg width="28" height="28" fill="none" stroke="var(--card-color)" viewBox="0 0 100 100" stroke-width="1.2" aria-hidden="true">
+                        <circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="16"/><circle cx="66" cy="50" r="16"/><circle cx="58" cy="36.1" r="16"/><circle cx="42" cy="36.1" r="16"/><circle cx="34" cy="50" r="16"/><circle cx="42" cy="63.9" r="16"/><circle cx="58" cy="63.9" r="16"/>
+                    </svg>
+                </div>
+                <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
+                    <path d="M0,12 L30,12 L34,4 L38,20 L42,8 L46,16 L50,12 L60,12"/>
+                </svg>
+            </div>
+            <div class="dash-card__title">Chakra Map</div>
+            <div class="dash-card__subtitle">Mapa Chakra</div>
+        </a>
+
+        {{-- My Vault (Data Cache) --}}
+        <a href="{{ route('app.data_cache') }}" class="dash-card" style="--card-color:#3b82f6;--card-bg:#dbeafe;">
+            <div class="dash-card__row">
+                <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
+                    <path d="M0,12 L10,12 L14,4 L18,20 L22,8 L26,16 L30,12 L60,12"/>
+                </svg>
+                <div class="dash-card__icon-wrap">
+                    <svg width="28" height="28" fill="none" stroke="var(--card-color)" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    </svg>
+                </div>
+                <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
+                    <path d="M0,12 L30,12 L34,4 L38,20 L42,8 L46,16 L50,12 L60,12"/>
+                </svg>
+            </div>
+            <div class="dash-card__title">Data</div>
+            <div class="dash-card__subtitle">Datos</div>
+        </a>
+
+        {{-- The Circle (BioConnect) --}}
+        <a href="{{ route('app.bioconnect') }}" class="dash-card" style="--card-color:#f97316;--card-bg:#ffedd5;">
+            <div class="dash-card__row">
+                <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
+                    <path d="M0,12 L10,12 L14,4 L18,20 L22,8 L26,16 L30,12 L60,12"/>
+                </svg>
+                <div class="dash-card__icon-wrap">
+                    <svg width="28" height="28" fill="none" stroke="var(--card-color)" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                    </svg>
+                </div>
+                <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
+                    <path d="M0,12 L30,12 L34,4 L38,20 L42,8 L46,16 L50,12 L60,12"/>
+                </svg>
+            </div>
+            <div class="dash-card__title">Connect</div>
+            <div class="dash-card__subtitle">Conectar</div>
+        </a>
+
+    </div>
+</div>
 @endsection
-
-@push('scripts')
-<script>
-(function () {
-    var backdrop  = document.getElementById('infoDrawerBackdrop');
-    var drawer    = document.getElementById('infoDrawer');
-    var titleEl   = document.getElementById('infoDrawerTitle');
-    var closeBtn  = document.getElementById('infoDrawerClose');
-    var loading   = document.getElementById('infoDrawerLoading');
-    var content   = document.getElementById('infoDrawerContent');
-    var cache     = {};
-
-    function openDrawer(url, title) {
-        titleEl.textContent = title || '';
-        content.innerHTML   = '';
-        loading.style.display = 'flex';
-        drawer.setAttribute('aria-hidden', 'false');
-        backdrop.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('info-drawer-open');
-        closeBtn.focus();
-
-        if (cache[url]) {
-            loading.style.display = 'none';
-            content.innerHTML = cache[url];
-            return;
-        }
-
-        fetch(url, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-            .then(function (r) { return r.text(); })
-            .then(function (html) {
-                var parser = new DOMParser();
-                var doc    = parser.parseFromString(html, 'text/html');
-                var main   = doc.querySelector('.modern-main-content') || doc.querySelector('main');
-                var result = main ? main.innerHTML : doc.body.innerHTML;
-                cache[url] = result;
-                loading.style.display = 'none';
-                content.innerHTML = result;
-            })
-            .catch(function () {
-                loading.style.display = 'none';
-                content.innerHTML = '<p class="text-secondary p-3">Could not load content. <a href="' + url + '">Open page directly</a>.</p>';
-            });
-    }
-
-    function closeDrawer() {
-        drawer.setAttribute('aria-hidden', 'true');
-        backdrop.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('info-drawer-open');
-    }
-
-    document.querySelectorAll('.module-card-trigger').forEach(function (card) {
-        card.addEventListener('click', function (e) {
-            e.preventDefault();
-            openDrawer(card.href, card.dataset.drawerTitle);
-        });
-    });
-
-    closeBtn.addEventListener('click', closeDrawer);
-    backdrop.addEventListener('click', closeDrawer);
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeDrawer();
-    });
-}());
-</script>
-@endpush

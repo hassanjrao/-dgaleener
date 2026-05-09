@@ -7,11 +7,11 @@ use Auth;
 
 class DashboardController extends Controller
 {
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\View\View
-     */
+    public function landing()
+    {
+        return view('home');
+    }
+
     public function index()
     {
         return view('app.pages.dashboard.index');

@@ -18,8 +18,8 @@ Auth::routes(['verify' => true]);
 // Route::get('/landing_page', 'HomeController@landing_page')->name('app.landing_page');
 // Route::get('/introduction', 'IntroductionController@index');
 
-Route::get('/', 'DashboardController@index')->name('app.root');
-Route::get('/home', 'DashboardController@index')->name('app.home');
+Route::get('/', 'DashboardController@landing')->name('app.root');
+Route::get('/home', 'DashboardController@landing')->name('app.home');
 Route::get('/bodyscan/info', 'BodyScanController@info')->name('app.bodyscan.info');
 Route::get('/bioconnect/info', 'BioConnectController@info')->name('app.bioconnect.info');
 Route::get('/chakrascan/info', 'ChakraScanController@info')->name('app.chakrascan.info');
