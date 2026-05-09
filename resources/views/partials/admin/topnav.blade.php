@@ -30,7 +30,7 @@
 
         <a href="{{ url('/admin/pairs/chakra') }}"
            class="admin-nav__link {{ str_contains($currentPath, 'pairs/chakra') ? 'active' : '' }}">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707"/></svg>
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 100 100" stroke-width="1.2"><circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="16"/><circle cx="66" cy="50" r="16"/><circle cx="58" cy="36.1" r="16"/><circle cx="42" cy="36.1" r="16"/><circle cx="34" cy="50" r="16"/><circle cx="42" cy="63.9" r="16"/><circle cx="58" cy="63.9" r="16"/></svg>
             Chakra Pairs
         </a>
 
@@ -64,7 +64,7 @@
 
         <a href="{{ url('/admin/model_labels/chakra_scan') }}"
            class="admin-nav__link {{ str_contains($currentPath, 'chakra_scan') ? 'active' : '' }}">
-            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707"/></svg>
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 100 100" stroke-width="1.2"><circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="16"/><circle cx="66" cy="50" r="16"/><circle cx="58" cy="36.1" r="16"/><circle cx="42" cy="36.1" r="16"/><circle cx="34" cy="50" r="16"/><circle cx="42" cy="63.9" r="16"/><circle cx="58" cy="63.9" r="16"/></svg>
             Chakra Scan Labels
         </a>
 

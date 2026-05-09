@@ -55,8 +55,8 @@
             <div class="col-12 col-md-6 col-lg-4">
                 <a href="{{ route('app.chakrascan') }}" class="modern-data-cache-tile">
                     <div class="modern-data-cache-tile__icon">
-                        <svg class="modern-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                            <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m12.728 0l-.707-.707M6.343 6.343l-.707-.707m12.728 12.728L5.757 5.757" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                        <svg class="modern-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 100 100" aria-hidden="true" stroke-width="1.2">
+                            <circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="16"/><circle cx="66" cy="50" r="16"/><circle cx="58" cy="36.1" r="16"/><circle cx="42" cy="36.1" r="16"/><circle cx="34" cy="50" r="16"/><circle cx="42" cy="63.9" r="16"/><circle cx="58" cy="63.9" r="16"/>
                         </svg>
                     </div>
                     <div class="modern-data-cache-tile__label">

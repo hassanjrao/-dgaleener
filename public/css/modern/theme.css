@@ -272,8 +272,8 @@ body.modern-theme {
 }
 
 .icon-tile-chakra-scan {
-    background: #ede9fe;
-    color: #7c3aed;
+    background: #fef3c7;
+    color: #b45309;
 }
 
 .icon-tile-data-cache {
@@ -2927,109 +2927,178 @@ body.user-menu-open .user-side-menu {
 /* ============================================================
    Modern Pricing Cards
    ============================================================ */
-.modern-pricing-wrap {
-    padding: 1.5rem 0 0.5rem;
+/* ── Pricing toggle wrapper ── */
+.pricing-toggle-wrap {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.75rem;
+    padding: 1.5rem 0 0.5rem;
 }
 
-.modern-pricing-grid {
-    max-width: 720px;
-    width: 100%;
-    margin: 0 auto;
+/* Toggle row */
+.pricing-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
-.modern-pricing-card {
+.pricing-toggle__label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #94a3b8;
+    transition: color 0.18s;
+    user-select: none;
+}
+
+.pricing-toggle__label--active {
+    color: #0f766e;
+}
+
+.pricing-toggle__switch {
+    position: relative;
+    width: 52px;
+    height: 28px;
+    background: #14b8a6;
+    border-radius: 9999px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background 0.18s;
+}
+
+.pricing-toggle__switch:focus-visible {
+    outline: 2px solid #14b8a6;
+    outline-offset: 3px;
+}
+
+.pricing-toggle__thumb {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 22px;
+    height: 22px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s cubic-bezier(.4,0,.2,1);
+    display: block;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+
+.pricing-toggle__switch[aria-checked="true"] .pricing-toggle__thumb {
+    transform: translateX(24px);
+}
+
+/* Single pricing card */
+.pricing-card-single {
     position: relative;
     background: #ffffff;
     border: 1.5px solid #e2e8f0;
-    border-radius: 1rem;
-    padding: 2rem 1.5rem 1.5rem;
+    border-radius: 1.25rem;
+    padding: 2.25rem 2rem 1.75rem;
+    text-align: center;
+    width: 100%;
+    max-width: 320px;
+    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.07);
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    height: 100%;
-    transition: box-shadow 0.2s ease;
+    gap: 0.5rem;
+    transition: box-shadow 0.2s;
 }
 
-.modern-pricing-card:hover {
-    box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+.pricing-card-single--hidden {
+    display: none;
 }
 
-.modern-pricing-card--featured {
-    border-color: #14b8a6;
-    box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.12);
-}
-
-.modern-pricing-card--featured:hover {
-    box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.12), 0 4px 24px rgba(15, 23, 42, 0.08);
-}
-
-.modern-pricing-card__badge {
-    display: inline-flex;
-    align-items: center;
-    background: #ccfbf1;
-    color: #0f766e;
+.pricing-card-single__badge {
+    position: absolute;
+    top: -0.75rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #14b8a6;
+    color: #fff;
     font-size: 0.7rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    font-weight: 800;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    padding: 0.22rem 0.6rem;
-    border-radius: 2rem;
-    width: fit-content;
+    padding: 0.25rem 0.85rem;
+    border-radius: 9999px;
+    white-space: nowrap;
 }
 
-.modern-pricing-card__header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-}
-
-.modern-pricing-card__name {
-    font-size: 1.05rem;
+.pricing-card-single__name {
+    font-size: 1rem;
     font-weight: 700;
-    color: #0f172a;
-    margin: 0;
+    color: #475569;
+    text-transform: capitalize;
+    letter-spacing: 0.04em;
+    margin-bottom: 0.5rem;
 }
 
-.modern-pricing-card__price {
+.pricing-card-single__price {
     display: flex;
     align-items: baseline;
+    justify-content: center;
     gap: 0.1rem;
-    margin-top: 0.5rem;
-}
-
-.modern-pricing-card__currency {
-    font-size: 1.35rem;
-    font-weight: 600;
-    color: #64748b;
     line-height: 1;
 }
 
-.modern-pricing-card__amount {
-    font-size: 3rem;
+.pricing-card-single__currency {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #0f172a;
+    align-self: flex-start;
+    margin-top: 0.45rem;
+}
+
+.pricing-card-single__amount {
+    font-size: 3.5rem;
     font-weight: 800;
     color: #0f172a;
+    letter-spacing: -0.03em;
     line-height: 1;
-    letter-spacing: -0.02em;
 }
 
-.modern-pricing-card__period {
+.pricing-card-single__period {
     font-size: 0.8rem;
-    color: #64748b;
-    margin: 0;
-    text-transform: capitalize;
+    color: #94a3b8;
+    margin: 0.1rem 0 0.75rem;
+    font-weight: 500;
 }
 
-.modern-pricing-card__desc {
-    font-size: 0.875rem;
+.pricing-card-single__desc {
+    font-size: 0.85rem;
     color: #64748b;
-    margin: 0;
-    line-height: 1.65;
+    line-height: 1.6;
+    margin: 0 0 0.5rem;
 }
 
-.modern-pricing-card__footer {
-    margin-top: auto;
+.pricing-card-single__footer {
+    margin-top: 0.75rem;
+}
+
+.pricing-card-single__btn {
+    display: block;
+    width: 100%;
+    background: #14b8a6;
+    color: #fff;
+    border: none;
+    border-radius: 0.6rem;
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.15s;
+    font-family: inherit;
+}
+
+.pricing-card-single__btn:hover {
+    background: #0f766e;
+    color: #fff;
+    text-decoration: none;
 }
 
 /* ── Free / highlighted module card ── */
@@ -3059,6 +3128,224 @@ body.user-menu-open .user-side-menu {
 
 /* ── Smooth scroll ── */
 html { scroll-behavior: smooth; }
+
+/* ── Info Drawer ── */
+.info-drawer-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    z-index: 1050;
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+}
+
+.info-drawer-backdrop[aria-hidden="false"] {
+    display: block;
+}
+
+.info-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 680px;
+    max-width: 100vw;
+    background: #fff;
+    z-index: 1060;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.32s cubic-bezier(.4,0,.2,1);
+    box-shadow: -8px 0 48px rgba(15, 23, 42, 0.16);
+}
+
+.info-drawer[aria-hidden="false"] {
+    transform: translateX(0);
+}
+
+body.info-drawer-open {
+    overflow: hidden;
+}
+
+.info-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    background: #f8fafc;
+}
+
+.info-drawer__title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.info-drawer__close {
+    width: 38px;
+    height: 38px;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+}
+
+.info-drawer__close:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: #dc2626;
+}
+
+.info-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.info-drawer__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 4rem 0;
+    color: #64748b;
+    font-size: 0.875rem;
+}
+
+.info-drawer__spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #14b8a6;
+    border-radius: 50%;
+    animation: drawerSpin 0.7s linear infinite;
+}
+
+@keyframes drawerSpin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+    .info-drawer {
+        width: 100vw;
+    }
+    .info-drawer__body {
+        padding: 1.25rem;
+    }
+}
+
+/* ── Free Protocol Banner ── */
+.free-protocol-banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background: linear-gradient(135deg, #0f2027 0%, #0f4c45 50%, #0f2027 100%);
+    padding: 3rem 2rem;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 24px rgba(20, 184, 166, 0.15);
+}
+
+.free-protocol-banner:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 36px rgba(20, 184, 166, 0.28);
+    text-decoration: none;
+}
+
+.free-protocol-banner__glow {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(20, 184, 166, 0.18) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.free-protocol-banner__badge {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.25rem;
+    background: #14b8a6;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    padding: 0.3rem 0.75rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+}
+
+.free-protocol-banner__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.85rem;
+    max-width: 520px;
+}
+
+.free-protocol-banner__icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(20, 184, 166, 0.15);
+    border: 1.5px solid rgba(20, 184, 166, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5eead4;
+    margin-bottom: 0.25rem;
+}
+
+.free-protocol-banner__title {
+    color: #fff;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.free-protocol-banner__desc {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin: 0;
+}
+
+.free-protocol-banner__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    background: #14b8a6;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    padding: 0.6rem 1.5rem;
+    border-radius: 9999px;
+    letter-spacing: 0.02em;
+    transition: background 0.15s;
+}
+
+.free-protocol-banner:hover .free-protocol-banner__cta {
+    background: #0f766e;
+}
 
 /* ── Dashboard Contact Us section ── */
 .dashboard-contact {
