@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}"@if (!empty($useAppShell)) ng-app="AnewApp"@endif>
+<html lang="{{ app()->getLocale() }}"@if (!empty($useAppShell)) ng-app="AnewApp" @endif>
+
 <head>
     @if (!empty($useAppShell))
         @include('partials.shared.meta')
@@ -16,15 +17,17 @@
 
         $currentRouteUri = optional(Route::getCurrentRoute())->uri() ?? '';
         $authUser = Auth::user();
-        $showPlayer = $authUser
-            && method_exists($authUser, 'hasVerifiedEmail') && $authUser->hasVerifiedEmail()
-            && method_exists($authUser, 'hasValidSubscription') && $authUser->hasValidSubscription()
-            && !in_array($currentRouteUri, ['home', 'media', 'playlist'], true)
-            && (!isset($hideBottomNav) || !$hideBottomNav)
-            && (!isset($hidePlayer) || !$hidePlayer);
+        $showPlayer =
+            $authUser &&
+            method_exists($authUser, 'hasVerifiedEmail') &&
+            $authUser->hasVerifiedEmail() &&
+            method_exists($authUser, 'hasValidSubscription') &&
+            $authUser->hasValidSubscription() &&
+            !in_array($currentRouteUri, ['home', 'media', 'playlist'], true) &&
+            (!isset($hideBottomNav) || !$hideBottomNav) &&
+            (!isset($hidePlayer) || !$hidePlayer);
 
-        $loadFoot = !empty($useAppShell) || $showPlayer
-            || (!empty($isBioconnectRoute) && Auth::check());
+        $loadFoot = !empty($useAppShell) || $showPlayer || (!empty($isBioconnectRoute) && Auth::check());
     @endphp
     <title>{{ $pageTitle !== '' ? $pageTitle . ' - ' . $siteTitle : $siteTitle }}</title>
 
@@ -33,7 +36,19 @@
 
     @stack('head')
 </head>
+
 <body class="@yield('body-class', 'modern-theme')">
+    <div class="gtranslate_wrapper"></div>
+    <script>
+        window.gtranslateSettings = {
+            "default_language": "en",
+            "detect_browser_language": true,
+            "wrapper_selector": ".gtranslate_wrapper",
+            "flag_style": "3d"
+        }
+    </script>
+    <script src="https://cdn.gtranslate.net/widgets/latest/float.js" defer></script>
+
     @if (!isset($hideBrandBar) || !$hideBrandBar)
         @include('partials.modern.brand_bar')
         @include('partials.modern.user_menu')
@@ -110,4 +125,5 @@
 
     @stack('scripts')
 </body>
+
 </html>

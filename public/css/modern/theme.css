@@ -33,6 +33,7 @@ body.modern-theme {
     }
 }
 
+
 .modern-brand-bar {
     position: sticky;
     top: 0;
@@ -3128,6 +3129,22 @@ body.user-menu-open .user-side-menu {
 
 /* ── Smooth scroll ── */
 html { scroll-behavior: smooth; }
+
+/* ── Google Translate widget — fixed above bottom nav ── */
+.gtranslate_wrapper {
+    position: fixed !important;
+    bottom: 5.5rem !important;
+    left: 1rem !important;
+    top: auto !important;
+    right: auto !important;
+    z-index: 1030 !important;
+}
+
+.gtranslate_wrapper > div,
+.gtranslate_wrapper > a,
+.gtranslate_wrapper iframe {
+    position: static !important;
+}
 
 /* ── Authenticated Dashboard ── */
 .dash-page {
