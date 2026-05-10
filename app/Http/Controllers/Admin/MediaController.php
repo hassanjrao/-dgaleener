@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 
 use Illuminate\Contracts\Filesystem\Filesystem;
-use Aws\S3\Exception\S3Exception;
 
 use Auth;
 use DataTables;
@@ -61,11 +60,9 @@ class MediaController extends BaseController
             $filePath   = '/audio_files/'.$s3_name;
 
             try {
-                $s3Obj = Storage::disk('s3');
-                $s3Obj->put($filePath, fopen($_FILES['media_file']['tmp_name'], 'r+'), 'public');
-            } catch (S3Exception $e) {
-                print_r($e);
-                return redirect()->to('/admin/media')->with('message.fail', 'S3 Error in uploading file. Please try again.');
+                Storage::put($filePath, fopen($_FILES['media_file']['tmp_name'], 'r+'), 'public');
+            } catch (\Exception) {
+                return redirect()->to('/admin/media')->with('message.fail', 'Error in uploading file. Please try again.');
             }
 
             $media = Media::create([

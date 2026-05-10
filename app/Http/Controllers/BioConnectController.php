@@ -12,7 +12,6 @@ use Storage;
 
 use Auth;
 
-use Aws\S3\Exception\S3Exception;
 use App\Models\User;
 
 class BioConnectController extends Controller
@@ -130,11 +129,9 @@ class BioConnectController extends Controller
             $filePath   = '/users/uid-'.$user_id.'/profile_pictures/'.$s3_name;
 
             try {
-                $s3Obj = Storage::disk('s3');
-                $s3Obj->put($filePath, fopen($_FILES['upload']['tmp_name'], 'r+'), 'public');
-            } catch (S3Exception $e) {
-                echo($e);exit;
-                return redirect()->to('/bioconnect/profile')->with('message.fail', 'S3 Error in uploading file. Please try again.');
+                Storage::put($filePath, fopen($_FILES['upload']['tmp_name'], 'r+'), 'public');
+            } catch (\Exception) {
+                return redirect()->to('/bioconnect/profile')->with('message.fail', 'Error in uploading file. Please try again.');
             }
 
             $postdate['profile_picture'] = $s3_name;

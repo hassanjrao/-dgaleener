@@ -35,8 +35,8 @@ class ConsentForm extends Base
 
         static::deleting(function ($consent_form) {
             $partial_url = 'clients/uid-'.$consent_form->client_id.'/consent_forms/'.$consent_form->s3_name;
-            if (\Storage::disk('s3')->exists($partial_url)) {
-                \Storage::disk('s3')->delete('/'.$partial_url);
+            if (\Storage::exists($partial_url)) {
+                \Storage::delete('/'.$partial_url);
             }
         });
     }

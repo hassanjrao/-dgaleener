@@ -35,8 +35,8 @@ class Media extends Base
 
         static::deleting(function ($media) {
             foreach ($media->audioStoragePaths() as $partialUrl) {
-                if (\Storage::disk('s3')->exists($partialUrl)) {
-                    \Storage::disk('s3')->delete('/'.$partialUrl);
+                if (\Storage::exists($partialUrl)) {
+                    \Storage::delete('/'.$partialUrl);
                 }
             }
 
@@ -70,7 +70,7 @@ class Media extends Base
                 if (! isset($availableLookup[$partialUrl])) {
                     continue;
                 }
-            } elseif (! \Storage::disk('s3')->exists($partialUrl)) {
+            } elseif (! \Storage::exists($partialUrl)) {
                 continue;
             }
 

@@ -10,7 +10,6 @@ use Validator;
 use Storage;
 use App\Models\Client;
 use App\Models\User;
-use Aws\S3\Exception\S3Exception;
 
 class DataCacheController extends Controller
 {
@@ -137,10 +136,9 @@ class DataCacheController extends Controller
             $s3_name    = time()."_".$_FILES['logo_file']['name'];
             $filePath   = '/users/uid-'.Auth::user()->id.'/logos/'.$s3_name;
             try {
-                $s3Obj = Storage::disk('s3');
-                $s3Obj->put($filePath, fopen($_FILES['logo_file']['tmp_name'], 'r+'), 'public');
-            } catch (S3Exception $e) {
-                return redirect()->to('/data_cache')->with('message.fail', 'S3 Error in uploading file. Please try again.');
+                Storage::put($filePath, fopen($_FILES['logo_file']['tmp_name'], 'r+'), 'public');
+            } catch (\Exception) {
+                return redirect()->to('/data_cache')->with('message.fail', 'Error in uploading file. Please try again.');
             }
 
             $logo = \App\Models\Logo::create([
@@ -175,10 +173,9 @@ class DataCacheController extends Controller
             $filePath   = '/clients/uid-'.$client->id.'/consent_forms/'.$s3_name;
 
             try {
-                $s3Obj = Storage::disk('s3');
-                $s3Obj->put($filePath, fopen($_FILES['consent_form_file']['tmp_name'], 'r+'), 'public');
-            } catch (S3Exception $e) {
-                return redirect()->to('/data_cache/clients/'.$client->id)->with('message.fail', 'S3 Error in uploading consent form file. Please try again.');
+                Storage::put($filePath, fopen($_FILES['consent_form_file']['tmp_name'], 'r+'), 'public');
+            } catch (\Exception) {
+                return redirect()->to('/data_cache/clients/'.$client->id)->with('message.fail', 'Error in uploading consent form file. Please try again.');
             }
 
             $consent_form = \App\Models\ConsentForm::create([

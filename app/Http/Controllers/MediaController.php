@@ -12,7 +12,6 @@ use App\Models\Playlist;
 use App\Models\MediaPlaylist;
 use DataTables;
 use Carbon\Carbon;
-use Aws\S3\Exception\S3Exception;
 
 class MediaController extends Controller
 {
@@ -94,7 +93,7 @@ class MediaController extends Controller
     public function allmedia()
     {
         $mediaArr = [];
-        $availablePaths = Storage::disk('s3')->files('audio_files');
+        $availablePaths = Storage::files('audio_files');
         $medialist = Media::query()
             ->select(['id', 'file_name', 's3_name'])
             ->get();
@@ -129,11 +128,9 @@ class MediaController extends Controller
             $filePath   = '/audio_files/'.$s3_name;
 
             try {
-                $s3Obj = Storage::disk('s3');
-                $s3Obj->put($filePath, fopen($_FILES['media_file']['tmp_name'], 'r+'), 'public');
-            } catch (S3Exception $e) {
-                print_r($e);
-                return redirect()->to('/media')->with('message.fail', 'S3 Error in uploading file. Please try again.');
+                Storage::put($filePath, fopen($_FILES['media_file']['tmp_name'], 'r+'), 'public');
+            } catch (\Exception) {
+                return redirect()->to('/media')->with('message.fail', 'Error in uploading file. Please try again.');
             }
             
             $media = Media::create([

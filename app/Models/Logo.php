@@ -23,8 +23,8 @@ class Logo extends Base
 
         static::deleting(function ($logo) {
             $partial_url = 'logos/uid-'.$logo->user_id.'/'.$logo->s3_name;
-            if (!empty(config('filesystems.disks.s3.region')) && \Storage::disk('s3')->exists($partial_url)) {
-                \Storage::disk('s3')->delete('/'.$partial_url);
+            if (\Storage::exists($partial_url)) {
+                \Storage::delete('/'.$partial_url);
             }
         });
     }
@@ -48,7 +48,7 @@ class Logo extends Base
     public function file_url()
     {
         $partial_url = "users/uid-".$this->user_id."/logos/".$this->s3_name;
-        if (!empty($this->s3_name) && !empty(config('filesystems.disks.s3.region')) && \Storage::disk('s3')->exists($partial_url)) {
+        if (!empty($this->s3_name) && \Storage::exists($partial_url)) {
             return $this->awsAssetsUrl("/".$partial_url);
         } else {
             return asset('/images/iconimages/file_not_found.png');
