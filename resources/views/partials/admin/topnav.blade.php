@@ -110,6 +110,19 @@
             Compose Email
         </a>
 
+        @php $contactUnread = \App\Models\ContactMessage::where('is_read', false)->count(); @endphp
+        <a href="{{ route('admin.contact') }}"
+           class="admin-nav__link {{ str_contains($currentPath, 'admin/contact') ? 'active' : '' }}"
+           style="justify-content: space-between;">
+            <span style="display:flex;align-items:center;gap:0.75rem;">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+                Contact Messages
+            </span>
+            @if($contactUnread > 0)
+                <span style="background:#dc2626;color:#fff;font-size:0.65rem;font-weight:700;border-radius:999px;min-width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;padding:0 4px;">{{ $contactUnread }}</span>
+            @endif
+        </a>
+
     </nav>
 
 </aside>

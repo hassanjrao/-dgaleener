@@ -42,6 +42,8 @@ Route::get('/orders/{id}/payment/status', 'OrderController@payment_status')->nam
 Route::get('/magnetictherapyblog', 'BlogController@index')->name('app.blogs.index');
 Route::get('/magnetictherapyblog/{slug}', 'BlogController@show')->name('app.blogs.show');
 
+Route::post('/contact', 'ContactController@store')->name('contact.store');
+
 
 
 
@@ -206,6 +208,13 @@ Route::get('subscriptions', 'SubscriptionController@index')->name('admin.subscri
     ## Users
     Route::get('users', 'UserController@index');
     Route::get('users/{id}/subscriptions', 'UserController@subscriptions');
+
+    ## Contact Messages
+    Route::get('contact', 'ContactController@index')->name('admin.contact');
+    Route::get('contact/datatables', 'ContactController@datatables')->name('admin.contact.datatables');
+    Route::post('contact/{id}/read', 'ContactController@markRead')->name('admin.contact.mark-read');
+    Route::get('contact/mark-all-read', 'ContactController@markAllRead')->name('admin.contact.mark-all-read');
+    Route::delete('contact/{id}', 'ContactController@destroy')->name('admin.contact.destroy');
 });
 
 /*** Admin ***/

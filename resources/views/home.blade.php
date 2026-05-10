@@ -166,13 +166,24 @@
                     </div>
                     <p class="dashboard-contact__blurb">Whether you're a practitioner, therapist, or just curious about biomagnetism — reach out and we'll get back to you as soon as possible.</p>
                 </div>
-                <form class="dashboard-contact__form" action="mailto:{{ env('MAIL_FROM_ADDRESS', 'info@anewavenue.com') }}" method="get" enctype="text/plain">
-                    <input type="text" name="name" placeholder="Your Name" class="dashboard-contact__input" required>
-                    <input type="email" name="email" placeholder="Your Email" class="dashboard-contact__input" required>
-                    <input type="text" name="subject" placeholder="Subject" class="dashboard-contact__input">
-                    <textarea name="message" placeholder="Your Message" class="dashboard-contact__textarea" rows="5" required></textarea>
-                    <button type="submit" class="dashboard-contact__submit">Send Message</button>
-                </form>
+                @if(session('contact.success'))
+                    <div style="background:#f0fdfa;border:1.5px solid #14b8a6;border-radius:0.5rem;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:0.75rem;">
+                        <svg width="22" height="22" fill="none" stroke="#14b8a6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span style="color:#0f766e;font-weight:600;">{{ session('contact.success') }}</span>
+                    </div>
+                @else
+                    <form class="dashboard-contact__form" action="{{ route('contact.store') }}" method="POST">
+                        @csrf
+                        <input type="text" name="name" placeholder="Your Name" class="dashboard-contact__input @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+                        @error('name')<span style="color:#dc2626;font-size:0.8rem;margin-top:-0.4rem;display:block;">{{ $message }}</span>@enderror
+                        <input type="email" name="email" placeholder="Your Email" class="dashboard-contact__input @error('email') is-invalid @enderror" value="{{ old('email') }}" required>
+                        @error('email')<span style="color:#dc2626;font-size:0.8rem;margin-top:-0.4rem;display:block;">{{ $message }}</span>@enderror
+                        <input type="text" name="subject" placeholder="Subject" class="dashboard-contact__input" value="{{ old('subject') }}">
+                        <textarea name="message" placeholder="Your Message" class="dashboard-contact__textarea @error('message') is-invalid @enderror" rows="5" required>{{ old('message') }}</textarea>
+                        @error('message')<span style="color:#dc2626;font-size:0.8rem;margin-top:-0.4rem;display:block;">{{ $message }}</span>@enderror
+                        <button type="submit" class="dashboard-contact__submit">Send Message</button>
+                    </form>
+                @endif
             </div>
         </div>
     </section>
