@@ -61,7 +61,7 @@ class MediaController extends BaseController
 
             try {
                 Storage::put($filePath, fopen($_FILES['media_file']['tmp_name'], 'r+'), 'public');
-            } catch (\Exception) {
+            } catch (\Exception $e) {
                 return redirect()->to('/admin/media')->with('message.fail', 'Error in uploading file. Please try again.');
             }
 

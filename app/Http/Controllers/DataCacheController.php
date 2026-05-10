@@ -137,7 +137,7 @@ class DataCacheController extends Controller
             $filePath   = '/users/uid-'.Auth::user()->id.'/logos/'.$s3_name;
             try {
                 Storage::put($filePath, fopen($_FILES['logo_file']['tmp_name'], 'r+'), 'public');
-            } catch (\Exception) {
+            } catch (\Exception $e) {
                 return redirect()->to('/data_cache')->with('message.fail', 'Error in uploading file. Please try again.');
             }
 
@@ -174,7 +174,7 @@ class DataCacheController extends Controller
 
             try {
                 Storage::put($filePath, fopen($_FILES['consent_form_file']['tmp_name'], 'r+'), 'public');
-            } catch (\Exception) {
+            } catch (\Exception $e) {
                 return redirect()->to('/data_cache/clients/'.$client->id)->with('message.fail', 'Error in uploading consent form file. Please try again.');
             }
 
