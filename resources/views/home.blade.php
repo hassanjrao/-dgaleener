@@ -15,8 +15,8 @@
             </h2>
             <div class="mb-4" style="width:3rem;height:2px;background:#006a63;"></div>
             <p class="mb-0 text-secondary" style="max-width:32rem;">
-                Open Major Chakra Vortexesto Release the Emotional Stress
-                Behind Physical Imbalance, or Optimize Your Bio-Terrian by
+                Open Major Chakra Vortexes to Release the Emotional Stress
+                Behind Physical Imbalance, or Optimize Your Bio-Terrain by
                 Balancing pH Radicals Through Biomagnetism.
             </p>
         </section>
@@ -28,6 +28,7 @@
                     <a href="{{ route('app.bodyscan.info') }}"
                         class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none module-card-trigger"
                         data-drawer-title="Body Scan">
+                        <p class="cs-card-header mb-2">3D Body Scan / Escaneo Corporal 3D</p>
                         <div class="icon-tile icon-tile-body-scan">
                             <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
@@ -36,7 +37,8 @@
                         <div>
                             <span class="pill pill-body-scan mb-3"><span class="pill-dot"></span>Body Scan</span>
                             <h5 class="fw-bold text-dark mb-2">Full Body Analysis</h5>
-                            <p class="text-secondary mb-0">Detect energy imbalances across all organ systems and tissue fields.</p>
+                            <p class="text-secondary mb-1">High-definition 3D male and female models featuring over 800 anatomical pairs for precise magnet placement.</p>
+                            <p class="cs-desc-es mb-0">Modelos 3D de alta definición (masculino y femenino) con más de 800 pares anatómicos para una colocación precisa de los imanes.</p>
                         </div>
                     </a>
                 </div>
@@ -44,6 +46,7 @@
                     <a href="{{ route('app.chakrascan.info') }}"
                         class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none module-card-trigger"
                         data-drawer-title="Chakra Scan">
+                        <p class="cs-card-header mb-2">Proprietary Chakra Method / Método de Chakra Propietario</p>
                         <div class="icon-tile icon-tile-chakra-scan">
                             <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 100 100" aria-hidden="true" stroke-width="1.2">
                                 <circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="16"/><circle cx="66" cy="50" r="16"/><circle cx="58" cy="36.1" r="16"/><circle cx="42" cy="36.1" r="16"/><circle cx="34" cy="50" r="16"/><circle cx="42" cy="63.9" r="16"/><circle cx="58" cy="63.9" r="16"/>
@@ -52,7 +55,8 @@
                         <div>
                             <span class="pill pill-chakra-scan mb-3"><span class="pill-dot"></span>Chakra Scan</span>
                             <h5 class="fw-bold text-dark mb-2">Energy Center Map</h5>
-                            <p class="text-secondary mb-0">Visualize and assess vibrational alignment across all energy centers.</p>
+                            <p class="text-secondary mb-1">A specialized system developed to decode emotional blocks through a comprehensive network of Major, Minor, and Micro chakras.</p>
+                            <p class="cs-desc-es mb-0">Un sistema especializado desarrollado para descodificar bloqueos emocionales a través de una red integral de chakras Mayores, Menores y Micro.</p>
                         </div>
                     </a>
                 </div>
@@ -60,6 +64,7 @@
                     <a href="{{ route('app.data_cache.info') }}"
                         class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none module-card-trigger"
                         data-drawer-title="Data Cache">
+                        <p class="cs-card-header mb-2">Data Cache (The Briefcase) / El Maletín de Datos</p>
                         <div class="icon-tile icon-tile-data-cache">
                             <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
@@ -68,14 +73,16 @@
                         <div>
                             <span class="pill pill-data-cache mb-3"><span class="pill-dot"></span>Data Cache</span>
                             <h5 class="fw-bold text-dark mb-2">Session Records</h5>
-                            <p class="text-secondary mb-0">Access treatment history, session logs, and tracked progress over time.</p>
+                            <p class="text-secondary mb-1">Securely manage your practice with private client intake forms, session history logs, and personalized notes.</p>
+                            <p class="cs-desc-es mb-0">Gestione su práctica de forma segura con formularios de admisión de clientes privados, registros de historial de sesiones y notas personalizadas.</p>
                         </div>
                     </a>
                 </div>
                 <div class="col-12 col-md-6">
                     <a href="{{ route('app.bioconnect.info') }}"
                         class="module-card p-4 p-lg-5 h-100 d-flex flex-column modern-gap-4 text-decoration-none module-card-trigger"
-                        data-drawer-title="Bio Connect">
+                        data-drawer-title="The Navigator">
+                        <p class="cs-card-header mb-2">Bio Connect / Bio Conectar</p>
                         <div class="icon-tile icon-tile-bio-connect">
                             <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                 <path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
@@ -99,9 +106,9 @@
                                 </svg>
                             </div>
                             <h4 class="free-protocol-banner__title">Free Protocol Pairs</h4>
-                            <p class="free-protocol-banner__desc text-white">Browse Dr. Goiz biomagnetism pair protocols for therapeutic reference — no subscription required.</p>
+                            <p class="free-protocol-banner__desc text-white">Browse 267 Original Biomagnetism Protocol Pairs for Therapeutic Reference — No Subscription Needed.</p>
                             <span class="free-protocol-banner__cta">
-                                Explore Free Protocols
+                                Explore Free Protocol Pairs
                                 <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                                 </svg>

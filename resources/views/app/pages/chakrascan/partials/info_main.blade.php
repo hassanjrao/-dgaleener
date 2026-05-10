@@ -1,34 +1,28 @@
-<article class="modern-info-card">
-    <p class="text-center mb-4">
-        <img src="{{ asset('/images/introduction/chakra_scan/banner.png') }}" alt="{{ env('APP_TITLE') }}"
-            class="img-fluid modern-info-banner">
-    </p>
+<article class="modern-info-card cs-info-card">
 
-    <h2 class="modern-info-title text-center">Chakra Ways Body Scan</h2>
-    <h4 class="modern-info-subtitle text-center">The Road Less Traveled</h4>
+    <p class="cs-card-header">Proprietary Chakra Method / Método de Chakra Propietario</p>
 
-    <div class="modern-copy-block">
-        <p>
-            The Chakra Ways Body Scan works directly with the emotional patterns and reactions, to the pathway of inflow and
-            out flow of energy. The body and mind reacts with 5% of its conscious mind, while the other 95% lies within the
-            subconscious mind; encoded memories and response to the memory energies. Have you ever paid attention to where the
-            energies ignites within us? A vast role in the neuron firing patterns shows that, ligands, which are known as
-            chemical messengers, called peptides, travel thru extracellular fluids and attach to highly selective receptors
-            throughout the body.
-        </p>
-        <p>
-            These molecules in turn inflict the nerves, immune system, endocrine glands and the digestive system. Causing
-            emotional chaos to the body. An old saying, time heals all wounds is now a myth. Because we now know, wherever
-            negative emotions arouse in ones life by means of inherited traumas and emotional baggage, only causes ones more
-            pain and suffering in the long run if not dealt with. Fears, when trapped or hiding is a stopping point to ones
-            life and hiding unhealthy fear only keeps the soul trapped within. Past/problem/now (past is not real, only the
-            present). All thoughts are electromagnetic, feelings and emotions.
-        </p>
-        <p class="mb-0">
-            Magnets are another form of energy and the body is a force field. A magnet to a trapped emotion when surfaced,
-            resembles the same reaction as a magnet to credit card strip - decodes the data and wipes it away. Detox emotions
-            and released. Life is how we choose to respond, unlocking the layers of negative blocks to the divine. Rise and
-            ascend emotional vibration, respect, honor and release them.
-        </p>
+    <div class="cs-icon-box">
+        <span class="cs-spinner"></span>
     </div>
+
+    <div class="cs-badge">
+        <span class="cs-badge-dot"></span> CHAKRA SCAN
+    </div>
+
+    <h3 class="cs-section-title">Energy Center Map</h3>
+
+    <p class="cs-desc-en">A specialized system developed to decode emotional blocks through a comprehensive network of Major, Minor, and Micro chakras.</p>
+    <p class="cs-desc-es">Un sistema especializado desarrollado para descodificar bloqueos emocionales a través de una red integral de chakras Mayores, Menores y Micro.</p>
+
+    <h3 class="cs-section-title mt-4">Mind &amp; Body Connection</h3>
+
+    <p class="cs-desc-en">The Chakra Body Scan works directly with emotional patterns and the pathway of energy inflow and outflow. The body and mind react with 5% conscious mind, while the other 95% lies within the subconscious — encoded memories and responses to memory energies.</p>
+    <p class="cs-desc-es">El Escaneo Corporal Chakra trabaja directamente con los patrones emocionales y el flujo de energía. El cuerpo y la mente reaccionan con el 5% de la mente consciente, mientras que el otro 95% reside en el subconsciente — memorias codificadas y respuestas a las energías de la memoria.</p>
+
+    <h3 class="cs-section-title mt-4">Release &amp; Ascend / Liberar y Ascender</h3>
+
+    <p class="cs-desc-en">Magnets are another form of energy and the body is a force field. A magnet to a trapped emotion, when surfaced, decodes the data and wipes it away — detoxing and releasing. Rise and ascend emotional vibration; respect, honor, and release.</p>
+    <p class="cs-desc-es mb-0">Los imanes son otra forma de energía y el cuerpo es un campo de fuerza. Un imán sobre una emoción atrapada, al salir a la superficie, decodifica los datos y los borra — desintoxicando y liberando. Eleva y asciende la vibración emocional; respeta, honra y libera.</p>
+
 </article>

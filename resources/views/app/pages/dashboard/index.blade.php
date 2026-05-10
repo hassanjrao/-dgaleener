@@ -37,7 +37,7 @@
         </a>
 
         {{-- Chakra Map --}}
-        <a href="{{ route('app.chakrascan') }}" class="dash-card" style="--card-color:#b45309;--card-bg:#fef3c7;">
+        <a href="{{ route('app.chakrascan') }}" class="dash-card" style="--card-color:#7c3aed;--card-bg:#ede9fe;">
             <div class="dash-card__row">
                 <svg class="dash-card__ekg" viewBox="0 0 60 24" fill="none" stroke="var(--card-color)" stroke-width="1.5" aria-hidden="true">
                     <path d="M0,12 L10,12 L14,4 L18,20 L22,8 L26,16 L30,12 L60,12"/>

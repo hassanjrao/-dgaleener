@@ -24,7 +24,7 @@
         </header>
 
         <div class="row g-4 modern-data-cache-grid">
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6">
                 <a href="{{ route('app.bodyscan') }}" class="modern-data-cache-tile">
                     <div class="modern-data-cache-tile__icon">
                         <svg class="modern-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -38,7 +38,7 @@
                 </a>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6">
                 <a href="{{ url('/data_cache/client_info') }}" class="modern-data-cache-tile">
                     <div class="modern-data-cache-tile__icon">
                         <svg class="modern-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -52,7 +52,7 @@
                 </a>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6">
                 <a href="{{ route('app.chakrascan') }}" class="modern-data-cache-tile">
                     <div class="modern-data-cache-tile__icon">
                         <svg class="modern-nav-icon" fill="none" stroke="currentColor" viewBox="0 0 100 100" aria-hidden="true" stroke-width="1.2">
@@ -66,7 +66,7 @@
                 </a>
             </div>
 
-            <div class="col-12 col-md-6 col-lg-4">
+            <div class="col-12 col-md-6">
                 <button type="button" class="modern-data-cache-tile modern-data-cache-tile--button"
                         data-toggle="modal" data-target="#preferencesModal">
                     <div class="modern-data-cache-tile__icon">

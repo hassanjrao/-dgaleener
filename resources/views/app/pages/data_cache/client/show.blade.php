@@ -30,9 +30,9 @@
                     </a>
                     <button class="modern-btn modern-btn--outline"
                             data-toggle="modal" data-target="#clientInfoModal"
-                            data-title="Edit Client" data-id="<% ctrl.client.id %>">Edit</button>
+                            data-title="Edit Client" data-id="<% ctrl.client.id %>">Edit / Editar</button>
                     <button class="modern-btn modern-btn--ghost"
-                            ng-click="ctrl.refreshClient()">Refresh</button>
+                            ng-click="ctrl.refreshClient()">Refresh / Actualizar</button>
                 </div>
             </header>
 
@@ -41,14 +41,14 @@
             <section class="modern-data-cache-summary row g-3" ng-if="ctrl.loaded">
                 <div class="col-12 col-lg-6">
                     <div class="modern-info-card modern-data-cache-summary__card">
-                        <div><strong>Name:</strong> <% ctrl.client.name %></div>
-                        <div><strong>Age:</strong> <% ctrl.client.age %> (<% ctrl.client.date_of_birth | date: 'MMMM dd, yyyy' %>)</div>
-                        <div><strong>Gender:</strong> <% ctrl.client.gender | capitalize %></div>
+                        <div><strong>Name / Nombre:</strong> <% ctrl.client.name %></div>
+                        <div><strong>Age / Edad:</strong> <% ctrl.client.age %> (<% ctrl.client.date_of_birth | date: 'MMMM dd, yyyy' %>)</div>
+                        <div><strong>Gender / Género:</strong> <% ctrl.client.gender | capitalize %></div>
                     </div>
                 </div>
                 <div class="col-12 col-lg-6">
                     <div class="modern-info-card modern-data-cache-summary__card">
-                        <div><strong>Address:</strong> <% ctrl.client.address %></div>
+                        <div><strong>Address / Dirección:</strong> <% ctrl.client.address %></div>
                     </div>
                 </div>
             </section>
@@ -56,9 +56,9 @@
             <section class="modern-info-card modern-data-cache-tabs-card" ng-hide="!ctrl.loaded">
                 <div id="client_show_tabs" class="modern-data-cache-tabs">
                     <ul>
-                        <li><a href="#tabs-sessions">Scan Sessions</a></li>
-                        <li><a href="#tabs-medical-notes">Medical Notes</a></li>
-                        <li><a href="#tabs-consent-forms">Consent Forms</a></li>
+                        <li><a href="#tabs-sessions">Scan Sessions / Sesiones</a></li>
+                        <li><a href="#tabs-medical-notes">Medical Notes / Notas médicas</a></li>
+                        <li><a href="#tabs-consent-forms">Consent Forms / Formularios</a></li>
                     </ul>
 
                     <div id="tabs-sessions">
@@ -68,18 +68,18 @@
                                    ng-model="ctrl.scan_session.date_started" date-picker-input>
                             <select ng-model="ctrl.scan_session.scan_type"
                                     class="modern-data-cache-select modern-data-cache-form-row__grow">
-                                <option value="body_scan">Body Scan</option>
-                                <option value="chakra_scan">Chakra Scan</option>
+                                <option value="body_scan">Body Scan / Escaneo corporal</option>
+                                <option value="chakra_scan">Chakra Scan / Escaneo Chakra</option>
                             </select>
                             <input type="number" id="scan_session_cost"
                                    class="modern-data-cache-input"
                                    ng-model="ctrl.scan_session.cost"
-                                   placeholder="Cost in Dollars" min="0"
+                                   placeholder="Cost / Costo ($)" min="0"
                                    ng-value="ctrl.client.session_cost">
                             <button class="modern-btn modern-btn--primary"
                                     ng-click="ctrl.addScanSession(ctrl.scan_session)"
                                     ng-disabled="!(ctrl.scan_session.date_started | valPresent) || !(ctrl.scan_session.scan_type | valPresent)">
-                                Add
+                                Add / Agregar
                             </button>
                         </div>
 

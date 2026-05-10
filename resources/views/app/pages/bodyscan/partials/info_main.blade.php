@@ -1,17 +1,5 @@
 <article class="modern-info-card">
-    <p class="text-center mb-4">
-        <img src="{{ asset('/images/introduction/body_scan/banner.png') }}" alt="{{ env('APP_TITLE') }}"
-            class="img-fluid modern-info-banner">
-    </p>
-
     <h2 class="modern-info-title text-center">Biomagnetism Body Scan</h2>
-    <h5 class="modern-info-subtitle text-center">Channeling Hazardous Health Ahead</h5>
-    <p class="modern-info-quote text-center mb-2">
-        This is a new era and to paraphrase Shakespeare "There are more things twist Heaven and Earth unknown to man"
-    </p>
-    <p class="modern-info-highlight text-center">
-        <em>A new wave of Biomagnetism has approached and coming on fast</em>
-    </p>
 
     <div class="modern-copy-block">
         <p>

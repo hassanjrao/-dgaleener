@@ -39,9 +39,6 @@ Route::post('/usps', 'UspsController@index')->name('app.products.usps')->middlew
 Route::get('/orders/{id}/payment', 'OrderController@payment')->name('app.orders.payment')->middleware('verified');
 Route::get('/orders/{id}/payment/status', 'OrderController@payment_status')->name('app.orders.payment.status')->middleware('verified');
 
-Route::get('/bioconnect', 'BioConnectController@index')->name('app.bioconnect');
-Route::get('/bioconnect/groups', 'BioConnectController@groups');
-
 Route::get('/magnetictherapyblog', 'BlogController@index')->name('app.blogs.index');
 Route::get('/magnetictherapyblog/{slug}', 'BlogController@show')->name('app.blogs.show');
 
@@ -51,6 +48,10 @@ Route::get('/magnetictherapyblog/{slug}', 'BlogController@show')->name('app.blog
 Route::middleware('verified')->group(function () {
 
     Route::get('/dashboard', 'DashboardController@index')->name('app.dashboard');
+
+    
+    Route::get('/bioconnect', 'BioConnectController@index')->name('app.bioconnect');
+    Route::get('/bioconnect/groups', 'BioConnectController@groups');
 
 
     Route::get('/pricing', 'HomeController@pricing')->name('app.pricing');

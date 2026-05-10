@@ -27,18 +27,18 @@
                     <h1 class="modern-page-title">
                         {{ $client->name }} &mdash; <% ctrl.scan_type == 'body_scan' ? 'Bio' : 'Chakra' %>
                     </h1>
-                    <p class="modern-page-subtitle">All available pairs to add</p>
+                    <p class="modern-page-subtitle">All available pairs to add / Todos los pares disponibles para agregar</p>
                 </div>
                 <div class="modern-page-header__actions">
                     <a href="/data_cache/clients/{{ $client->id }}/bio?ssid=<% ctrl.scan_session.id %>"
                        ng-if="ctrl.scan_type == 'body_scan'" class="modern-btn modern-btn--outline">
-                        <span aria-hidden="true">&larr;</span> Back
+                        <span aria-hidden="true">&larr;</span> Back / Volver
                     </a>
                     <a href="/data_cache/clients/{{ $client->id }}/chakra?ssid=<% ctrl.scan_session.id %>"
                        ng-if="ctrl.scan_type != 'body_scan'" class="modern-btn modern-btn--outline">
-                        <span aria-hidden="true">&larr;</span> Back
+                        <span aria-hidden="true">&larr;</span> Back / Volver
                     </a>
-                    <button class="modern-btn modern-btn--ghost" ng-click="ctrl.refresh()">Refresh</button>
+                    <button class="modern-btn modern-btn--ghost" ng-click="ctrl.refresh()">Refresh / Actualizar</button>
                 </div>
             </header>
 
@@ -46,7 +46,7 @@
                      ng-if="(ctrl.scan_session | valPresent) && ctrl.loaded">
                 <div class="modern-data-cache-toolbar">
                     <div class="modern-data-cache-toolbar__group">
-                        <input type="text" ng-model="ctrl.searchText" placeholder="Search"
+                        <input type="text" ng-model="ctrl.searchText" placeholder="Search / Buscar"
                                class="modern-data-cache-input modern-data-cache-toolbar__input">
                     </div>
                 </div>

@@ -37,22 +37,22 @@
                     <button class="modern-btn modern-btn--primary"
                             ng-click="ctrl.markDoneScanSession(ctrl.scan_session)"
                             ng-if="ctrl.scan_session.editable && !(ctrl.scan_session.date_ended | valPresent)">
-                        Mark As Done
+                        Mark As Done / Marcar como hecho
                     </button>
                     <button class="modern-btn modern-btn--ghost"
                             ng-click="ctrl.markUndoneScanSession(ctrl.scan_session)"
                             ng-if="ctrl.scan_session.editable && (ctrl.scan_session.date_ended | valPresent)">
-                        Mark As Undone
+                        Mark As Undone / Desmarcar
                     </button>
                     <button class="modern-btn modern-btn--outline"
                             ng-click="ctrl.emailScanSession(ctrl.scan_session)"
                             ng-if="(ctrl.scan_session | valPresent)">
-                        Email
+                        Email / Correo
                     </button>
                     <button class="modern-btn modern-btn--outline"
                             ng-click="ctrl.printScanSession(ctrl.scan_session)"
                             ng-if="(ctrl.scan_session | valPresent)">
-                        Print
+                        Print / Imprimir
                     </button>
                 </div>
             </header>
@@ -84,21 +84,21 @@
             <section class="modern-data-cache-summary row g-3" ng-if="ctrl.loaded">
                 <div class="col-12 col-lg-4">
                     <div class="modern-info-card modern-data-cache-summary__card">
-                        <div><strong>Name:</strong> <% ctrl.client.name %></div>
-                        <div><strong>Age:</strong> <% ctrl.client.age %> (<% ctrl.client.date_of_birth | date: 'MMMM dd, yyyy' %>)</div>
-                        <div><strong>Gender:</strong> <% ctrl.client.gender | capitalize %></div>
+                        <div><strong>Name / Nombre:</strong> <% ctrl.client.name %></div>
+                        <div><strong>Age / Edad:</strong> <% ctrl.client.age %> (<% ctrl.client.date_of_birth | date: 'MMMM dd, yyyy' %>)</div>
+                        <div><strong>Gender / Género:</strong> <% ctrl.client.gender | capitalize %></div>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4">
                     <div class="modern-info-card modern-data-cache-summary__card">
-                        <div><strong>Address:</strong> <% ctrl.client.address %></div>
+                        <div><strong>Address / Dirección:</strong> <% ctrl.client.address %></div>
                     </div>
                 </div>
                 <div class="col-12 col-lg-4">
                     <div class="modern-info-card modern-data-cache-summary__card">
                         <span><% (ctrl.scan_session.date_started | date: 'MMMM dd, yyyy') || '-' %></span><span ng-if="ctrl.scan_session.date_ended | valPresent"> &mdash; <% (ctrl.scan_session.date_ended | date: 'MMMM dd, yyyy') || '-' %></span><br>
-                        Invoice #<% ctrl.scan_session.id || '-' %><br>
-                        <strong>Price:</strong> $<% ctrl.scan_session.cost || '-' %> <% (ctrl.scan_session.paid ? '(paid)' : '(not paid yet)') || '-' %>
+                        Invoice / Factura #<% ctrl.scan_session.id || '-' %><br>
+                        <strong>Price / Precio:</strong> $<% ctrl.scan_session.cost || '-' %> <% (ctrl.scan_session.paid ? '(paid / pagado)' : '(not paid yet / no pagado)') || '-' %>
                     </div>
                 </div>
             </section>
@@ -106,8 +106,8 @@
             <section class="modern-info-card" ng-if="ctrl.loaded">
                 <div class="modern-data-cache-toolbar">
                     <div class="modern-data-cache-toolbar__group">
-                        <button class="modern-btn modern-btn--outline" ng-click="ctrl.refreshData()">Refresh</button>
-                        <input type="text" placeholder="Search for pairs or points below"
+                        <button class="modern-btn modern-btn--outline" ng-click="ctrl.refreshData()">Refresh / Actualizar</button>
+                        <input type="text" placeholder="Search for pairs or points / Buscar pares o puntos"
                                class="modern-data-cache-input modern-data-cache-toolbar__input"
                                ng-model="ctrl.searchText">
                     </div>
@@ -123,9 +123,9 @@
                         </select>
                         <button class="modern-btn modern-btn--primary"
                                 ng-click="ctrl.addPair(pair)"
-                                ng-disabled="!(pair | valPresent)">Add</button>
+                                ng-disabled="!(pair | valPresent)">Add / Agregar</button>
                         <a href="/data_cache/clients/<% ctrl.client.id %>/add_pairs?ssid=<% ctrl.scan_session.id %>" target="_blank">
-                            <button class="modern-btn modern-btn--outline">Show List</button>
+                            <button class="modern-btn modern-btn--outline">Show List / Ver lista</button>
                         </a>
                     </div>
                 </div>
