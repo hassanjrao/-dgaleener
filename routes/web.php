@@ -11,7 +11,7 @@
 |
 */
 
-Auth::routes(['verify' => false]);
+Auth::routes(['verify' => true]);
 
 // Route::get('/signup', 'HomeController@signup')->name('app.signup');
 // Route::get('/', 'DashboardController@index')->name('app.root');
