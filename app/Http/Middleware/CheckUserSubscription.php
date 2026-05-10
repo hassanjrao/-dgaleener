@@ -21,7 +21,7 @@ class CheckUserSubscription
             return $next($request);
         }
 
-        return redirect(\URL::route('app.dashboard'))
-                    ->with('message.fail', 'Your subscription has expired or invalid. Please renew your subscription to continue our services. Renew here, '.URL::route('app.pricing').'.');
+        return redirect(\URL::route('app.pricing'))
+                    ->with('message.fail', 'Your subscription has expired or is inactive. Please select a plan to continue.');
     }
 }

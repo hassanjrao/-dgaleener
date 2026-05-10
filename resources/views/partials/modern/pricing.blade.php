@@ -37,7 +37,7 @@
                     <button type="submit" class="pricing-card-single__btn">Get Started</button>
                 </form>
             @else
-                <a href="{{ route('register') }}" class="pricing-card-single__btn">Get Started</a>
+                <a href="{{ route('register', ['plan_id' => $monthlyPlan ? $monthlyPlan->id : '']) }}" class="pricing-card-single__btn">Get Started</a>
             @endauth
         </div>
     </div>
@@ -61,7 +61,7 @@
                     <button type="submit" class="pricing-card-single__btn">Get Started</button>
                 </form>
             @else
-                <a href="{{ route('register') }}" class="pricing-card-single__btn">Get Started</a>
+                <a href="{{ route('register', ['plan_id' => $yearlyPlan ? $yearlyPlan->id : '']) }}" class="pricing-card-single__btn">Get Started</a>
             @endauth
         </div>
     </div>

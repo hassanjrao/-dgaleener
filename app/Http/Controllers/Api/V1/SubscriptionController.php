@@ -131,7 +131,7 @@ class SubscriptionController extends BaseController
         $condition = Auth::user()->can('datatables', Subscription::class);
 
         if ($condition) {
-            $subscriptions = Subscription::query();
+            $subscriptions = Subscription::query()->latest();
 
             return DataTables::eloquent($subscriptions)->toJson();
         } else {

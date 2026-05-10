@@ -13,7 +13,17 @@
                 <div class="text-center mb-4">
                     <img src="/images/iconimages/load.png" alt="{{ env('APP_TITLE') }}" class="modern-auth-logo">
                     <h1 class="hero-heading modern-auth-title">Create <span class="italic-wellness">Account</span></h1>
-                    <p class="modern-info-highlight mb-0"><strong>15 days Free Trial. No Card Needed. No Risk.</strong></p>
+                    @php
+                        $selectedPlan = request('plan_id') ? \App\Models\Plan::find(request('plan_id')) : null;
+                    @endphp
+                    @if($selectedPlan)
+                        <div class="modern-info-highlight mb-0" style="background:#f0fdfa;border:1.5px solid #14b8a6;border-radius:0.5rem;padding:0.65rem 1rem;">
+                            <strong style="color:#0f766e;">Selected Plan: {{ ucfirst($selectedPlan->category) }} &mdash; ${{ number_format($selectedPlan->price, 2) }}</strong><br>
+                            <small style="color:#374151;">Payment is required after email verification to activate your account.</small>
+                        </div>
+                    @else
+                        <p class="text-muted mb-0" style="font-size:0.85rem;">After verifying your email, select a plan to activate your account. <a href="{{ route('app.pricing') }}">View plans</a></p>
+                    @endif
                 </div>
 
                 @if (session('status'))
@@ -28,6 +38,7 @@
 
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
+                    <input type="hidden" name="plan_id" value="{{ request('plan_id', old('plan_id')) }}">
                     <div class="row">
                         <div class="col-12 mb-3">
                             <label for="type" class="modern-auth-label">User Type</label>

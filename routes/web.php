@@ -45,101 +45,107 @@ Route::get('/magnetictherapyblog/{slug}', 'BlogController@show')->name('app.blog
 
 
 
+// Pricing is public — accessible to guests and authenticated users alike
+Route::get('/pricing', 'HomeController@pricing')->name('app.pricing');
+
 Route::middleware('verified')->group(function () {
 
+    // Dashboard + account management — no subscription check (user may need to pay)
     Route::get('/dashboard', 'DashboardController@index')->name('app.dashboard');
-
-    
-    Route::get('/bioconnect', 'BioConnectController@index')->name('app.bioconnect');
-    Route::get('/bioconnect/groups', 'BioConnectController@groups');
-
-
-    Route::get('/pricing', 'HomeController@pricing')->name('app.pricing');
     Route::get('/orders', 'HomeController@orders')->name('app.user.orders');
     Route::get('/payments', 'HomeController@payments')->name('app.user.payments');
     Route::get('/subscriptions', 'HomeController@subscriptions')->name('app.user.subscriptions');
 
-    # Body Scan
-    Route::get('/bodyscan', 'BodyScanController@index')->name('app.bodyscan');
-    # Chakra Scan
-    Route::get('/chakrascan', 'ChakraScanController@index')->name('app.chakrascan');
-
-    # Bio Connect
-    Route::get('/bioconnect/profile', 'BioConnectController@profile');
-    Route::get('/bioconnect/profile/update', 'BioConnectController@updateProfile');
-    Route::get('/bioconnect/activities', 'BioConnectController@activities');
-    Route::get('/bioconnect/friends', 'BioConnectController@friends');
-    Route::get('/bioconnect/friends/find', 'BioConnectController@findFriend');
-    Route::get('/bioconnect/friends/request', 'BioConnectController@request');
-    Route::get('findfrienddata', 'BioConnectController@findFrienddata');
-    Route::get('/bioconnect/groups/mydiscussion', 'BioConnectController@groups_mydiscussion');
-    Route::get('/bioconnect/groups/mycomment', 'BioConnectController@groups_mycomment');
-    Route::get('/bioconnect/groups/mostcomments', 'BioConnectController@groups_mostcomments');
-
-    # Data Cache
-    Route::get('/data_cache', 'DataCacheController@index')->name('app.data_cache');
-    Route::get('/data_cache/client_info', 'DataCacheController@client_info');
-    Route::get('/data_cache/clients', 'DataCacheController@client_info');
-    Route::get('/data_cache/clients/{id}', 'DataCacheController@client_show');
-    Route::get('/data_cache/clients/{id}/add_pairs', 'DataCacheController@add_pairs');
-    Route::get('/data_cache/clients/{id}/bio', 'DataCacheController@client_bio');
-    Route::get('/data_cache/clients/{id}/chakra', 'DataCacheController@client_chakra');
-    Route::get('/data_cache/bio', 'DataCacheController@bio');
-    Route::get('/data_cache/chakra', 'DataCacheController@chakra');
-    Route::get('/data_cache/preferences', 'DataCacheController@preferences');
-    Route::post('/data_cache/upload_logo', 'DataCacheController@uploadLogo');
-    Route::post('/data_cache/upload_consent_form', 'DataCacheController@uploadConsentForm');
-    Route::post('/data_cache/preferences/update', array('as' => 'updatePreferences', 'uses' => 'DataCacheController@updatePreferences'));
-    Route::get('/data_cache/help', 'DataCacheController@help');
-
-    ## Media - Audio
-    Route::get('/media', 'MediaController@index');
-    Route::post('/media', 'MediaController@store');
-    Route::get('/media/datatables', 'MediaController@datatables');
-    Route::post('/media/update/{id}', 'MediaController@update');
-    Route::get('/media/delete/{id}', 'MediaController@destroy');
-    Route::get('/media/all', 'MediaController@allmedia');
-    Route::get('/media/{id}', 'MediaController@show');
-
-    ## Plans
+    ## Plans — no subscription check (these ARE the payment routes)
     Route::post('/plans/{id}/subscribe', 'PlanController@subscribe')->name('app.plans.subscribe');
     Route::get('/plans/{id}/subscribe/status', 'PlanController@status')->name('app.plans.subscribe.status');
 
-    ## Playlist
-    Route::get('/playlist', 'PlaylistController@index');
-    Route::get('/playlist/datatables', 'PlaylistController@datatables');
-    Route::get('/playlist/{id}', 'PlaylistController@show');
-    Route::post('/playlist', 'PlaylistController@store');
-    Route::post('/playlist/update/{id}', 'PlaylistController@update');
-    Route::get('/playlist/delete/{id}', 'PlaylistController@destroy');
-    Route::get('/playlist/media/{id}', 'PlaylistController@getMedia');
-    Route::get('/playlist/allmedia/{id}', 'PlaylistController@allMedia');
+    // All feature routes require an active subscription
+    Route::middleware('subscriber')->group(function () {
 
-    # Posts
-    Route::get('/posts', 'PostController@index')->name('app.posts.index');
-    Route::get('/posts/datatables', 'PostController@datatables');
-    Route::get('/posts/new', 'PostController@new')->name('app.posts.new');
-    Route::get('/posts/{id}', 'PostController@show')->name('app.posts.show');
-    Route::get('/posts/{id}/edit', 'PostController@edit')->name('app.posts.edit');
-    Route::post('/posts', 'PostController@store')->name('app.posts.store');
-    Route::put('/posts/{id}', 'PostController@update')->name('app.posts.update');
-    Route::delete('/posts/{id}', 'PostController@destroy')->name('app.posts.destroy');
+        Route::get('/bioconnect', 'BioConnectController@index')->name('app.bioconnect');
+        Route::get('/bioconnect/groups', 'BioConnectController@groups');
 
-    ## Scan Sessions
-    Route::get('/scan_sessions/{id}/export', 'ScanSessionController@export');
-    Route::get('/scan_sessions/{id}/print', 'ScanSessionController@print')->name('app.scanSessions.print');
-    Route::get('/scan_sessions/{id}/payment', 'ScanSessionController@payment')->name('app.scanSessions.payment');
-    Route::get('/scan_sessions/{id}/payment/status', 'ScanSessionController@status')->name('app.scanSessions.payment.status');
-    Route::get('/scan_sessions/{id}/payment/request', 'ScanSessionController@requestPayment')->name('app.scanSessions.payment.request');
+        # Body Scan
+        Route::get('/bodyscan', 'BodyScanController@index')->name('app.bodyscan');
+        # Chakra Scan
+        Route::get('/chakrascan', 'ChakraScanController@index')->name('app.chakrascan');
 
-    ## Media Playlist
-    Route::post('/mediaplaylist', 'MediaPlaylistController@store');
+        # Bio Connect
+        Route::get('/bioconnect/profile', 'BioConnectController@profile');
+        Route::get('/bioconnect/profile/update', 'BioConnectController@updateProfile');
+        Route::get('/bioconnect/activities', 'BioConnectController@activities');
+        Route::get('/bioconnect/friends', 'BioConnectController@friends');
+        Route::get('/bioconnect/friends/find', 'BioConnectController@findFriend');
+        Route::get('/bioconnect/friends/request', 'BioConnectController@request');
+        Route::get('findfrienddata', 'BioConnectController@findFrienddata');
+        Route::get('/bioconnect/groups/mydiscussion', 'BioConnectController@groups_mydiscussion');
+        Route::get('/bioconnect/groups/mycomment', 'BioConnectController@groups_mycomment');
+        Route::get('/bioconnect/groups/mostcomments', 'BioConnectController@groups_mostcomments');
 
-    /* Profile update */
-    Route::post('saveprofile', array('as' => 'saveprofile', 'uses' => 'BioConnectController@saveprofile_database'));
+        # Data Cache
+        Route::get('/data_cache', 'DataCacheController@index')->name('app.data_cache');
+        Route::get('/data_cache/client_info', 'DataCacheController@client_info');
+        Route::get('/data_cache/clients', 'DataCacheController@client_info');
+        Route::get('/data_cache/clients/{id}', 'DataCacheController@client_show');
+        Route::get('/data_cache/clients/{id}/add_pairs', 'DataCacheController@add_pairs');
+        Route::get('/data_cache/clients/{id}/bio', 'DataCacheController@client_bio');
+        Route::get('/data_cache/clients/{id}/chakra', 'DataCacheController@client_chakra');
+        Route::get('/data_cache/bio', 'DataCacheController@bio');
+        Route::get('/data_cache/chakra', 'DataCacheController@chakra');
+        Route::get('/data_cache/preferences', 'DataCacheController@preferences');
+        Route::post('/data_cache/upload_logo', 'DataCacheController@uploadLogo');
+        Route::post('/data_cache/upload_consent_form', 'DataCacheController@uploadConsentForm');
+        Route::post('/data_cache/preferences/update', array('as' => 'updatePreferences', 'uses' => 'DataCacheController@updatePreferences'));
+        Route::get('/data_cache/help', 'DataCacheController@help');
 
-    /* Group */
-    Route::post('savediscussions', array('as' => 'savediscussions', 'uses' => 'GroupController@save_discussions_database'));
+        ## Media - Audio
+        Route::get('/media', 'MediaController@index');
+        Route::post('/media', 'MediaController@store');
+        Route::get('/media/datatables', 'MediaController@datatables');
+        Route::post('/media/update/{id}', 'MediaController@update');
+        Route::get('/media/delete/{id}', 'MediaController@destroy');
+        Route::get('/media/all', 'MediaController@allmedia');
+        Route::get('/media/{id}', 'MediaController@show');
+
+        ## Playlist
+        Route::get('/playlist', 'PlaylistController@index');
+        Route::get('/playlist/datatables', 'PlaylistController@datatables');
+        Route::get('/playlist/{id}', 'PlaylistController@show');
+        Route::post('/playlist', 'PlaylistController@store');
+        Route::post('/playlist/update/{id}', 'PlaylistController@update');
+        Route::get('/playlist/delete/{id}', 'PlaylistController@destroy');
+        Route::get('/playlist/media/{id}', 'PlaylistController@getMedia');
+        Route::get('/playlist/allmedia/{id}', 'PlaylistController@allMedia');
+
+        # Posts
+        Route::get('/posts', 'PostController@index')->name('app.posts.index');
+        Route::get('/posts/datatables', 'PostController@datatables');
+        Route::get('/posts/new', 'PostController@new')->name('app.posts.new');
+        Route::get('/posts/{id}', 'PostController@show')->name('app.posts.show');
+        Route::get('/posts/{id}/edit', 'PostController@edit')->name('app.posts.edit');
+        Route::post('/posts', 'PostController@store')->name('app.posts.store');
+        Route::put('/posts/{id}', 'PostController@update')->name('app.posts.update');
+        Route::delete('/posts/{id}', 'PostController@destroy')->name('app.posts.destroy');
+
+        ## Scan Sessions
+        Route::get('/scan_sessions/{id}/export', 'ScanSessionController@export');
+        Route::get('/scan_sessions/{id}/print', 'ScanSessionController@print')->name('app.scanSessions.print');
+        Route::get('/scan_sessions/{id}/payment', 'ScanSessionController@payment')->name('app.scanSessions.payment');
+        Route::get('/scan_sessions/{id}/payment/status', 'ScanSessionController@status')->name('app.scanSessions.payment.status');
+        Route::get('/scan_sessions/{id}/payment/request', 'ScanSessionController@requestPayment')->name('app.scanSessions.payment.request');
+
+        ## Media Playlist
+        Route::post('/mediaplaylist', 'MediaPlaylistController@store');
+
+        /* Profile update */
+        Route::post('saveprofile', array('as' => 'saveprofile', 'uses' => 'BioConnectController@saveprofile_database'));
+
+        /* Group */
+        Route::post('savediscussions', array('as' => 'savediscussions', 'uses' => 'GroupController@save_discussions_database'));
+
+    }); // end subscriber middleware
+
 });
 
 /*** Admin ***/
@@ -195,7 +201,7 @@ Route::prefix('admin')->namespace('Admin')->middleware(['verified', 'auth.admin'
     Route::get('playlist/allmedia/{id}', 'PlaylistController@allMedia');
 
     ## Orders
-    Route::get('subscriptions', 'SubscriptionController@index')->name('admin.subscriptions');
+Route::get('subscriptions', 'SubscriptionController@index')->name('admin.subscriptions');
 
     ## Users
     Route::get('users', 'UserController@index');

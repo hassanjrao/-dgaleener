@@ -52,11 +52,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'type' => 'required|in:practitioner,therapist',
-            'name' => 'required|string|max:255|unique:users',
-            'username' => 'required|string|min:8|unique:users',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:6|confirmed',
+            'type'    => 'required|in:practitioner,therapist',
+            'name'    => 'required|string|max:255|unique:users',
+            'username'=> 'required|string|min:8|unique:users',
+            'email'   => 'required|string|email|max:255|unique:users,email',
+            'password'=> 'required|string|min:6|confirmed',
+            'plan_id' => 'nullable|exists:plans,id',
         ]);
     }
 
@@ -76,14 +77,18 @@ class RegisterController extends Controller
             DB::rollBack();
 
             Log::error('Registration failed.', [
-                'email' => $request->input('email'),
-                'username' => $request->input('username'),
+                'email'     => $request->input('email'),
+                'username'  => $request->input('username'),
                 'exception' => $e,
             ]);
 
             return redirect()->back()
                 ->withInput($request->except('password', 'password_confirmation'))
                 ->with('message.fail', 'Registration failed. Please try again. If the problem continues, contact support.');
+        }
+
+        if ($request->filled('plan_id')) {
+            session(['pending_plan_id' => $request->plan_id]);
         }
 
         $mailError = $this->sendVerificationEmail($user);
@@ -94,7 +99,7 @@ class RegisterController extends Controller
         }
 
         return redirect()->route('verification.notice')
-            ->with('message.success', 'Your account was created successfully. Please check your email to verify your account.');
+            ->with('message.success', 'Your account was created successfully. Please check your email to verify your account, then complete your plan selection to activate your account.');
     }
 
     /**

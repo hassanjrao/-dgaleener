@@ -56,11 +56,6 @@ class User extends Authenticatable implements Auditable, MustVerifyEmail
     {
         parent::boot();
 
-        static::created(function ($user) {
-            $plan = Plan::firstOrCreate(['name' => 'Monthly'], ["name" => "Monthly", "description" => "Monthly", "category" => "monthly", "price" => 14.99]);
-            Subscription::create(['plan_id' => $plan->id, 'user_id' => $user->id, 'starts_at' => Carbon::now(), 'ends_at' => Carbon::now()->addDays(15)]);
-        });
-
         static::deleting(function ($user) {
             foreach ($user->friends_as_requester()->get() as $friend) {
                 $friend->delete();

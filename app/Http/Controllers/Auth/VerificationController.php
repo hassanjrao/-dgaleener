@@ -24,10 +24,25 @@ class VerificationController extends Controller
 
     /**
      * Where to redirect users after verification.
-     *
-     * @var string
+     * Dynamic: go to the pending plan subscribe page, or pricing if none.
      */
-    protected $redirectTo = '/dashboard';
+    protected $redirectTo = '/pricing';
+
+    protected function redirectPath()
+    {
+        $planId = session('pending_plan_id');
+
+        if ($planId && \App\Models\Plan::find($planId)) {
+            session()->forget('pending_plan_id');
+            return route('app.plans.subscribe', ['id' => $planId]);
+        }
+
+        if (auth()->user() && auth()->user()->hasValidSubscription()) {
+            return route('app.dashboard');
+        }
+
+        return route('app.pricing');
+    }
 
     /**
      * Create a new controller instance.
