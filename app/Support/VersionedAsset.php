@@ -10,10 +10,6 @@ class VersionedAsset
         $assetUrl = asset($normalizedPath);
         $assetPath = public_path($normalizedPath);
 
-        if (is_file($assetPath)) {
-            return $assetUrl.'?v='.filemtime($assetPath);
-        }
-
         return $assetUrl;
     }
 }
