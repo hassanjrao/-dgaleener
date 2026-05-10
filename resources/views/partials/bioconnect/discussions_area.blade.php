@@ -1,5 +1,5 @@
 <div class="loader" style="margin:0 auto;" ng-if="!ctrl.discussionsLoaded"></div>
-<h6 ng-if="!(ctrl.discussions | valPresent) && ctrl.discussionsLoaded">There are no discussions available.</h6>
+<h6 ng-if="!(ctrl.discussions | valPresent) && ctrl.discussionsLoaded">There are no discussions available. / No hay discusiones disponibles.</h6>
 <table class="table" ng-if="(ctrl.discussions | valPresent) && ctrl.discussionsLoaded">
     <tbody id="postcontentid" class="post_content">
         <tr ng-repeat="discussion in ctrl.discussions | orderBy: ctrl.orderBy track by discussion.id">

@@ -57,8 +57,12 @@
     <div id="tabs-logos">
         <form method="POST" enctype="multipart/form-data" id="logoForm" action="{{ url('/data_cache/upload_logo') }}">
             @csrf
-            <div id="form-part" style="display: inline-flex;">
-                <input type="file" id="logo_file" name="logo_file" accept=".jpg,.jpeg,.png" required="">
+            <div id="form-part" style="display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <label class="bilingual-file-label" for="logo_file" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                    <span class="bilingual-file-btn-text" style="background:#f1f5f9;border:1px solid #cbd5e1;border-radius:4px;padding:6px 12px;font-size:0.875rem;white-space:nowrap;">Choose File / Elegir archivo</span>
+                    <span id="logo_file_name" style="font-size:0.82rem;color:#64748b;">No file chosen / Ningún archivo elegido</span>
+                </label>
+                <input type="file" id="logo_file" name="logo_file" accept=".jpg,.jpeg,.png" required="" style="display:none;" onchange="document.getElementById('logo_file_name').textContent = this.files[0] ? this.files[0].name : 'No file chosen / Ningún archivo elegido'">
                 <button type="submit" id="logoSubmit" class="form-control btn btn-primary">Upload / Subir</button>
             </div>
             <div id="loader-part" style="display: none;">

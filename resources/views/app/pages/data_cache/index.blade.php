@@ -12,6 +12,7 @@
 @endpush
 
 @section('content')
+<div class="dc-page">
     <main class="modern-main-content">
         <header class="modern-page-header">
             <div>
@@ -84,6 +85,7 @@
           
         </div>
     </main>
+</div>
 
     @include('app.pages.data_cache.modals.client_info')
     @include('app.pages.data_cache.modals.preferences')

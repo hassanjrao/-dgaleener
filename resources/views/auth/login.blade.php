@@ -12,7 +12,7 @@
             <section class="modern-auth-card">
                 <div class="text-center mb-4">
                     <img src="/images/iconimages/load.png" alt="{{ env('APP_TITLE') }}" class="modern-auth-logo">
-                    <h1 class="hero-heading modern-auth-title">Welcome <span class="italic-wellness">Back</span></h1>
+                    <h1 class="hero-heading modern-auth-title">Sign In / <span class="italic-wellness">Iniciar sesión</span></h1>
                 </div>
 
                 @if (session('status'))

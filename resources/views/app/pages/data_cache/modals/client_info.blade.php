@@ -78,7 +78,7 @@
     #clientInfoModal .checkbox-label .translation,
     #clientInfoModal .btn-label .translation,
     #clientInfoModal .save-btn-label .translation {
-        color: #ff5a47;
+        color: #16a34a;
         display: block;
         font-size: 0.88em;
         font-weight: 400;
@@ -88,7 +88,7 @@
     }
 
     #clientInfoModal .modal-title .translation {
-        color: #ff5a47;
+        color: #16a34a;
         display: block;
         font-size: 0.62em;
         font-weight: 400;
@@ -256,7 +256,7 @@
     }
 
     #clientInfoModal .btn-label .translation {
-        color: #750f0f;
+        color: #16a34a;
     }
 
 </style>

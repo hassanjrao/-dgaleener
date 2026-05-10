@@ -38,7 +38,7 @@
 
                 $post_id = $(this).attr('data-id')
 
-                var confirmDialog = confirm("Are you sure you wish to delete this post?");
+                var confirmDialog = confirm("Are you sure you wish to delete this post? / ¿Estás seguro de que deseas eliminar esta publicación?");
                 if (confirmDialog == true) {
                     $.ajax({
                         url: '/posts/'+$post_id,
@@ -53,6 +53,23 @@
             $('#posts').DataTable({
                 processing: true,
                 serverSide: true,
+                language: {
+                    search: "Search / Buscar:",
+                    searchPlaceholder: "Search... / Buscar...",
+                    processing: "Processing... / Procesando...",
+                    lengthMenu: "Show _MENU_ entries / Mostrar _MENU_ entradas",
+                    info: "Showing _START_ to _END_ of _TOTAL_ entries / Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                    infoEmpty: "No entries found / Sin entradas",
+                    infoFiltered: "(filtered from _MAX_ total / filtrado de _MAX_ totales)",
+                    zeroRecords: "No matching records found / No se encontraron registros",
+                    emptyTable: "No data available / No hay datos disponibles",
+                    paginate: {
+                        first: "First / Primero",
+                        last: "Last / Último",
+                        next: "Next / Siguiente",
+                        previous: "Previous / Anterior"
+                    }
+                },
                 ajax: { url : '/posts/datatables' },
                 columns: [
                     { data: 'id', name: 'id', className: 'dt-body-center' },

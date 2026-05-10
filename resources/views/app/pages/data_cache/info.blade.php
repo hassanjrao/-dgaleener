@@ -15,8 +15,21 @@
             </h1>
         </section>
 
+        <div class="modern-info-card module-intro-card mb-4">
+            <p class="cs-card-header mb-3">Data Cache (The Briefcase) / El Maletín de Datos</p>
+            <div class="icon-tile icon-tile-data-cache mb-3">
+                <svg class="module-card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                </svg>
+            </div>
+            <span class="pill pill-data-cache mb-3"><span class="pill-dot"></span>Data Cache</span>
+            <h5 class="fw-bold text-dark mb-2">Session Records</h5>
+            <p class="text-secondary mb-1">Securely manage your practice with private client intake forms, session history logs, and personalized notes.</p>
+            <p class="cs-desc-es mb-0">Gestione su práctica de forma segura con formularios de admisión de clientes privados, registros de historial de sesiones y notas personalizadas.</p>
+        </div>
+
         <div class="row modern-row-gap">
-           
+
             <div class="col-12 col-lg-12">
                 <article class="modern-info-card modern-info-gradient">
                     <h2 class="modern-info-title text-center">Data Cache</h2>

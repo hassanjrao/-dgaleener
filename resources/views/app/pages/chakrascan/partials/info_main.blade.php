@@ -3,7 +3,11 @@
     <p class="cs-card-header">Proprietary Chakra Method / Método de Chakra Propietario</p>
 
     <div class="cs-icon-box">
-        <span class="cs-spinner"></span>
+        <div class="icon-tile icon-tile-chakra-scan" style="width:56px;height:56px;">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 100 100" aria-hidden="true" stroke-width="1.2" style="width:36px;height:36px;">
+                <circle cx="50" cy="50" r="32"/><circle cx="50" cy="50" r="16"/><circle cx="66" cy="50" r="16"/><circle cx="58" cy="36.1" r="16"/><circle cx="42" cy="36.1" r="16"/><circle cx="34" cy="50" r="16"/><circle cx="42" cy="63.9" r="16"/><circle cx="58" cy="63.9" r="16"/>
+            </svg>
+        </div>
     </div>
 
     <div class="cs-badge">

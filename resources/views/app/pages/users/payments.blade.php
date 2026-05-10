@@ -41,9 +41,27 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            var dtLang = {
+                search: "Search / Buscar:",
+                searchPlaceholder: "Search... / Buscar...",
+                processing: "Processing... / Procesando...",
+                lengthMenu: "Show _MENU_ entries / Mostrar _MENU_ entradas",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries / Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                infoEmpty: "No entries found / Sin entradas",
+                infoFiltered: "(filtered from _MAX_ total / filtrado de _MAX_ totales)",
+                zeroRecords: "No matching records found / No se encontraron registros",
+                emptyTable: "No data available / No hay datos disponibles",
+                paginate: {
+                    first: "First / Primero",
+                    last: "Last / Último",
+                    next: "Next / Siguiente",
+                    previous: "Previous / Anterior"
+                }
+            };
             $('#payments').DataTable({
                 processing: true,
                 serverSide: true,
+                language: dtLang,
                 ajax: { url : '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/users/me/payments/datatables' },
                 columns: [
                     { data: 'date_paid' },

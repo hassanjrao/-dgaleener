@@ -45,9 +45,27 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
+            var dtLang = {
+                search: "Search / Buscar:",
+                searchPlaceholder: "Search... / Buscar...",
+                processing: "Processing... / Procesando...",
+                lengthMenu: "Show _MENU_ entries / Mostrar _MENU_ entradas",
+                info: "Showing _START_ to _END_ of _TOTAL_ entries / Mostrando _START_ a _END_ de _TOTAL_ entradas",
+                infoEmpty: "No entries found / Sin entradas",
+                infoFiltered: "(filtered from _MAX_ total / filtrado de _MAX_ totales)",
+                zeroRecords: "No matching records found / No se encontraron registros",
+                emptyTable: "No data available / No hay datos disponibles",
+                paginate: {
+                    first: "First / Primero",
+                    last: "Last / Último",
+                    next: "Next / Siguiente",
+                    previous: "Previous / Anterior"
+                }
+            };
             $('#orders').DataTable({
                 processing: true,
                 serverSide: true,
+                language: dtLang,
                 ajax: { url : '{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/users/me/orders/datatables' },
                 columns: [
                     { data: 'product', name: 'product', orderable: false, searchable: false,
@@ -62,7 +80,7 @@
                         render: function ( data, type, row, meta ) { return '$' + data; }
                     },
                     { data: 'paid', name: 'paid', orderable: false, searchable: false,
-                        render: function ( data, type, row, meta ) { return data == true ? 'Yes' : 'No'; }
+                        render: function ( data, type, row, meta ) { return data == true ? 'Yes / Sí' : 'No'; }
                     },
                     { data: 'id', orderable: false, searchable: false,
                         render: function ( data, type, row, meta ) {
@@ -71,7 +89,7 @@
                                 url: "{{ env("APP_WEB_API_URL") }}/{{ env("APP_WEB_API_VERSION" )}}/orders/"+data,
                                 type: 'GET', dataType: 'JSON', async: false,
                                 success: function (order) {
-                                    if (!order.paid) { content = '<a href="/orders/'+order.id+'/payment">Pay</a>'; }
+                                    if (!order.paid) { content = '<a href="/orders/'+order.id+'/payment">Pay / Pagar</a>'; }
                                 }
                             });
                             return content;
