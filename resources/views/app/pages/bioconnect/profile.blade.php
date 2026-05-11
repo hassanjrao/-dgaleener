@@ -163,6 +163,10 @@
         <section class="modern-info-card modern-bioconnect-profile mt-4" id="change-password">
             <h5 class="mb-4" style="font-weight:600;">Change Password / Cambiar contraseña</h5>
 
+            @if (session('password.success'))
+                <div class="alert alert-success">{{ session('password.success') }}</div>
+            @endif
+
             @if ($errors->has('current_password') || $errors->has('new_password') || $errors->has('new_password_confirmation'))
                 <div class="alert alert-danger">
                     @foreach (['current_password', 'new_password', 'new_password_confirmation'] as $field)

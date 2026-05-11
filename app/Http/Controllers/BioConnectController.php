@@ -179,7 +179,7 @@ class BioConnectController extends Controller
         $user->password = Hash::make($request->new_password);
         $user->save();
 
-        return redirect()->to('/bioconnect/profile')->with('message.success', 'Password updated successfully. / Contraseña actualizada correctamente.');
+        return redirect()->to('/bioconnect/profile#change-password')->with('password.success', 'Password updated successfully. / Contraseña actualizada correctamente.');
     }
 
     protected function syncMirroredProfiles(User $user, array $mirrorReference = [])
