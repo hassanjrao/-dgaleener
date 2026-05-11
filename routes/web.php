@@ -146,6 +146,7 @@ Route::middleware('verified')->group(function () {
 
         /* Profile update */
         Route::post('saveprofile', array('as' => 'saveprofile', 'uses' => 'BioConnectController@saveprofile_database'));
+        Route::post('/bioconnect/profile/password', 'BioConnectController@updatePassword')->name('bioconnect.profile.password');
 
         /* Group */
         Route::post('savediscussions', array('as' => 'savediscussions', 'uses' => 'GroupController@save_discussions_database'));

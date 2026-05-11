@@ -159,6 +159,62 @@
                 </div>
             </form>
         </section>
+
+        <section class="modern-info-card modern-bioconnect-profile mt-4" id="change-password">
+            <h5 class="mb-4" style="font-weight:600;">Change Password / Cambiar contraseña</h5>
+
+            @if ($errors->has('current_password') || $errors->has('new_password') || $errors->has('new_password_confirmation'))
+                <div class="alert alert-danger">
+                    @foreach (['current_password', 'new_password', 'new_password_confirmation'] as $field)
+                        @error($field)
+                            <div>{{ $message }}</div>
+                        @enderror
+                    @endforeach
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('bioconnect.profile.password') }}" class="modern-bioconnect-profile__form">
+                @csrf
+
+                <div class="form-group row">
+                    <label for="current_password" class="col-sm-3 col-form-label">
+                        Current Password / Contraseña actual
+                    </label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control @error('current_password') is-invalid @enderror"
+                               id="current_password" name="current_password" required autocomplete="current-password">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="new_password" class="col-sm-3 col-form-label">
+                        New Password / Nueva contraseña
+                    </label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control @error('new_password') is-invalid @enderror"
+                               id="new_password" name="new_password" required autocomplete="new-password"
+                               minlength="8">
+                        <small class="form-text text-muted">Minimum 8 characters / Mínimo 8 caracteres</small>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label for="new_password_confirmation" class="col-sm-3 col-form-label">
+                        Confirm New Password / Confirmar nueva contraseña
+                    </label>
+                    <div class="col-sm-9">
+                        <input type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror"
+                               id="new_password_confirmation" name="new_password_confirmation" required autocomplete="new-password">
+                    </div>
+                </div>
+
+                <div class="modern-bioconnect-profile__actions">
+                    <button type="submit" class="modern-btn modern-btn--primary">
+                        Update Password / Actualizar contraseña
+                    </button>
+                </div>
+            </form>
+        </section>
     </main>
 @endsection
 

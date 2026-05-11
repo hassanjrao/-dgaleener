@@ -11,6 +11,7 @@ use URL;
 use Storage;
 
 use Auth;
+use Hash;
 
 use App\Models\User;
 
@@ -23,7 +24,7 @@ class BioConnectController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('subscriber')->except('index', 'groups', 'profile', 'info');
+        $this->middleware('subscriber')->except('index', 'groups', 'profile', 'updatePassword', 'info');
     }
 
     public function index()
@@ -153,6 +154,32 @@ class BioConnectController extends Controller
         } else {
             return redirect('/bioconnect/profile')->with('message.fail', 'Unable to save your profile, please check your inputs in the form below.')->withErrors($user->getErrors());
         }
+    }
+
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password'          => 'required',
+            'new_password'              => 'required|min:8|different:current_password',
+            'new_password_confirmation' => 'required|same:new_password',
+        ], [
+            'new_password.different'          => 'New password must be different from your current password. / La nueva contraseña debe ser diferente a la actual.',
+            'new_password.min'                => 'New password must be at least 8 characters. / La nueva contraseña debe tener al menos 8 caracteres.',
+            'new_password_confirmation.same'  => 'New password and confirmation do not match. / La nueva contraseña y la confirmación no coinciden.',
+        ]);
+
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            return redirect()->to('/bioconnect/profile#change-password')
+                ->withErrors(['current_password' => 'The current password is incorrect. / La contraseña actual es incorrecta.'])
+                ->withInput();
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->to('/bioconnect/profile')->with('message.success', 'Password updated successfully. / Contraseña actualizada correctamente.');
     }
 
     protected function syncMirroredProfiles(User $user, array $mirrorReference = [])
