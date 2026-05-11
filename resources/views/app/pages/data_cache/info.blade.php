@@ -24,7 +24,7 @@
             </div>
             <span class="pill pill-data-cache mb-3"><span class="pill-dot"></span>Data Cache</span>
             <h5 class="fw-bold text-dark mb-2">Session Records</h5>
-            <p class="text-secondary mb-1">Securely manage your practice with private client intake forms, session history logs, and personalized notes.</p>
+            <p class="text-secondary mb-1">Securely manage private client intake forms, session history logs, and personalized notes.</p>
             <p class="cs-desc-es mb-0">Gestione su práctica de forma segura con formularios de admisión de clientes privados, registros de historial de sesiones y notas personalizadas.</p>
         </div>
 

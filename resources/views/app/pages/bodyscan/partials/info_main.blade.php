@@ -14,7 +14,7 @@
             cell and maintaining proper PH balance. A cells ability to function and thrive is driven by balance.
         </p>
         <p class="mb-0">
-            With Biomagnetism, the magnetic fields pull the stagnate diseased ions in and out of the cell enriching the cell
+            With Biomagnetism, the magnetic fields pull the stagnate ions in and out of the cell enriching the cell
             with oxygen and disrupting the toxic intruders to scatter about and exit the body. Allowing for the alignment to
             regain its normal cell function and the damage cells to repair.
         </p>
