@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\DB;
 
-class AddNewRolesTable extends Migration
+class CreateContactMessagesTableCopy extends Migration
 {
     public function up()
     {
