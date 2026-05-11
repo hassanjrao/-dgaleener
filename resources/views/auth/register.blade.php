@@ -43,7 +43,7 @@
                         <div class="col-12 mb-3">
                             <label for="type" class="modern-auth-label">User Type / Tipo de usuario</label>
                             <select class="form-control modern-auth-input @error('type') is-invalid @enderror" id="type" name="type" required>
-                                @foreach (\Spatie\Permission\Models\Role::orderBy('name', 'desc')->whereIn('name', ['practitioner', 'therapist'])->get() as $role)
+                                @foreach (\Spatie\Permission\Models\Role::orderBy('name', 'desc')->whereIn('name', ['student/estudiante', 'practitioner/practicante', 'guest/invitado'])->get() as $role)
                                     @if ($role->name != 'administrator')
                                         <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
                                     @endif
