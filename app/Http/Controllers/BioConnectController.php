@@ -158,7 +158,7 @@ class BioConnectController extends Controller
 
     public function updatePassword(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'current_password'          => 'required',
             'new_password'              => 'required|min:8|different:current_password',
             'new_password_confirmation' => 'required|same:new_password',
@@ -167,6 +167,12 @@ class BioConnectController extends Controller
             'new_password.min'                => 'New password must be at least 8 characters. / La nueva contraseña debe tener al menos 8 caracteres.',
             'new_password_confirmation.same'  => 'New password and confirmation do not match. / La nueva contraseña y la confirmación no coinciden.',
         ]);
+
+        if ($validator->fails()) {
+            return redirect()->to('/bioconnect/profile#change-password')
+                ->withErrors($validator)
+                ->withInput();
+        }
 
         $user = Auth::user();
 
