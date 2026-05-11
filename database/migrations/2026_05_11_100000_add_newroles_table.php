@@ -10,9 +10,9 @@ class CreateContactMessagesTableCopy extends Migration
     public function up()
     {
         DB::table('roles')->insert([
-            ['name' => 'student/estudiante'],
-            ['name' => 'practitioner/practicante'],
-            ['name' => 'guest/invitado'],
+            ['name' => 'student/estudiante', 'guard_name' => 'web'],
+            ['name' => 'practitioner/practicante', 'guard_name' => 'web'],
+            ['name' => 'guest/invitado', 'guard_name' => 'web'],
         ]);
     }
 
