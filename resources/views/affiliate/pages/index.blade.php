@@ -1,3 +1,7 @@
+@php
+header('location: /home');
+exit;
+@endphp
 @extends('layouts.affiliate')
 @section('page-title')
     {{ env('APP_TITLE').' Sophisticated Modern PWA App.'}}
