@@ -11,7 +11,7 @@
     <main class="modern-main-content">
         <div class="container py-5">
             <h1 class="text-center" style="margin-bottom:35px">{{ __('Ion Positive and Negative Changes') }}</h1>
-            <h3 style="margin-bottom:35px">{{ __('Engage to discover transforming energy to alignment, channeling cell activity with magnet fields to wellness.') }}</h3>
+            <h3 style="margin-bottom:35px">{{ __('Essssssngage to discover transforming energy to alignment, channeling cell activity with magnet fields to wellness.') }}</h3>
             <h5 style="margin-bottom:35px">{{ __('A broad approach to positive and negative electron fields, working to eradicate diseases. (toxins, endotoxins, radicals, dysfunctions, emotional crisis, embedded negative codes, negative memory and PH imbalance.)') }}</h5>
             <h3 class="text-center">{{ __('A journey to health - Biomagnetism Therapy') }}</h3>
             <br/><br/>
