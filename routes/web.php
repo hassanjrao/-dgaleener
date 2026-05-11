@@ -13,6 +13,10 @@
 
 Auth::routes(['verify' => true]);
 
+Route::get('/phpinfo', function () {
+    phpinfo();
+});
+
 // Route::get('/signup', 'HomeController@signup')->name('app.signup');
 // Route::get('/', 'DashboardController@index')->name('app.root');
 // Route::get('/landing_page', 'HomeController@landing_page')->name('app.landing_page');
