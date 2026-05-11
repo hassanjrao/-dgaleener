@@ -27,7 +27,7 @@
 								</div> <!-- end logo-area -->
 								<div class="header-content-left">
 									<h1 class="text-xs-center">
-										{{ env('APP_TITLE') }} Sophisticated Modern PWA App.
+										{{ env('APP_TITLE') }} ssssss Sophisticated Modern PWA App.
 									</h1>
 									<h3 class="text-xs-center">
 										Ion Positive and Negative Changes
